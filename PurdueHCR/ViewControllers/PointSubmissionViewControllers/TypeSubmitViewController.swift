@@ -51,16 +51,6 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
             submitButton.isEnabled = true;
             return
         }
-        submitPointLog(pointType: pointType, descriptions: description)
-    }
-    
-    
-    /// Submit Point Log to DataHandler. 
-    ///
-    /// - Parameters:
-    ///   - pointType: Point Type to have a log created of
-    ///   - descriptions: String text describing what the residents did
-    func submitPointLog(pointType:PointType, descriptions:String){
         let name = User.get(.name) as! String
         let preApproved = ((User.get(.permissionLevel) as! Int) == 1 )
         let floor = User.get(.floorID) as! String
@@ -89,6 +79,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
                 }
             }
         }
+        
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {

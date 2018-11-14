@@ -269,6 +269,49 @@
 			path = PurdueHCRUITests;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
+=======
+		D3183DA02186D861007A1309 /* RECViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D3183DA32186DED7007A1309 /* HouseViewControllers */,
+				D3183DA82186DF51007A1309 /* PointOptionsViewControllers */,
+				D3183DA92186DF62007A1309 /* RewardsViewControllers */,
+			);
+			path = RECViewControllers;
+			sourceTree = "<group>";
+		};
+		D3183DA32186DED7007A1309 /* HouseViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D3183D9E2186D3D2007A1309 /* RECHouse.storyboard */,
+				D3183DA62186DF18007A1309 /* HouseCompetitionOverviewTableViewController.swift */,
+				D3183DA42186DEFF007A1309 /* HouseTableViewController.swift */,
+			);
+			path = HouseViewControllers;
+			sourceTree = "<group>";
+		};
+		D3183DA82186DF51007A1309 /* PointOptionsViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D3183DAB2186E02B007A1309 /* RECPointOptions.storyboard */,
+				D3183DB12186E8FF007A1309 /* RECPointOptionTableViewController.swift */,
+				D38ACF2E21897085000E0539 /* RECPointCreationTableViewController.swift */,
+			);
+			path = PointOptionsViewControllers;
+			sourceTree = "<group>";
+		};
+		D3183DA92186DF62007A1309 /* RewardsViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D3183DAD2186E037007A1309 /* RECRewards.storyboard */,
+				D323C0F02192200300CA839C /* RECRewardsTableViewController.swift */,
+				D323C0F22192201200CA839C /* RECRewardCreationTableViewController.swift */,
+			);
+			path = RewardsViewControllers;
+			sourceTree = "<group>";
+		};
+>>>>>>> parent of 8c9fe5b... REC add points
 		D3355C90214A25BF0037556C /* ViewXIB */ = {
 			isa = PBXGroup;
 			children = (
