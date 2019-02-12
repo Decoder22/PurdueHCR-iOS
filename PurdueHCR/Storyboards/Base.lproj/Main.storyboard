@@ -40,6 +40,7 @@
                         <viewLayoutGuide key="safeArea" id="oTi-77-cX2"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="j8K-2A-WkV" id="bYd-xS-C0L"/>
                         <outlet property="imageView" destination="WUo-sG-Abw" id="9Vi-RC-qoB"/>
                         <segue destination="49e-Tb-3d3" kind="show" identifier="doneWithInit" id="uWT-sX-PZX"/>
                     </connections>

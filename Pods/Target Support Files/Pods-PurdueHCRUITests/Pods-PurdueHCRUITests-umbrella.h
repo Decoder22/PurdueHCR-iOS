@@ -10,8 +10,7 @@
 #endif
 #endif
 
-#import "SubscriptionPrompt.h"
 
-FOUNDATION_EXPORT double SubscriptionPromptVersionNumber;
-FOUNDATION_EXPORT const unsigned char SubscriptionPromptVersionString[];
+FOUNDATION_EXPORT double Pods_PurdueHCRUITestsVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_PurdueHCRUITestsVersionString[];
 
