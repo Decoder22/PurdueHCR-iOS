@@ -1,8 +1,8 @@
 language: objective-c
-osx_image: xcode9.4
+osx_image: xcode10.1
 xcode_workspace: PurdueHCR.xcworkspace # path to your xcodeproj folder
 xcode_scheme: PurdueHCR
-xcode_destination: platform=iOS Simulator,OS=11.4,name=iPhone X
+xcode_destination: platform=iOS Simulator,OS=12.0,name=iPhone X
 
 before_install:
     - pod repo update
@@ -10,4 +10,4 @@ before_install:
 branches:
   only:
   - UITestSetup
-
+  -
