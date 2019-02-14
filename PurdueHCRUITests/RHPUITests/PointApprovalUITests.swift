@@ -42,6 +42,8 @@ class PointApprovalUITests: XCTestCase {
         
         //Points Remaining Label
         //Total Points Label
+        let currentHousePoints = app.staticTexts.element(matching:.any, identifier: "Points Remaining Label").label
+        print(app.debugDescription)
         
         //Get Current Users point, total house points, and value of base point type.
         UITestUtils.submitPoints(app: app, test: self, testPointDescription: testPointDescription)
@@ -65,6 +67,7 @@ class PointApprovalUITests: XCTestCase {
         
         //Log back in as Resident and compare points
         UITestUtils.logIn(app: app, test: self, type: .RESIDENT)
+        UITestUtils.waitForLoadingToComplete(app: app, test: self)
         XCTAssertTrue(app.staticTexts["Points Remaining Label"].exists, "Points exist")
         
         

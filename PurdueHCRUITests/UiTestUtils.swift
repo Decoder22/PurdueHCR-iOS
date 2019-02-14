@@ -29,7 +29,9 @@ class UITestUtils{
     ///
     /// - Parameter app: The current XCUIApplication
     static func logout(app:XCUIApplication){
-        if(app.navigationBars["PurdueHCR.HouseProfileView"].exists){
+        
+        if(app.tabBars.element(boundBy: 0).exists){
+            app.tabBars.buttons["Points"].tap()
             app.navigationBars["PurdueHCR.HouseProfileView"].buttons["Sign Out"].tap()
             app.buttons["Logout"].tap()
             app.alerts["Log out?"].buttons["Yes"].tap()
