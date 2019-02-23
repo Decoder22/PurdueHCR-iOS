@@ -42,6 +42,7 @@ class PointOptionViewController: UITableViewController, UISearchResultsUpdating{
             self.tableView.deselectRow(at: index, animated: true)
         }
         resfreshData()
+
     }
 
     override func didReceiveMemoryWarning() {

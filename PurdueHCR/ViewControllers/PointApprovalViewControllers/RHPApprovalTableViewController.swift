@@ -12,17 +12,18 @@ class ApprovalCell: UITableViewCell {
     @IBOutlet var reasonLabel: UILabel!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
+    
+    
 }
 
 class RHPApprovalTableViewController: UITableViewController {
     
     var refresher: UIRefreshControl?
-    var displayedLogs = [PointLog]()
-	var index: IndexPath?
+    var unconfirmedLogs = [PointLog]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        displayedLogs = DataManager.sharedManager.getUnconfirmedPointLogs() ?? [PointLog]()
+        unconfirmedLogs = DataManager.sharedManager.getUnconfirmedPointLogs() ?? [PointLog]()
         refresher = UIRefreshControl()
         refresher?.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refresher?.addTarget(self, action: #selector(resfreshData), for: .valueChanged)
@@ -36,7 +37,7 @@ class RHPApprovalTableViewController: UITableViewController {
     
     @objc func resfreshData(){
         DataManager.sharedManager.refreshUnconfirmedPointLogs(onDone: { (pointLogs:[PointLog]) in
-            self.displayedLogs = pointLogs
+            self.unconfirmedLogs = pointLogs
             DispatchQueue.main.async { [unowned self] in
                 self.tableView.reloadData()
             }
@@ -59,7 +60,7 @@ class RHPApprovalTableViewController: UITableViewController {
 			emptyMessage(message: message)
 			return 0
 		}
-        else if displayedLogs.count > 0 {
+        else if unconfirmedLogs.count > 0 {
             killEmptyMessage()
             return 1
         } else {
@@ -70,16 +71,16 @@ class RHPApprovalTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return displayedLogs.count
+        return unconfirmedLogs.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ApprovalCell
         
-        cell.reasonLabel?.text = displayedLogs[indexPath.row].type.pointDescription
-        cell.nameLabel?.text = displayedLogs[indexPath.row].resident
-        cell.descriptionLabel?.text = displayedLogs[indexPath.row].pointDescription
+        cell.reasonLabel?.text = unconfirmedLogs[indexPath.row].type.pointDescription
+        cell.nameLabel?.text = unconfirmedLogs[indexPath.row].resident
+        cell.descriptionLabel?.text = unconfirmedLogs[indexPath.row].pointDescription
 
         return cell
     }
@@ -99,83 +100,54 @@ class RHPApprovalTableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		var action : [UIContextualAction] = []
-		let logs = self.displayedLogs[indexPath.row]
-		if ((logs.wasHandled && logs.wasRejected()) || (!logs.wasHandled && !logs.wasRejected())) {
-			let approveAction = UIContextualAction(style: .normal, title:  "Approve", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-				print("Approve button tapped")
-                let reviewing = logs.wasHandled
-                print(reviewing)
-                let log = self.displayedLogs.remove(at: indexPath.row)
-                if (reviewing) {
-                    self.updatePointLogStatus(log: log, approve: true, updating: true, indexPath: indexPath)
-                } else {
-                    self.updatePointLogStatus(log: log, approve: true, indexPath: indexPath)
-                }
-				if(self.displayedLogs.count == 0){
-					let indexSet = NSMutableIndexSet()
-					indexSet.add(0)
-                    if (!reviewing) {
-                        self.tableView.deleteSections(indexSet as IndexSet, with: .automatic)
-                    }
-                    success(true)
-				}
-				else{
-                   // if (!reviewing) {
-                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    //}
-                    success(true)
-				}
-				
-			})
-			approveAction.backgroundColor = .green
-			approveAction.title = "Approve"
-			action.append(approveAction)
-		}
-        return UISwipeActionsConfiguration(actions: action)
+        
+        let approveAction = UIContextualAction(style: .normal, title:  "Approve", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            print("Approve button tapped")
+            let log = self.unconfirmedLogs.remove(at: indexPath.row)
+            self.handlePointApproval(log: log, approve: true)
+            if(self.unconfirmedLogs.count == 0){
+                let indexSet = NSMutableIndexSet()
+                indexSet.add(0)
+                self.tableView.deleteSections(indexSet as IndexSet, with: .automatic)
+                success(true)
+            }
+            else{
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                success(true)
+            }
+            
+        })
+        approveAction.backgroundColor = .green
+        approveAction.title = "Approve"
+        return UISwipeActionsConfiguration(actions: [approveAction])
     }
     
-	override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		var action : [UIContextualAction] = []
-		let logs = self.displayedLogs[indexPath.row]
-		if (!logs.wasRejected()) {
-			let rejectAction = UIContextualAction(style: .normal, title:  "Reject", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-				print("Delete button tapped")
-                let reviewing = logs.wasHandled
-                print(reviewing)
-                let log = self.displayedLogs.remove(at: indexPath.row)
-                if (reviewing) {
-                    self.updatePointLogStatus(log: log, approve: true, updating: true, indexPath: indexPath)
-                } else {
-                    self.updatePointLogStatus(log: log, approve: true, indexPath: indexPath)
-                }
-				if(self.displayedLogs.count == 0){
-                    if (!reviewing) {
-                        let indexSet = NSMutableIndexSet()
-                        indexSet.add(0)
-                        self.tableView.deleteSections(indexSet as IndexSet, with: .automatic)
-                    }
-					success(true)
-				}
-				else{
-                    if (!reviewing) {
-                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    }
-					success(true)
-				}
-			})
-			rejectAction.backgroundColor = .red
-			rejectAction.title = "Reject"
-			action.append(rejectAction)
-		}
-        return UISwipeActionsConfiguration(actions: action)
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let rejectAction = UIContextualAction(style: .normal, title:  "Reject", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+            print("Delete button tapped")
+            let log = self.unconfirmedLogs.remove(at: indexPath.row)
+            self.handlePointApproval(log: log, approve: false)
+            if(self.unconfirmedLogs.count == 0){
+                let indexSet = NSMutableIndexSet()
+                indexSet.add(0)
+                self.tableView.deleteSections(indexSet as IndexSet, with: .automatic)
+                success(true)
+            }
+            else{
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                success(true)
+            }
+        })
+        rejectAction.backgroundColor = .red
+        rejectAction.title = "Reject"
+        return UISwipeActionsConfiguration(actions: [rejectAction])
     }
     
     
-    func updatePointLogStatus(log:PointLog, approve:Bool, updating:Bool = false, indexPath: IndexPath) {
-		DataManager.sharedManager.updatePointLogStatus(log: log, approved: approve, updating: updating, onDone: { (err: Error?) in
+    func handlePointApproval(log:PointLog, approve:Bool){
+        DataManager.sharedManager.confirmOrDenyPoints(log: log, approved: approve, onDone: { (err: Error?) in
             if let error = err {
-                if(error.localizedDescription == "The operation couldn’t be completed. (Point request has already been handled error 1.)"){
+                if(error.localizedDescription == "The operation couldn’t be completed. (Document has already been approved error 1.)"){
                     self.notify(title: "WARNING: ALREADY HANDLED", subtitle: "Check with other RHPs before continuing", style: .warning)
 //                    DispatchQueue.main.async {
 //                        self.resfreshData()
@@ -183,17 +155,17 @@ class RHPApprovalTableViewController: UITableViewController {
                     return
                 }
                 else if( error.localizedDescription == "The operation couldn’t be completed. (Document does not exist error 2.)"){
-                    self.notify(title: "Failure", subtitle: "Point request no longer exists.", style: .danger)
+                    self.notify(title: "Failure", subtitle: "Document no longer exists.", style: .danger)
 //                    DispatchQueue.main.async {
 //                        self.resfreshData()
 //                    }
                     return
                 }
                 else{
-                    self.notify(title: "Failed", subtitle: "Failed to update point request.", style: .danger)
-                    self.displayedLogs.append(log)
+                    self.notify(title: "Failed", subtitle: "Failed to remove point log.", style: .danger)
+                    self.unconfirmedLogs.append(log)
                     DispatchQueue.main.async { [unowned self] in
-                        if(self.displayedLogs.count == 0 && self.tableView.numberOfSections != 0){
+                        if(self.unconfirmedLogs.count == 0 && self.tableView.numberOfSections != 0){
                             let indexSet = NSMutableIndexSet()
                             indexSet.add(0)
                             self.tableView.deleteSections(indexSet as IndexSet, with: .automatic)
@@ -230,8 +202,8 @@ class RHPApprovalTableViewController: UITableViewController {
             let nextViewController = segue.destination as! PointLogOverviewController
             let indexPath = tableView.indexPathForSelectedRow
             
-            nextViewController.pointLog = self.displayedLogs[(indexPath?.row)!]
-            index = ( sender as! RHPApprovalTableViewController ).tableView.indexPathForSelectedRow
+            nextViewController.pointLog = self.unconfirmedLogs[(indexPath?.row)!]
+            nextViewController.index = ( sender as! RHPApprovalTableViewController ).tableView.indexPathForSelectedRow
             nextViewController.preViewContr = self
         }
     }

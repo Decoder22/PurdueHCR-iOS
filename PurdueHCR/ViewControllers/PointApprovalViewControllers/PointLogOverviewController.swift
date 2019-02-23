@@ -14,13 +14,12 @@ class PointLogOverviewController: UIViewController {
     
     @IBOutlet var approveButton: UIButton!
     @IBOutlet var rejectButton: UIButton!
-	
-	var indexPath : IndexPath?
+    
     
     var pointLog: PointLog?
-    //var index: IndexPath?
+    var index: IndexPath?
     @IBOutlet var pointDescriptionView: PointDescriptionView!
-	var preViewContr: RHPApprovalTableViewController?
+    var preViewContr: RHPApprovalTableViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,24 +44,14 @@ class PointLogOverviewController: UIViewController {
     
     @IBAction func approvePointLog(_ sender: Any) {
         approveButton.isEnabled = false
-        //preViewContr?.displayedLogs.remove(at:index!.row)
-		if (pointLog?.wasHandled == true) {
-			if let pointSubmittedViewContr = (preViewContr as! PointsSubmittedViewController?) {
-				pointSubmittedViewContr.updatePointLogStatus(log: pointLog!, approve: true, indexPath: indexPath!)
-			}
-		} else {
-			preViewContr?.updatePointLogStatus(log: pointLog!, approve: true, indexPath: indexPath!)
-		}
-		
+        preViewContr?.unconfirmedLogs.remove(at:index!.row)
+        preViewContr?.handlePointApproval(log: pointLog!, approve: true)
         self.navigationController?.popViewController(animated: true)
     }
     @IBAction func rejectPointLog(_ sender: Any) {
         rejectButton.isEnabled = false
-        //preViewContr?.displayedLogs.remove(at: index!.row)
-		if (pointLog?.wasHandled == true) {
-			preViewContr = preViewContr as! PointsSubmittedViewController
-		}
-		preViewContr?.updatePointLogStatus(log: pointLog!, approve: false, indexPath: indexPath!)
+        preViewContr?.unconfirmedLogs.remove(at: index!.row)
+        preViewContr?.handlePointApproval(log: pointLog!, approve: false)
         self.navigationController?.popViewController(animated: true)
     }
     
