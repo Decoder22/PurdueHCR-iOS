@@ -166,7 +166,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 			self.addChild(alertController)
 			
 		} else if (initError!.code == 2) {
-			let alertController = UIAlertController.init(title: "Error", message: initError!.domain, preferredStyle: .alert)
+			let alertController = UIAlertController.init(title: "Failure to Find Account", message: "Please create a new account.", preferredStyle: .alert)
 			
 			let okAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (alert) in
 				try! Auth.auth().signOut()
