@@ -156,7 +156,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 			Cely.changeStatus(to: .loggedIn)
 			self.activityIndicator.stopAnimating()
 		} else if (initError!.code == 1) {
-			let alertController = UIAlertController.init(title: "Error", message: initError!.domain, preferredStyle: .alert)
+			let alertController = UIAlertController.init(title: "Error", message: "Data could not be loaded.", preferredStyle: .alert)
 			
 			let retryOption = UIAlertAction.init(title: "Try Again", style: .default, handler: { (alert) in
 				self.initializeData()
