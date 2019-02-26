@@ -26,9 +26,20 @@ class AnimatedLoadingViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         if(Cely.currentLoginStatus() == .loggedIn){
-            if(NewLaunch.newLaunch.isFirstLaunch){
-                //createNewLaunchAlert()
-            }
+			/*
+			if(NewLaunch.newLaunch.isFirstLaunch){
+                createNewLaunchAlert()
+            }*/
+			
+			self.imageView.image = #imageLiteral(resourceName: "emblem")
+			self.imageView.layer.borderWidth = 5
+			self.imageView.layer.borderColor = UIColor.black.cgColor
+			let height = self.imageView.frame.height
+			self.imageView.layer.cornerRadius = height/2
+			self.imageView.layer.shadowColor = UIColor.gray.cgColor
+			self.imageView.layer.shadowRadius = 2
+			self.imageView.layer.shadowOpacity = 100
+			self.imageView.layer.shadowOffset = CGSize.init(width: 0, height: 5)
             finishLoadinng()
 
         }
@@ -44,7 +55,7 @@ class AnimatedLoadingViewController: UIViewController {
                 self.activityIndicator.stopAnimating()
 				self.performSegue(withIdentifier: "doneWithInit", sender: nil)
 			} else if (error!.code == 1) {
-				let alertController = UIAlertController.init(title: "Error", message: error!.domain, preferredStyle: .alert)
+				let alertController = UIAlertController.init(title: "Error", message: "Data could not be loaded.", preferredStyle: .alert)
 				
 				let retryOption = UIAlertAction.init(title: "Try Again", style: .default, handler: { (alert) in
 					self.finishLoadinng()
@@ -54,7 +65,7 @@ class AnimatedLoadingViewController: UIViewController {
 				self.addChild(alertController)
 				
 			} else if (error!.code == 2) {
-				let alertController = UIAlertController.init(title: "Error", message: error!.domain, preferredStyle: .alert)
+				let alertController = UIAlertController.init(title: "Failure to Find Account", message: "Please create a new account.", preferredStyle: .alert)
 				
 				let okAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (alert) in
 					try! Auth.auth().signOut()
@@ -78,7 +89,8 @@ class AnimatedLoadingViewController: UIViewController {
     }
     
     //This will be for showing announcements
-    func createNewLaunchAlert(){
+	/*
+	func createNewLaunchAlert(){
         let alert = UIAlertController(title: "Are you interested in joining Development Committee?", message: "Development Committee is looking for software developers, marketers, and designers to help with the future of Purdue HCR. If you are interested in helping, checkout our Discord channel!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Take me to the Discord", style: UIAlertAction.Style.default, handler: { (action) in
             alert.dismiss(animated: true, completion: nil)
@@ -91,6 +103,7 @@ class AnimatedLoadingViewController: UIViewController {
         }))
         self.present(alert, animated: true, completion: nil)
     }
+	*/
     
 
     /*

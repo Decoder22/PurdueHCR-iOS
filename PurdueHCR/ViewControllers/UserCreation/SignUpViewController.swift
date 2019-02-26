@@ -19,7 +19,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var verifyPasswordField: UITextField!
     @IBOutlet var codeField: UITextField!
     @IBOutlet var signUpButton: UIButton!
-    
+	@IBOutlet weak var imageView: UIImageView!
+	
     
     var fortyPercent = CGFloat(0.0)
     var lastChange = 0.0
@@ -29,10 +30,19 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        DataManager.sharedManager.refreshHouses(onDone: {(h:[House]) in
+		
+		self.hideKeyboardWhenTappedAround()
+		
+		self.imageView.image = #imageLiteral(resourceName: "emblem")
+		self.imageView.layer.shadowColor = UIColor.gray.cgColor
+		self.imageView.layer.shadowRadius = 2
+		self.imageView.layer.shadowOpacity = 100
+		self.imageView.layer.shadowOffset = CGSize.init(width: 0, height: 5)
+		
+		DataManager.sharedManager.refreshHouses(onDone: {(h:[House]) in
             self.houses = h
         })
-        
+		
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = UIActivityIndicatorView.Style.gray
@@ -146,7 +156,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 			Cely.changeStatus(to: .loggedIn)
 			self.activityIndicator.stopAnimating()
 		} else if (initError!.code == 1) {
-			let alertController = UIAlertController.init(title: "Error", message: initError!.domain, preferredStyle: .alert)
+			let alertController = UIAlertController.init(title: "Error", message: "Data could not be loaded.", preferredStyle: .alert)
 			
 			let retryOption = UIAlertAction.init(title: "Try Again", style: .default, handler: { (alert) in
 				self.initializeData()
@@ -156,7 +166,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 			self.addChild(alertController)
 			
 		} else if (initError!.code == 2) {
-			let alertController = UIAlertController.init(title: "Error", message: initError!.domain, preferredStyle: .alert)
+			let alertController = UIAlertController.init(title: "Failure to Find Account", message: "Please create a new account.", preferredStyle: .alert)
 			
 			let okAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (alert) in
 				try! Auth.auth().signOut()

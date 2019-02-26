@@ -13,8 +13,8 @@ target 'PurdueHCR' do
   pod 'NotificationBannerSwift'
   pod 'AZDropdownMenu'
   pod 'PopupKit'
+  pod 'SnapKit'
 end
-
 
 target 'PurdueHCRUITests' do
     inherit! :search_paths

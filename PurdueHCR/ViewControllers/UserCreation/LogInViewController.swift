@@ -10,12 +10,24 @@ import UIKit
 import Cely
 import FirebaseAuth
 
+extension UIViewController {
+	func hideKeyboardWhenTappedAround() {
+		let tap: UITapGestureRecognizer =     UITapGestureRecognizer(target: self, action:    #selector(UIViewController.dismissKeyboard))
+		tap.cancelsTouchesInView = false
+		self.view.addGestureRecognizer(tap)
+	}
+	@objc func dismissKeyboard() {
+		view.endEditing(true)
+	}
+}
+
 class LogInViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet var username: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var logInButton: UIButton!
 	@IBOutlet weak var forgotPasswordButton: UIButton!
+	@IBOutlet weak var imageView: UIImageView!
 	
     var fortyPercent = CGFloat(0.0)
     var lastChange = 0.0
@@ -23,8 +35,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        activityIndicator.center = self.view.center
+		
+		self.hideKeyboardWhenTappedAround()
+		
+		self.imageView.image = #imageLiteral(resourceName: "emblem")
+		self.imageView.layer.shadowColor = UIColor.gray.cgColor
+		self.imageView.layer.shadowRadius = 2
+		self.imageView.layer.shadowOpacity = 100
+		self.imageView.layer.shadowOffset = CGSize.init(width: 0, height: 5)
+		
+		activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = UIActivityIndicatorView.Style.gray
         self.view.addSubview(activityIndicator)
@@ -46,17 +66,18 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         logInButton.layer.masksToBounds = true
         logInButton.layer.borderWidth = 1
         logInButton.layer.borderColor = UIColor.darkGray.cgColor
-        
+		
         // Do any additional setup after loading the view.
     }
 	
 	@IBAction func nextTextField(_ sender: Any) {
+		/*
 		if let nextField = username.superview?.viewWithTag(username.tag + 1) as? UITextField {
 			nextField.becomeFirstResponder()
 		} else {
 			// Not found, so remove keyboard.
 			username.resignFirstResponder()
-		}
+		}*/
 	}
 	
 	
@@ -85,7 +106,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 		
 		Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
 			guard let usr = user, error == nil else {
-				self.notify(title: "Failed to Log In", subtitle: error!.localizedDescription, style: .danger)
+                if(error!.localizedDescription.contains("The password is invalid")){
+                    self.notify(title: "Wrong Password", subtitle: "Please try again", style: .danger)
+                }
+                else if(error!.localizedDescription.contains("There is no user record")){
+                    self.notify(title: "Could not find user with that email", subtitle: "Please try again", style: .danger)
+                }
+                else{
+                    self.notify(title: "Failed to Log In", subtitle: error!.localizedDescription, style: .danger)
+                }
+				
 				self.logInButton.isEnabled = true
 				self.activityIndicator.stopAnimating()
 				return
@@ -102,7 +132,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 					self.logInButton.isEnabled = true
 					self.activityIndicator.stopAnimating()
 					try! Auth.auth().signOut()
-					self.notify(title: "Error", subtitle: "Could not find user information. Please create a new account.", style: .danger)
+					self.notify(title: "Could Not Find User", subtitle: "Please create a new account.", style: .danger)
 					return
 				}
 			})
@@ -160,7 +190,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 		alert.addAction(action)
 		present(alert, animated: true, completion: nil)
 	}
-	
+	/*
     func moveTextField(textField:UITextField, up:Bool){
         if(up && textField.frame.minY > self.fortyPercent){
             let movement = self.fortyPercent - textField.frame.minY
@@ -180,15 +210,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             self.view.frame = self.view.frame.offsetBy(dx: 0, dy: movement)
             UIView.commitAnimations()
         }
-    }
+    }*/
     
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        moveTextField(textField: textField, up: true)
+        //moveTextField(textField: textField, up: true)
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        moveTextField(textField: textField, up: false)
+        //moveTextField(textField: textField, up: false)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

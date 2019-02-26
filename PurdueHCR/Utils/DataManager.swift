@@ -22,6 +22,7 @@ class DataManager {
     private let fbh = FirebaseHelper()
 	var pointTypes: [PointType] = [PointType]()
     private var _unconfirmedPointLogs: [PointLog]? = nil
+	private var _confiredPointLogs: [PointLog]? = nil
     private var _houses: [House]? = nil
     private var _rewards: [Reward]? = nil
     private var _houseCodes: [HouseCode]? = nil
@@ -63,15 +64,17 @@ class DataManager {
         })
     }
     
-    func confirmOrDenyPoints(log:PointLog, approved:Bool, onDone:@escaping (_ err:Error?)->Void){
-        fbh.approvePoint(log: log, approved: approved, onDone:{[weak self] (_ err :Error?) in
+    func updatePointLogStatus(log:PointLog, approved:Bool, updating:Bool = false, onDone:@escaping (_ err:Error?)->Void){
+        fbh.updatePointLogStatus(log: log, approved: approved, updating: updating, onDone:{[weak self] (_ err :Error?) in
             if(err != nil){
                 print("Failed to confirm or deny point")
             }
             else{
-                if let index = self?._unconfirmedPointLogs!.index(of: log) {
-                    self?._unconfirmedPointLogs!.remove(at: index)
-                }
+				if (!updating) {
+					if let index = self?._unconfirmedPointLogs!.index(of: log) {
+						self?._unconfirmedPointLogs!.remove(at: index)
+					}
+				}
             }
             onDone(err)
         })
@@ -86,7 +89,7 @@ class DataManager {
     ///   - onDone: Closure function the be called once the code hits an error or finish. err is nil if no errors are found.
     func writePoints(log:PointLog, preApproved:Bool = false, onDone:@escaping (_ err:Error?)->Void){
         // take in a point log, write it to house then write the ref to the user
-        fbh.addPointLog(log: log, preApproved:preApproved, onDone: onDone)
+        fbh.addPointLog(log: log, preApproved: preApproved, onDone: onDone)
     }
     
     /// Add Award from REA/REC
@@ -101,7 +104,14 @@ class DataManager {
 
         fbh.addPointLog(log: log, preApproved: true, house: house.houseID, isRECGrantingAward: true, onDone: onDone)
     }
-    
+	
+	/// Retrieves the confirmed points
+	///
+	/// - Returns: The logs of the confirmed points.
+	func getResolvedPointLogs()->[PointLog]?{
+		return self._confiredPointLogs
+	}
+	
     func getUnconfirmedPointLogs()->[PointLog]?{
         return self._unconfirmedPointLogs
     }
@@ -109,7 +119,16 @@ class DataManager {
     func refreshUser(onDone:@escaping (_ err:Error?)->Void){
         fbh.refreshUserInformation(onDone: onDone)
     }
-    
+	
+	func refreshResolvedPointLogs(onDone: @escaping (_ pointLogs:[PointLog])->Void) {
+		fbh.getResolvedPoints(onDone: {[weak self] (pointLogs:[PointLog]) in
+			if let strongSelf = self {
+				strongSelf._confiredPointLogs = pointLogs
+			}
+			onDone(pointLogs)
+		})
+	}
+	
     func refreshUnconfirmedPointLogs(onDone:@escaping (_ pointLogs:[PointLog])->Void ){
         fbh.getUnconfirmedPoints(onDone: {[weak self] (pointLogs:[PointLog]) in
             if let strongSelf = self {
@@ -184,6 +203,10 @@ class DataManager {
         }
         if let id = User.get(.id) as! String?{
             getUserWhenLogginIn(id: id, onDone: {(isLoggedIn:Bool) in
+                if(!isLoggedIn){
+                    finished(NSError(domain: "Unable to find account", code: 2, userInfo: nil))
+                    return
+                }
 				self.refreshPointTypes(onDone: {(pointTypes:[PointType]) in
 					counter.increment()
 					if((User.get(.permissionLevel) as! Int) == 1){
@@ -264,7 +287,8 @@ class DataManager {
     
     func handlePointLink(id:String){
         //Make sure that the user submitting a QR point is a Resident or an RHP
-        let userLevel = User.get(.permissionLevel) as! Int
+		
+		let userLevel = User.get(.permissionLevel) as! Int
         if(userLevel != 0 && userLevel != 1){
             DispatchQueue.main.async {
                 let banner = NotificationBanner(title: "Failure", subtitle: "Only residents can submit points.", style: .danger)
@@ -273,13 +297,6 @@ class DataManager {
             }
             return
         }
-		
-		if (!systemPreferences!.isHouseEnabled) {
-			let banner = NotificationBanner(title: "Failure", subtitle: "House competition is inactive.", style: .danger)
-			banner.duration = 2
-			banner.show()
-			return
-		}
 		
         fbh.findLinkWithID(id: id, onDone: {(linkOptional:Link?) in
             guard let link = linkOptional else {
@@ -307,7 +324,12 @@ class DataManager {
                 group.leave()
             }
             group.notify(queue: .main) {
-                
+				if (!self.systemPreferences!.isHouseEnabled) {
+					let banner = NotificationBanner(title: "Failure", subtitle: "House competition is inactive.", style: .danger)
+					banner.duration = 2
+					banner.show()
+					return
+				}
                 
                 let pointType = self.getPointType(value: link.pointTypeID)
                 let resident = User.get(.name) as! String
