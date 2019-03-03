@@ -16,7 +16,7 @@ class LinkCodeViewController: UIViewController {
     @IBOutlet var activateSwitch: UISwitch!
     @IBOutlet var archiveSwitch: UISwitch!
     @IBOutlet var saveToPhotosButton: UIButton!
-    
+    @IBOutlet var copyLinkButton: UIButton!
     
     var qrImage:CIImage?
     
@@ -35,7 +35,6 @@ class LinkCodeViewController: UIViewController {
         archiveSwitch.setOn(link!.archived, animated: false)
         let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItem.Style.plain, target: self, action: #selector(back))
         self.navigationItem.leftBarButtonItem = newBackButton
-		
     }
 
     func generateQRCode(){
@@ -50,13 +49,20 @@ class LinkCodeViewController: UIViewController {
         let scaleY = qrImageView.frame.size.height / qrImage!.extent.size.height
         qrImage = qrImage!.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
         qrImageView.image = UIImage(ciImage: qrImage!)
-        
+        copyLinkButton.setTitle(linkCode, for: UIControl.State.normal)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    @IBAction func copyQRLink(_ sender: Any) {
+        UIPasteboard.general.string = copyLinkButton.currentTitle
+    }
+    
+    
     
     @IBAction func saveToCameraRoll(_ sender: Any) {
         saveToPhotosButton.isEnabled = false
