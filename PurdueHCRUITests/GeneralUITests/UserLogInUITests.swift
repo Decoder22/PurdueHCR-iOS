@@ -39,5 +39,19 @@ class UserLogInUITests: XCTestCase {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
+	
+	func testInvalidPassword() {
+		let app = XCUIApplication()
+		let emailField = app.textFields["Email"]
+		emailField.tap()
+		emailField.typeText(UITestUtils.REC_EMAIL)
+		let passwordField = app.secureTextFields["Password"]
+		passwordField.tap()
+		passwordField.typeText("Invalid password")
+		app.buttons["Login"].tap()
+		UITestUtils.waitForLoadingToComplete(app: app, test: self)
+		
+		XCTAssertTrue(app.staticTexts["Wrong Password"].exists)
+	}
 
 }
