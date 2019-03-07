@@ -31,8 +31,8 @@ class UITestUtils{
     static func logout(app:XCUIApplication){
         
         if(app.tabBars.element(boundBy: 0).exists){
-            app.tabBars.buttons["Points"].tap()
-            app.navigationBars["PurdueHCR.HouseProfileView"].buttons["Sign Out"].tap()
+            app.tabBars.buttons["Profile"].tap()
+            app.navigationBars["Profile"].buttons["Sign Out"].tap()
             app.buttons["Logout"].tap()
             app.alerts["Log out?"].buttons["Yes"].tap()
         }
@@ -63,6 +63,7 @@ class UITestUtils{
         passwordField.tap()
         passwordField.typeText(ACCOUNT_PASSWORD)
         app.buttons["Login"].tap()
+        sleep(2)
         UITestUtils.waitForLoadingToComplete(app: app, test: test)
     }
     
@@ -90,7 +91,7 @@ class UITestUtils{
     /// - Returns: Returns true if signed in
     static func isSignedIn(app:XCUIApplication,test:XCTestCase) -> Bool {
         waitForLoadingToComplete(app: app, test: test)
-        let expectation = test.expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: app.navigationBars["PurdueHCR.HouseProfileView"], handler: nil)
+        let expectation = test.expectation(for: NSPredicate(format: "exists == 1"), evaluatedWith: app.navigationBars["Profile"], handler: nil)
         let result = XCTWaiter.wait(for: [expectation], timeout: 10)
         switch(result) {
         case .completed:

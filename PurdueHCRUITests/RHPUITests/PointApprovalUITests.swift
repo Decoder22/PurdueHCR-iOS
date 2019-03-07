@@ -48,7 +48,7 @@ class PointApprovalUITests: XCTestCase {
         //Get Current Users point, total house points, and value of base point type.
         UITestUtils.submitPoints(app: app, test: self, testPointDescription: testPointDescription)
         UITestUtils.waitForDropDownDismissal(app: app, test: self, message: "Submitted for approval!")
-        app.tabBars.buttons["Points"].tap()
+        app.tabBars.buttons["Profile"].tap()
         UITestUtils.logout(app: app)
         
         //Log in as RHP and approve

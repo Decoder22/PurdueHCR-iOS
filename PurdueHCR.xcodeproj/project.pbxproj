@@ -927,6 +927,7 @@
 			baseConfigurationReference = 39366264BA748CDB712098B6 /* Pods-PurdueHCRUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5N596YY333;
 				INFOPLIST_FILE = PurdueHCRUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -949,6 +950,7 @@
 			baseConfigurationReference = 2F1172101702388B6147D7A8 /* Pods-PurdueHCRUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5N596YY333;
 				INFOPLIST_FILE = PurdueHCRUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -39,7 +39,7 @@ class ResidentPointSubmissionUITests: XCTestCase {
         UITestUtils.waitForLoadingToComplete(app: app, test: self)
         UITestUtils.submitPoints(app: app, test: self, testPointDescription: testPointDescription)
         UITestUtils.waitForDropDownDismissal(app: app, test: self, message: "Submitted for approval!")
-        app.tabBars.buttons["Points"].tap()
+        app.tabBars.buttons["Profile"].tap()
         UITestUtils.logout(app: app)
         
         
@@ -65,7 +65,7 @@ class ResidentPointSubmissionUITests: XCTestCase {
         UITestUtils.waitForLoadingToComplete(app: app, test: self)
         UITestUtils.submitPoints(app: app, test: self, testPointDescription: testPointDescription)
         UITestUtils.waitForDropDownDismissal(app: app, test: self, message: "Submitted for approval!")
-        app.tabBars.buttons["Points"].tap()
+        app.tabBars.buttons["Profile"].tap()
         UITestUtils.logout(app: app)
         
         
