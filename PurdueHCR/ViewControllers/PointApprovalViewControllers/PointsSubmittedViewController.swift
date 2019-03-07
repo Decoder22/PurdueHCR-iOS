@@ -22,6 +22,7 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.navigationItem.hidesBackButton = true
 		displayedLogs = DataManager.sharedManager.getResolvedPointLogs() ?? [PointLog]()
 		refresher = UIRefreshControl()
 		refresher?.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -32,10 +33,10 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 		searchController.searchBar.placeholder = "Search Points"
 		navigationItem.searchController = searchController
 		definesPresentationContext = true
+		self.navigationItem.hidesBackButton = false
 	}
 	
 	@objc override func resfreshData(){
-		self.navigationItem.hidesBackButton = true
 		DataManager.sharedManager.refreshResolvedPointLogs(onDone: { (pointLogs:[PointLog]) in
 			self.displayedLogs = pointLogs
 			DispatchQueue.main.async { [unowned self] in
@@ -43,7 +44,6 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 			}
 			self.tableView.refreshControl?.endRefreshing()
 		})
-		self.navigationItem.hidesBackButton = false
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
