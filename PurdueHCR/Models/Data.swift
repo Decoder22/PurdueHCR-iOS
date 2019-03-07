@@ -180,7 +180,7 @@ class PointLog {
             pointTypeIDValue = pointTypeIDValue * -1
         }
         var residentName = self.resident
-        if(floorID == "Shreve"){
+        if(residentName.contains(SHREVE_RESIDENT)){
             residentName = String(residentName.dropFirst(SHREVE_RESIDENT.count))
             
         }
@@ -267,6 +267,15 @@ class Link {
         self.pointTypeID = pointTypeID
         self.enabled = false
         self.archived = false
+    }
+    
+    func getIOSDeepLink() -> String {
+        return "hcrpoint://addpoints/"+id
+        
+    }
+    
+    func getAndroidDeepLink() -> String {
+        return "intent://addpoints/"+id+"#Intent;scheme=hcrpoint;package=com.hcrpurdue.jason.hcrhousepoints;end"
     }
 }
 
