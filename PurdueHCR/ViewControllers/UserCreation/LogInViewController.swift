@@ -179,7 +179,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 		alertController.addTextField { (textField) -> Void in
 			// Enter the textfiled customization code here.
 			loginTextField = textField
-			loginTextField?.placeholder = "Enter your login ID"
+			loginTextField?.placeholder = "Enter your email"
 		}
 		present(alertController, animated: true, completion: nil)
 	}
