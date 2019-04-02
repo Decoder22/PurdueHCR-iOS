@@ -17,13 +17,14 @@ class ForgotPasswordPage: BasePage, UITestPageProtocol {
     let okButton:XCUIElement
     
     override init(app: XCUIApplication, test: XCTestCase) {
-        recoveryEmailField = app.textFields["Enter your login ID"]
+        recoveryEmailField = app.textFields["Enter your email"]
         cancelButton = app.buttons["Cancel"]
         okButton = app.buttons["OK"]
         super.init(app: app, test: test)
     }
     
-    @discardableResult func waitForLoadingToComplete() -> ForgotPasswordPage {
+    @discardableResult
+	func waitForLoadingToComplete() -> ForgotPasswordPage {
         waitForLoading()
         return self
     }

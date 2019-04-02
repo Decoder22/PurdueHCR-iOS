@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		76743E43566ADBC9820A7F30 /* Pods_PurdueHCRUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC9352CC1FB986152D577038 /* Pods_PurdueHCRUITests.framework */; };
 		AFFF5C517BE37CA63E769D79 /* Pods_PurdueHCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172F6609F4B14DA0FA8D754A /* Pods_PurdueHCR.framework */; };
-		B5297B6E2249BFAE005C3F92 /* UserLogoutUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5297B6D2249BFAE005C3F92 /* UserLogoutUITests.swift */; };
-		B5297B702249BFDF005C3F92 /* UserForgotPasswordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5297B6F2249BFDF005C3F92 /* UserForgotPasswordTests.swift */; };
-		B5297B722249C0C4005C3F92 /* UserCreationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5297B712249C0C4005C3F92 /* UserCreationTests.swift */; };
+		B52B713B2252DC5700C46C11 /* UITestForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B713A2252DC5700C46C11 /* UITestForgotPassword.swift */; };
 		B551BDD321B1004F00CF4F6C /* Register in Resources */ = {isa = PBXBuildFile; fileRef = B551BDD221B1004F00CF4F6C /* Register */; };
 		B55449592176F11300A914C2 /* TextFieldMaxLengths.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */; };
 		B5B8236121EA8203009E6750 /* PointsSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B8236021EA8203009E6750 /* PointsSubmittedViewController.swift */; };
@@ -104,6 +102,7 @@
 		B5297B6D2249BFAE005C3F92 /* UserLogoutUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogoutUITests.swift; sourceTree = "<group>"; };
 		B5297B6F2249BFDF005C3F92 /* UserForgotPasswordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserForgotPasswordTests.swift; sourceTree = "<group>"; };
 		B5297B712249C0C4005C3F92 /* UserCreationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCreationTests.swift; sourceTree = "<group>"; };
+		B52B713A2252DC5700C46C11 /* UITestForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestForgotPassword.swift; sourceTree = "<group>"; };
 		B551BDD221B1004F00CF4F6C /* Register */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Register; sourceTree = "<group>"; };
 		B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldMaxLengths.swift; sourceTree = "<group>"; };
 		B5B8236021EA8203009E6750 /* PointsSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsSubmittedViewController.swift; sourceTree = "<group>"; };
@@ -475,6 +474,7 @@
 				D3BCD384224BE5760041AB2D /* UITestBase.swift */,
 				D3CF6BDB224FF3EC00D97A0F /* UITestPointSubmission.swift */,
 				D3CF6BE12250867E00D97A0F /* UITestQRCode.swift */,
+				B52B713A2252DC5700C46C11 /* UITestForgotPassword.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -847,6 +847,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3BCD38D224C65050041AB2D /* UITestSignUpPage.swift in Sources */,
+				B52B713B2252DC5700C46C11 /* UITestForgotPassword.swift in Sources */,
 				D3BCD397224C984E0041AB2D /* UITestRHPApprovalPage.swift in Sources */,
 				D3CF6BDE2250264D00D97A0F /* UITestRHPHistoryPage.swift in Sources */,
 				D32B156C220FEE870015CC8A /* QRUITests.swift in Sources */,
