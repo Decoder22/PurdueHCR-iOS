@@ -21,6 +21,7 @@ class UITestBase: XCTestCase {
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         
         app.launch()
+		getStartingPage().waitForLoadingToComplete().logout()
         UITestUtils.waitForLoadingToComplete(app: app, test: self)
         UITestUtils.logout(app: app)
 
