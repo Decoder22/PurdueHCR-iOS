@@ -22,8 +22,6 @@ class UITestBase: XCTestCase {
         
         app.launch()
 		getStartingPage().waitForLoadingToComplete().logout()
-        UITestUtils.waitForLoadingToComplete(app: app, test: self)
-        UITestUtils.logout(app: app)
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }

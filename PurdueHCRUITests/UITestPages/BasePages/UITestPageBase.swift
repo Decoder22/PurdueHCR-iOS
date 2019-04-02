@@ -89,7 +89,6 @@ class BasePage{
 		}
 		app.buttons["Logout"].tap()
 		app.alerts["Log out?"].buttons["Yes"].tap()
-		
         return SignInPage(app: app, test: test)
     }
     

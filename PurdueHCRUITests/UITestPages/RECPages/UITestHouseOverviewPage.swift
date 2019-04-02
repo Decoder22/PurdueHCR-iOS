@@ -18,11 +18,11 @@ class HouseOverviewPage: BasePage, UITestPageProtocol {
 		competitionSwitch = app.switches["House Competition Switch"]
 		super.init(app: app, test: test)
 	}
-	
-    @discardableResult func waitForLoadingToComplete() -> HouseOverviewPage {
-        waitForLoading()
-        return self
-    }
+   
+  @discardableResult func waitForLoadingToComplete() -> HouseOverviewPage {
+      waitForLoading()
+      return self
+  }
 	
 	@discardableResult func flipHouseCompetitionEnabledSwitch(houseEnabledMessage: String = "") -> HouseOverviewPage {
 		sleep(2)
@@ -37,7 +37,6 @@ class HouseOverviewPage: BasePage, UITestPageProtocol {
 			app.alerts["Enable House Competition"].buttons["Confirm"].tap()
 		}
 		return self
-	}
-	
+  }
 }
 
