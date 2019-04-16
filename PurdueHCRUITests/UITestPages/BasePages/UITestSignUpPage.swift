@@ -39,6 +39,7 @@ class SignUpPage: BasePage, UITestPageProtocol {
     @discardableResult
     func typeEmail(email:String) -> SignUpPage {
         emailField.tap()
+		clearTextField(textField: emailField)
         emailField.typeText(email)
         return self
     }
@@ -46,6 +47,7 @@ class SignUpPage: BasePage, UITestPageProtocol {
     @discardableResult
     func typeName(name:String) -> SignUpPage {
         nameField.tap()
+		clearTextField(textField: nameField)
         nameField.typeText(name)
         return self
     }
@@ -53,6 +55,7 @@ class SignUpPage: BasePage, UITestPageProtocol {
     @discardableResult
     func typePassword(password:String) -> SignUpPage {
         passwordField.tap()
+		clearTextField(textField: passwordField)
         passwordField.typeText(password)
         return self
     }
@@ -60,14 +63,19 @@ class SignUpPage: BasePage, UITestPageProtocol {
     @discardableResult
     func typeVerifyPassword(password:String) -> SignUpPage {
         verifyPasswordField.tap()
+		clearTextField(textField: verifyPasswordField)
         verifyPasswordField.typeText(password)
         return self
     }
     
     @discardableResult
     func typeCode(code:String) -> SignUpPage {
-        verifyPasswordField.tap()
-        verifyPasswordField.typeText(code)
+        codeField.tap()
+		/*for _ in 1...(codeField.value as! String).count {
+			app.keys["delete"].tap()
+		}*/
+		clearTextField(textField: codeField)
+        codeField.typeText(code)
         return self
     }
     
@@ -85,7 +93,7 @@ class SignUpPage: BasePage, UITestPageProtocol {
     
     @discardableResult
     func fillSignupPage(email:String, name:String, password:String, code:String) -> ProfilePage {
-        return typeName(name: name).typeEmail(email: email).typePassword(password: password).typeVerifyPassword(password: password).typeCode(code: code).tapSignupButton()
+        return typeEmail(email: email).typeName(name: name).typePassword(password: password).typeVerifyPassword(password: password).typeCode(code: code).tapSignupButton()
     }
     
 }

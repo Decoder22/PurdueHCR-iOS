@@ -20,7 +20,7 @@ protocol UITestTabBarProtocol {
 }
 
 
-class BasePage{
+class BasePage {
     
     let app: XCUIApplication
     let test: XCTestCase
@@ -126,6 +126,12 @@ class BasePage{
             Safari.open(URLString: qrCodeLink, safariApp: safari)
         }
     }
+	
+	func clearTextField(textField: XCUIElement) {
+		for _ in 1...(textField.value as! String).count {
+			app.keys["delete"].tap()
+		}
+	}
     
 }
 
