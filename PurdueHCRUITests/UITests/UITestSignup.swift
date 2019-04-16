@@ -11,9 +11,7 @@ import XCTest
 class UITestSignup: UITestBase {
 
     override func setUp() {
-        //super.setUp()
-		app.launch()
-		getStartingPage().waitForLoadingToComplete()
+        super.setUp()
     }
 
     override func tearDown() {
