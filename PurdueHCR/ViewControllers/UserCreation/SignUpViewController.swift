@@ -99,7 +99,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             self.signUpButton.isEnabled = true
             self.activityIndicator.stopAnimating()
         }
-		else if (password!.split(separator: " ").count != 1) {
+		else if (password?.split(separator: " ").count != 1) {
 			self.notify(title: "Failed to Sign Up", subtitle: "Password contains invalid characters.", style: .danger)
 			self.signUpButton.isEnabled = true
 			self.activityIndicator.stopAnimating()
