@@ -10,7 +10,6 @@ import XCTest
 
 class UITestSignup: UITestBase {
 
-<<<<<<< HEAD
     override func setUp() {
         super.setUp()
     }
@@ -71,27 +70,5 @@ class UITestSignup: UITestBase {
 		let page = getStartingPage().tapCreateAccountButton()
 		page.fillSignupPage(email: "InvalidEmail", name: "Example Name", password: "validpassword", code: "4N123").waitForDropDownNotification(message: "Failed to Sign Up")
     }
-
-	func testSignupInvalidName() {
-		let page = getStartingPage().tapCreateAccountButton()
-		page.fillSignupPage(email: "validemail@purdue.edu", name: "InvalidName", password: "validpassword", code: "4N123").waitForDropDownNotification(message: "Failed to Sign Up")
-	}
 	
-	func testSignupInvalidPassword() {
-		let page = getStartingPage().tapCreateAccountButton()
-		page.fillSignupPage(email: "validemail@purdue.edu", name: "Valid Name", password: "invalid password", code: "4N123").waitForDropDownNotification(message: "Failed to Sign Up")
-	}
-	
-	func testSignupInvalidCode() {
-		let page = getStartingPage().tapCreateAccountButton()
-		page.fillSignupPage(email: "validemail@purdue.edu", name: "Valid Name", password: "validpassword", code: "invalidcode").waitForDropDownNotification(message: "Failed to Sign Up")
-	}
-	
-	func testAlreadySignedUp() {
-		let page = getStartingPage().tapCreateAccountButton()
-		page.fillSignupPage(email: "tester@purdue.edu", name: "Valid Name", password: "validpassword", code: "4N123").waitForDropDownNotification(message: "Failed to Sign Up")
-	}
-	
-=======
->>>>>>> Removing conflict
 }
