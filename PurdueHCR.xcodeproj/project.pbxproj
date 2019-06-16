@@ -33,7 +33,6 @@
 		D33F43B1210AA00700D3982D /* PointDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F43B0210AA00700D3982D /* PointDescriptionView.swift */; };
 		D345C96B20F3CC1B00ACDF39 /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345C96A20F3CC1B00ACDF39 /* FirebaseHelper.swift */; };
 		D36DFEBE220F2EF40062184C /* UserLogInUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DFEBD220F2EF40062184C /* UserLogInUITests.swift */; };
-		D36DFEC6220F30270062184C /* UiTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DFEC5220F30270062184C /* UiTestUtils.swift */; };
 		D36DFEC8220F3CBF0062184C /* ResidentPointSubmissionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DFEC7220F3CBF0062184C /* ResidentPointSubmissionUITests.swift */; };
 		D37E1D9C20FAAD8E00C1B05E /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37E1D9B20FAAD8E00C1B05E /* SignUpViewController.swift */; };
 		D3912A6A219CE77B0002E7C7 /* HouseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3912A65219CE77A0002E7C7 /* HouseTableViewController.swift */; };
@@ -128,7 +127,6 @@
 		D36DFEBB220F2EF40062184C /* PurdueHCRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PurdueHCRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D36DFEBD220F2EF40062184C /* UserLogInUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLogInUITests.swift; sourceTree = "<group>"; };
 		D36DFEBF220F2EF40062184C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D36DFEC5220F30270062184C /* UiTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiTestUtils.swift; sourceTree = "<group>"; };
 		D36DFEC7220F3CBF0062184C /* ResidentPointSubmissionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidentPointSubmissionUITests.swift; sourceTree = "<group>"; };
 		D37E1D9B20FAAD8E00C1B05E /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3912A65219CE77A0002E7C7 /* HouseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HouseTableViewController.swift; path = PurdueHCR/ViewControllers/REC/HouseViewControllers/HouseTableViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -335,7 +333,6 @@
 				D3B2793F2212249300921DB2 /* ResidentUITests */,
 				D36DFEC9220F3CDA0062184C /* GeneralUITests */,
 				D36DFEBF220F2EF40062184C /* Info.plist */,
-				D36DFEC5220F30270062184C /* UiTestUtils.swift */,
 			);
 			path = PurdueHCRUITests;
 			sourceTree = "<group>";
@@ -858,7 +855,6 @@
 				D3CF6BDC224FF3EC00D97A0F /* UITestPointSubmission.swift in Sources */,
 				D3BCD38F224C65330041AB2D /* UITestForgotPasswordPage.swift in Sources */,
 				D3BCD38B224C2C900041AB2D /* UITestProfilePage.swift in Sources */,
-				D36DFEC6220F30270062184C /* UiTestUtils.swift in Sources */,
 				D3CF6BD4224FE88100D97A0F /* UITestPointSubmissionPage.swift in Sources */,
 				D3BCD39B224CA0AD0041AB2D /* UITestRHPSubmitPointsTablePage.swift in Sources */,
 				D3CF6BDA224FEF1B00D97A0F /* UITestRHPPointSubmissionPage.swift in Sources */,

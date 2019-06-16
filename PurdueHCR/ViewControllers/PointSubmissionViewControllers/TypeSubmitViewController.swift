@@ -13,9 +13,11 @@ import Firebase
 class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet var typeLabel: UILabel!
-    @IBOutlet var descriptionField: UITextView!
-    @IBOutlet var submitButton: UIBarButtonItem!
+	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet var descriptionField: UITextView!
 	@IBOutlet weak var houseImage: UIImageView!
+	@IBOutlet weak var submitButton: UIButton!
+	
 	
     var type:PointType?
     var user:User?
@@ -23,9 +25,12 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         typeLabel.text? = type!.pointDescription
+		nameLabel.text = User.get(.name) as? String
         descriptionField.layer.borderColor = UIColor.black.cgColor
         descriptionField.layer.borderWidth = 1
 		descriptionField.layer.cornerRadius = 10
+		submitButton.layer.cornerRadius = 10
+		
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
         self.view.addGestureRecognizer(tapGesture)
 		let houseName = User.get(.house) as! String
