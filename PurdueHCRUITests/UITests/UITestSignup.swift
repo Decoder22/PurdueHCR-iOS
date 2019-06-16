@@ -10,6 +10,7 @@ import XCTest
 
 class UITestSignup: UITestBase {
 
+<<<<<<< HEAD
     override func setUp() {
         super.setUp()
     }
@@ -91,4 +92,6 @@ class UITestSignup: UITestBase {
 		page.fillSignupPage(email: "tester@purdue.edu", name: "Valid Name", password: "validpassword", code: "4N123").waitForDropDownNotification(message: "Failed to Sign Up")
 	}
 	
+=======
+>>>>>>> Removing conflict
 }
