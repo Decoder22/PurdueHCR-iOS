@@ -1,32 +1,28 @@
 //
-//  PointsSubmittedViewController.swift
+//  UserPointsTableViewController.swift
 //  PurdueHCR
 //
-//  Created by Ben Hardin on 1/12/19.
+//  Created by Benjamin Hardin on 6/17/19.
 //  Copyright © 2019 DecodeProgramming. All rights reserved.
 //
 
 import UIKit
 
-class ResolvedCell: UITableViewCell {
-	@IBOutlet weak var activeView: UIView!
-	@IBOutlet weak var nameLabel: UILabel!
-	@IBOutlet weak var descriptionLabel: UILabel!
-	@IBOutlet weak var reasonLabel: UILabel!
-}
+class UserPointsTableViewController: UITableViewController, UISearchResultsUpdating {
 
-class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchResultsUpdating {
-	
 	let searchController = UISearchController(searchResultsController: nil)
+	var refresher: UIRefreshControl?
+	var displayedLogs = [PointLog]()
+	var index: IndexPath?
 	var filteredPoints = [PointLog]()
 	var activityIndicator = UIActivityIndicatorView()
 	
 	override func viewDidLoad() {
-        
+		
 		self.navigationItem.hidesBackButton = true
-    	self.activityIndicator.startAnimating()
+		self.activityIndicator.startAnimating()
 		super.viewDidLoad()
-
+		
 		activityIndicator.center = self.view.center
 		activityIndicator.style = .gray
 		activityIndicator.hidesWhenStopped = true
@@ -43,16 +39,16 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 		definesPresentationContext = true
 	}
 	
-	@objc override func resfreshData(){
-        DataManager.sharedManager.refreshResolvedPointLogs(onDone: { (pointLogs:[PointLog]) in
-            self.displayedLogs = pointLogs
-            DispatchQueue.main.async { [unowned self] in
-                self.tableView.reloadData()
-            }
-            self.tableView.refreshControl?.endRefreshing()
-            self.activityIndicator.stopAnimating()
-            self.navigationItem.hidesBackButton = false
-        })
+	@objc func resfreshData(){
+		DataManager.sharedManager.refreshResolvedPointLogs(onDone: { (pointLogs:[PointLog]) in
+			self.displayedLogs = pointLogs
+			DispatchQueue.main.async { [unowned self] in
+				self.tableView.reloadData()
+			}
+			self.tableView.refreshControl?.endRefreshing()
+			self.activityIndicator.stopAnimating()
+			self.navigationItem.hidesBackButton = false
+		})
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -67,16 +63,16 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 				return 0
 			}
 		}
-        else{
-            if(displayedLogs.count > 0){
-                killEmptyMessage()
-                return 1
-            }
-            else {
-                emptyMessage(message: "Loading History")
-                return 0
-            }
-        }
+		else{
+			if(displayedLogs.count > 0){
+				killEmptyMessage()
+				return 1
+			}
+			else {
+				emptyMessage(message: "Loading History")
+				return 0
+			}
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,21 +87,21 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ResolvedCell
 		cell.activeView.layer.cornerRadius = cell.activeView.frame.width / 2
 		if(isFiltering()){
-            if (filteredPoints[indexPath.row].wasRejected() == true) {
-                cell.activeView.backgroundColor = UIColor.red
-            } else {
-                cell.activeView.backgroundColor = UIColor.green
-            }
+			if (filteredPoints[indexPath.row].wasRejected() == true) {
+				cell.activeView.backgroundColor = UIColor.red
+			} else {
+				cell.activeView.backgroundColor = UIColor.green
+			}
 			cell.descriptionLabel.text = filteredPoints[indexPath.row].pointDescription
 			cell.reasonLabel.text = filteredPoints[indexPath.row].type.pointDescription
 			cell.nameLabel.text = filteredPoints[indexPath.row].resident
 		}
 		else{
-            if (displayedLogs[indexPath.row].wasRejected() == true) {
-                cell.activeView.backgroundColor = UIColor.red
-            } else {
-                cell.activeView.backgroundColor = UIColor.green
-            }
+			if (displayedLogs[indexPath.row].wasRejected() == true) {
+				cell.activeView.backgroundColor = UIColor.red
+			} else {
+				cell.activeView.backgroundColor = UIColor.green
+			}
 			cell.reasonLabel?.text = displayedLogs[indexPath.row].type.pointDescription
 			cell.nameLabel?.text = displayedLogs[indexPath.row].resident
 			cell.descriptionLabel?.text = displayedLogs[indexPath.row].pointDescription
@@ -115,12 +111,12 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 	
 	override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		var action : [UIContextualAction] = []
-        var log : PointLog
-        if (isFiltering()) {
-            log = self.filteredPoints[indexPath.row]
-        } else {
-            log = self.displayedLogs[indexPath.row]
-        }
+		var log : PointLog
+		if (isFiltering()) {
+			log = self.filteredPoints[indexPath.row]
+		} else {
+			log = self.displayedLogs[indexPath.row]
+		}
 		if ((log.wasHandled && log.wasRejected()) || (!log.wasHandled && !log.wasRejected())) {
 			let approveAction = UIContextualAction(style: .normal, title:  "Approve", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
 				self.updatePointLogStatus(log: log, approve: true, updating: true, indexPath: indexPath)
@@ -143,12 +139,12 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 	
 	override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		var action : [UIContextualAction] = []
-        var log : PointLog
-        if (isFiltering()) {
-            log = self.filteredPoints[indexPath.row]
-        } else {
-            log = self.displayedLogs[indexPath.row]
-        }
+		var log : PointLog
+		if (isFiltering()) {
+			log = self.filteredPoints[indexPath.row]
+		} else {
+			log = self.displayedLogs[indexPath.row]
+		}
 		if (!log.wasRejected()) {
 			let rejectAction = UIContextualAction(style: .normal, title:  "Reject", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
 				self.updatePointLogStatus(log: log, approve: false, updating: true, indexPath: indexPath)
@@ -168,7 +164,7 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 		return UISwipeActionsConfiguration(actions: action)
 	}
 	
-	override func updatePointLogStatus(log:PointLog, approve:Bool, updating:Bool = true, indexPath: IndexPath) {
+	func updatePointLogStatus(log:PointLog, approve:Bool, updating:Bool = true, indexPath: IndexPath) {
 		DataManager.sharedManager.updatePointLogStatus(log: log, approved: approve, updating: true, onDone: { (err: Error?) in
 			if let error = err {
 				if(error.localizedDescription == "The operation couldn’t be completed. (Point request has already been handled error 1.)"){
@@ -207,32 +203,32 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 				if(approve){
 					self.notify(title: "Success", subtitle: "Point approved", style: .success)
 					DispatchQueue.main.async {
-                        //This is a work around because sometimes when transistioning back from PointLogOverviewViewController, the
-                        //cell would not update the value properly. Even though it should be getting set already, we are doing in again.
-                        if(self.isFiltering()){
-                            self.filteredPoints[indexPath.row].updateApprovalStatus(approved: approve)
-                        }
-                        else{
-                            self.displayedLogs[indexPath.row].updateApprovalStatus(approved: approve)
-                        }
+						//This is a work around because sometimes when transistioning back from PointLogOverviewViewController, the
+						//cell would not update the value properly. Even though it should be getting set already, we are doing in again.
+						if(self.isFiltering()){
+							self.filteredPoints[indexPath.row].updateApprovalStatus(approved: approve)
+						}
+						else{
+							self.displayedLogs[indexPath.row].updateApprovalStatus(approved: approve)
+						}
 						self.tableView.setEditing(false, animated: true)
 						self.tableView.reloadRows(at: [indexPath], with: .fade)
-                    }
+					}
 				}
 				else{
 					self.notify(title: "Success", subtitle: "Point rejected", style: .success)
 					DispatchQueue.main.async {
-                        //This is a work around because sometimes when transistioning back from PointLogOverviewViewController, the
-                        //cell would not update the value properly. Even though it should be getting set already, we are doing in again.
-                        if(self.isFiltering()){
-                            self.filteredPoints[indexPath.row].updateApprovalStatus(approved: approve)
-                        }
-                        else{
-                            self.displayedLogs[indexPath.row].updateApprovalStatus(approved: approve)
-                        }
+						//This is a work around because sometimes when transistioning back from PointLogOverviewViewController, the
+						//cell would not update the value properly. Even though it should be getting set already, we are doing in again.
+						if(self.isFiltering()){
+							self.filteredPoints[indexPath.row].updateApprovalStatus(approved: approve)
+						}
+						else{
+							self.displayedLogs[indexPath.row].updateApprovalStatus(approved: approve)
+						}
 						self.tableView.setEditing(false, animated: true)
 						self.tableView.reloadRows(at: [indexPath], with: .fade)
-                    }
+					}
 				}
 			}
 		})
@@ -244,26 +240,27 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 	}
 	
 	// This function is called before the segue
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		
-		if (segue.identifier == "cell_push") {
-			// get a reference to the second view controller
-			let nextViewController = segue.destination as! PointLogOverviewController
-			let indexPath = tableView.indexPathForSelectedRow
-			
-			if(isFiltering()) {
-				nextViewController.pointLog = self.filteredPoints[(indexPath?.row)!]
-			} else {
-				nextViewController.pointLog = self.displayedLogs[(indexPath?.row)!]
-			}
-			nextViewController.preViewContr = self
-			nextViewController.indexPath = indexPath
-		}
-	}
+//	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//		if (segue.identifier == "cell_push") {
+//			// get a reference to the second view controller
+//			let nextViewController = segue.destination as! PointLogOverviewController
+//			let indexPath = tableView.indexPathForSelectedRow
+//
+//			if(isFiltering()) {
+//				nextViewController.pointLog = self.filteredPoints[(indexPath?.row)!]
+//			} else {
+//				nextViewController.pointLog = self.displayedLogs[(indexPath?.row)!]
+//			}
+//			//nextViewController.preViewContr = self
+//			nextViewController.indexPath = indexPath
+//		}
+//	}
 	
 	func updateSearchResults(for searchController: UISearchController) {
 		filterContentForSearchText(searchController.searchBar.text!)
-    }
+	}
+	
 	func searchBarIsEmpty() -> Bool {
 		// Returns true if the text is empty or nil
 		return searchController.searchBar.text?.isEmpty ?? true
@@ -279,6 +276,7 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 		})
 		tableView.reloadData()
 	}
+	
 	func isFiltering() -> Bool {
 		return searchController.isActive && !searchBarIsEmpty()
 	}

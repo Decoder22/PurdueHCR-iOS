@@ -11,7 +11,7 @@ import FirebaseAuth
 import Cely
 import PopupKit
 
-class HouseProfileViewController: UIViewController, UIScrollViewDelegate {
+class HouseProfileViewController: UIViewController, UIScrollViewDelegate, CustomViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
 	@IBOutlet weak var settingsButton: UIBarButtonItem!
@@ -39,6 +39,10 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate {
         self.profileView.layer.shadowOffset = CGSize.zero
         self.profileView.layer.shadowRadius = 5
         self.profileView.layer.cornerRadius = radius
+		self.profileView.delegate = self
+		
+		//let myCustomView = Bundle.main.loadNibNamed("UserPoi", owner: self, options: nil)?[0] as! ProfileView
+		//myCustomView.delegate = self
 		
         self.housePointsView.layer.shadowColor = UIColor.darkGray.cgColor
         self.housePointsView.layer.shadowOpacity = 0.5
@@ -51,7 +55,6 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate {
         self.housePointsCompareView.layer.shadowOffset = CGSize.zero
         self.housePointsCompareView.layer.shadowRadius = 5
 		self.housePointsCompareView.layer.cornerRadius = radius
-        
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -162,6 +165,12 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate {
 	
 	@objc func reportBug(sender: UIButton!) {
 		UIApplication.shared.open(URL(string: "https://sites.google.com/view/hcr-points/home")!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+	}
+	
+	func goToNextScene() {
+		let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+		let vc = storyboard.instantiateViewController(withIdentifier: "UserPointsController") 
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 
 }

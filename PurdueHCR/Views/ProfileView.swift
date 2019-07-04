@@ -8,16 +8,22 @@
 
 import UIKit
 
+protocol CustomViewDelegate: class {
+	func goToNextScene()
+}
+
 class ProfileView: UIView {
 
+	weak var delegate: CustomViewDelegate?
+	
     @IBOutlet var backgroundView: UIView!
     @IBOutlet var houseLogoImageView: UIImageView!
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var totalPointsLabel: UILabel!
-    //@IBOutlet var achievementLabel: UILabel!
+	@IBOutlet weak var viewPointsButton: UIButton!
+	//@IBOutlet var achievementLabel: UILabel!
 //    @IBOutlet var pointsButton: UILabel! // change back to button for the Medals update
 	
-    
     var transitionFunc: () ->() = {print("NO IMPLEMENTATION")}
     
     override init(frame: CGRect){
@@ -35,6 +41,7 @@ class ProfileView: UIView {
         addSubview(backgroundView)
         backgroundView.frame = self.bounds
         backgroundView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+		viewPointsButton.layer.cornerRadius = 10//viewPointsButton.layer.frame.height / 2
 //        pointsButton.text = "Stay tuned for:\n The Medals Update!"
 //        pointsButton.layer.borderWidth = 2.0
 //        pointsButton.layer.borderColor = UIColor.black.cgColor
@@ -69,9 +76,13 @@ class ProfileView: UIView {
         
         
     }
-    
+	
     @IBAction func transition(_ sender: Any) {
         transitionFunc()
     }
-    
+	
+	@IBAction func viewUserPoints(_ sender: Any) {
+		delegate?.goToNextScene()
+	}
+	
 }
