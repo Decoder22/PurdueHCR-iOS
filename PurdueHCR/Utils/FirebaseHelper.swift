@@ -653,6 +653,39 @@ class FirebaseHelper {
                 onDone(pointLogs)
         }
     }
+	
+	func getAllPointLogsForUser(user:User, onDone:@escaping (([PointLog]) -> Void)){
+		let docRef = db.collection(self.USERS).document(user).collection(self.POINTS)
+		
+		docRef.getDocuments()
+			{ (querySnapshot, error) in
+				if error != nil {
+					print("Error getting documenbts: \(String(describing: error))")
+					return
+				}
+				var pointLogs = [PointLog]()
+				for document in querySnapshot!.documents {
+					let floorID = document.data()["FloorID"] as! String
+					let id = document.documentID
+					let description = document.data()["Description"] as! String
+					let idType = (document.data()["PointTypeID"] as! Int)
+					var resident = document.data()["Resident"] as! String
+					if(floorID == "Shreve"){
+						resident = "(Shreve) " + resident
+					}
+					let residentRefMaybe = document.data()["ResidentRef"]
+					var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)
+					if(residentRefMaybe != nil ){
+						residentRef = residentRefMaybe as! DocumentReference
+					}
+					let pointType = DataManager.sharedManager.getPointType(value: idType)
+					let pointLog = PointLog(pointDescription: description, resident: resident, type: pointType, floorID: floorID, residentRef:residentRef)
+					pointLog.logID = id
+					pointLogs.append(pointLog)
+				}
+				onDone(pointLogs)
+		}
+	}
     
     func addPointType(pointType:PointType, onDone:@escaping (_ err:Error?)-> Void){
         let highestId = DataManager.sharedManager.getPoints()!.count + 1 // This has the potential for a race condition but oh well

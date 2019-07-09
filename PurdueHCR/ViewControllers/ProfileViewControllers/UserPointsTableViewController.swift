@@ -27,7 +27,9 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 		activityIndicator.style = .gray
 		activityIndicator.hidesWhenStopped = true
 		view.addSubview(activityIndicator)
-		displayedLogs = DataManager.sharedManager.getResolvedPointLogs() ?? [PointLog]()
+		
+		displayedLogs = DataManager.sharedManager.getAllPointLogsForUser(user: User, onDone: ([PointLog]))
+		
 		refresher = UIRefreshControl()
 		refresher?.attributedTitle = NSAttributedString(string: "Pull to refresh")
 		refresher?.addTarget(self, action: #selector(resfreshData), for: .valueChanged)
@@ -69,7 +71,8 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 				return 1
 			}
 			else {
-				emptyMessage(message: "Loading History")
+				emptyMessage(message: "No submitted points")
+				navigationItem.searchController = nil
 				return 0
 			}
 		}

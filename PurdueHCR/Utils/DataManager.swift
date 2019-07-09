@@ -403,6 +403,10 @@ class DataManager {
     func getAllPointLogsForHouse(house:String, onDone:@escaping (([PointLog]) -> Void)){
         fbh.getAllPointLogsForHouse(house: house, onDone: onDone)
     }
+	
+	func getAllPointLogsForUser(user:User, onDone:@escaping (([PointLog]) -> Void)){
+		fbh.getAllPointLogsForUser(user: user, onDone: onDone)
+	}
     
     func createPointType(pointType:PointType, onDone:@escaping ((_ err:Error?) ->Void)){
         fbh.addPointType(pointType: pointType, onDone: onDone)
