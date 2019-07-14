@@ -47,6 +47,10 @@ class TabBarController: UITabBarController {
         // Do any additional setup after loading the view.
         self.setViewControllers(viewControllers, animated: false)
     }
+	
+	override func viewDidAppear(_ animated: Bool) {
+		self.performSegue(withIdentifier: "showSplashScreen", sender: nil)
+	}
     
     func linkPointSubmissionViewController() -> UIViewController {
         let pointSubmissionViewController = UIStoryboard(name: "PointSubmission", bundle: nil).instantiateViewController(withIdentifier: "Point_Submission_Initial") as! UINavigationController
