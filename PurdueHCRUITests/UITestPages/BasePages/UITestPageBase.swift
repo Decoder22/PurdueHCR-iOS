@@ -127,6 +127,12 @@ class BasePage {
         }
     }
 	
+	func clearTextField(textField: XCUIElement) {
+		for _ in 1...(textField.value as! String).count {
+			app.keys["delete"].tap()
+		}
+	}
+    
 }
 
 
