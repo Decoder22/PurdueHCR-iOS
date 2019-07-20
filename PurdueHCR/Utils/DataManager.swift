@@ -197,9 +197,14 @@ class DataManager {
         print("INITIALIZE")
 		let TOTALCOUNT = 5
         let counter = AppUtils.AtomicCounter(identifier: "initializeData")
-        guard let _ = User.get(.name) else{
-            print("FAILED INIT")
-            return
+		
+		// Something about the way this guard is set up could probably be better...
+		guard let _ = User.get(.firstName) else{
+			guard let _ = User.get(.lastName) else {
+				print("FAILED INIT")
+				return
+			}
+			return
         }
         if let id = User.get(.id) as! String?{
             getUserWhenLogginIn(id: id, onDone: {(isLoggedIn:Bool) in
@@ -332,7 +337,9 @@ class DataManager {
 				}
                 
                 let pointType = self.getPointType(value: link.pointTypeID)
-                let resident = User.get(.name) as! String
+				let firstName = User.get(.firstName) as! String
+				let lastName = User.get(.lastName) as! String
+                let resident = firstName + " " + lastName
                 let floorID = User.get(.floorID) as! String
                 let ref = self.getUserRefFromUserID(id: User.get(.id) as! String)
                 let log = PointLog(pointDescription: link.description, resident: resident, type: pointType, floorID: floorID, residentRef: ref)
@@ -404,8 +411,8 @@ class DataManager {
         fbh.getAllPointLogsForHouse(house: house, onDone: onDone)
     }
 	
-	func getAllPointLogsForUser(user:User, onDone:@escaping (([PointLog]) -> Void)){
-		fbh.getAllPointLogsForUser(user: user, onDone: onDone)
+	func getAllPointLogsForUser(residentID:String, house:String, onDone:@escaping (([PointLog]) -> Void)){
+		fbh.getAllPointLogsForUser(residentID: residentID, house: house, onDone: onDone)
 	}
     
     func createPointType(pointType:PointType, onDone:@escaping ((_ err:Error?) ->Void)){
@@ -465,7 +472,7 @@ class DataManager {
 
     //Used for handling link to make sure all necessairy information is there
     func isInitialized() -> Bool {
-        return getHouses() != nil && getPoints() != nil && Cely.currentLoginStatus() == .loggedIn && User.get(.id) != nil && User.get(.name) != nil && User.get(.permissionLevel) != nil && systemPreferences != nil
+        return getHouses() != nil && getPoints() != nil && Cely.currentLoginStatus() == .loggedIn && User.get(.id) != nil && User.get(.firstName) != nil && User.get(.lastName) != nil && User.get(.permissionLevel) != nil && systemPreferences != nil
 		
     }
 	

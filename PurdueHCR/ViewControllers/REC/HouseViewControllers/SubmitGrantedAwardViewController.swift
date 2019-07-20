@@ -17,7 +17,9 @@ class SubmitGrantedAwardViewController: TypeSubmitViewController {
     ///   - pointType: Type to be submitted
     ///   - descriptions: Description given by the REA/REC for reason why they were granting them the points
     override func submitPointLog(pointType: PointType, logDescription: String) {
-        let name = User.get(.name) as! String
+		let firstName = User.get(.firstName) as! String
+		let lastName = User.get(.lastName) as! String
+		let name = firstName + lastName
         let recRef = DataManager.sharedManager.getUserRefFromUserID(id: User.get(.id) as! String)
         let log = PointLog(pointDescription: logDescription, resident:name , type: pointType, floorID: "Award", residentRef: recRef)
         DataManager.sharedManager.awardPointsToHouseFromREC(log: log, house: house!) { (error) in

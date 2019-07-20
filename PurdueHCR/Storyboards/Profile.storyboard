@@ -78,7 +78,7 @@
                                 </connections>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="vFy-4D-Lcd" secondAttribute="trailing" id="XYm-yZ-75g"/>
                             <constraint firstItem="vFy-4D-Lcd" firstAttribute="leading" secondItem="6CA-bv-9bg" secondAttribute="leading" id="eCS-a6-ccy"/>

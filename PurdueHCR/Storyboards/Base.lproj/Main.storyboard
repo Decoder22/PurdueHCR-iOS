@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0p3-Is-rZU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0p3-Is-rZU">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +26,7 @@
                                 </constraints>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pbk-rQ-ztg">
-                                <rect key="frame" x="88" y="592" width="199" height="55"/>
+                                <rect key="frame" x="87.5" y="592" width="199" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="vsw-0v-mHJ"/>
                                 </constraints>
@@ -41,7 +41,7 @@
                                 <rect key="frame" x="177.5" y="369" width="20" height="20"/>
                             </activityIndicatorView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5oD-ez-eae">
-                                <rect key="frame" x="88" y="529" width="200" height="55"/>
+                                <rect key="frame" x="87.5" y="529" width="200" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="mBm-ye-kQK"/>
                                 </constraints>
@@ -78,11 +78,20 @@
                         <outlet property="retryButton" destination="5oD-ez-eae" id="u4u-jF-0YR"/>
                         <outlet property="signOutButton" destination="pbk-rQ-ztg" id="8HC-3S-C5Q"/>
                         <segue destination="49e-Tb-3d3" kind="show" identifier="doneWithInit" id="uWT-sX-PZX"/>
+                        <segue destination="vA6-jb-4eb" kind="show" identifier="test_push" id="9lS-Ay-Ai6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H83-E9-bY8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2655.1999999999998" y="-269.41529235382313"/>
+        </scene>
+        <!--House Code View Controller-->
+        <scene sceneID="lJf-fr-Wcn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="LoginStoryboard" referencedIdentifier="House Code View Controller" id="vA6-jb-4eb" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iyk-hj-ff2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2207" y="169"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">

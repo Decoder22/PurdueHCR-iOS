@@ -61,7 +61,9 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
     ///   - pointType: Point Type to have a log created of
     ///   - descriptions: String text describing what the residents did
     func submitPointLog(pointType:PointType, logDescription:String){
-        let name = User.get(.name) as! String
+		let firstName = User.get(.firstName) as! String
+		let lastName = User.get(.lastName) as! String
+		let name = firstName + lastName
         let preApproved = ((User.get(.permissionLevel) as! Int) == 1 )
         let floor = User.get(.floorID) as! String
         let residentRef = DataManager.sharedManager.getUserRefFromUserID(id: User.get(.id) as! String)

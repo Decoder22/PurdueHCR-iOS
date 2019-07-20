@@ -68,7 +68,9 @@ class ProfileView: UIView {
         else if(houseName == "Titanium"){
             houseLogoImageView.image = #imageLiteral(resourceName: "Titanium")
         }
-        nameLabel.text = (User.get(.name) as! String)
+		let firstName = User.get(.firstName) as! String
+		let lastName = User.get(.lastName) as! String
+        nameLabel.text = firstName + " " + lastName
 		
 		totalPointsLabel.adjustsFontSizeToFitWidth = true
         totalPointsLabel.text = (User.get(.points) as! Int).description + " points"

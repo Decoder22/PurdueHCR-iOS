@@ -45,7 +45,12 @@ class PointLogOverviewController: UIViewController {
 		
 		approveButton?.setImage(#imageLiteral(resourceName: "approve"), for: .normal)
 		approveButton?.layer.cornerRadius = radius
-		approveButton?.backgroundColor = UIColor.green
+		/*if #available(iOS 13, *) {
+			approveButton?.backgroundColor = UIColor.get
+		} else {
+			
+		}*/
+		approveButton?.backgroundColor = UIColor.init(red: 52, green: 199, blue: 89, alpha: 1.00)
 		approveButton?.layer.shadowColor = UIColor.gray.cgColor
 		approveButton?.layer.shadowRadius = 3
 		approveButton?.layer.shadowOpacity = 15

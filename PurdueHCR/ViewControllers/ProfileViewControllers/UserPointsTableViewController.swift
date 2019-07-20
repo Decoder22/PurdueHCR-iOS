@@ -28,8 +28,6 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 		activityIndicator.hidesWhenStopped = true
 		view.addSubview(activityIndicator)
 		
-		displayedLogs = DataManager.sharedManager.getAllPointLogsForUser(user: User, onDone: ([PointLog]))
-		
 		refresher = UIRefreshControl()
 		refresher?.attributedTitle = NSAttributedString(string: "Pull to refresh")
 		refresher?.addTarget(self, action: #selector(resfreshData), for: .valueChanged)
@@ -42,7 +40,7 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	}
 	
 	@objc func resfreshData(){
-		DataManager.sharedManager.refreshResolvedPointLogs(onDone: { (pointLogs:[PointLog]) in
+		DataManager.sharedManager.getAllPointLogsForUser(residentID: (User).get(.id) as! String, house: (User).get(.house) as! String, onDone: { (pointLogs:[PointLog]) in
 			self.displayedLogs = pointLogs
 			DispatchQueue.main.async { [unowned self] in
 				self.tableView.reloadData()
@@ -52,7 +50,18 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 			self.navigationItem.hidesBackButton = false
 		})
 	}
+
+	func updateSearchResults(for searchController: UISearchController) {
 	
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		if let index = self.tableView.indexPathForSelectedRow {
+			self.tableView.deselectRow(at: index, animated: true)
+		}
+		resfreshData()
+	}
+
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		// #warning Incomplete implementation, return the number of sections
 		if isFiltering() {
@@ -259,10 +268,6 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 //			nextViewController.indexPath = indexPath
 //		}
 //	}
-	
-	func updateSearchResults(for searchController: UISearchController) {
-		filterContentForSearchText(searchController.searchBar.text!)
-	}
 	
 	func searchBarIsEmpty() -> Bool {
 		// Returns true if the text is empty or nil

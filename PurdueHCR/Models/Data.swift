@@ -114,13 +114,26 @@ class PointLog {
         
         self.floorID = document["FloorID"] as! String
         self.pointDescription = document["Description"] as! String
-        self.resident = document["Resident"] as! String
-        self.residentRef = document["ResidentRef"] as! DocumentReference
+		let resident = document["Resident"]
+		var name = ""
+		if (resident == nil) {
+			let first = document["ResidentFirstName"] as! String
+			let last = document["ResidentLastName"] as! String
+			name = first + last
+			
+		} else {
+			name = resident as! String
+		}
+		self.resident = name
+		var ref = document["ResidentRef"]
+		if (ref == nil) {
+			ref = document["ResidentId"] as! DocumentReference
+		}
+        self.residentRef = ref as! DocumentReference
         self.approvedBy = document["ApprovedBy"] as! String?
         self.approvedOn = document["ApprovedOn"] as! Timestamp?
         self.residentReportTime = document["ResidentReportTime"] as! Timestamp?
-        
-        
+		
         let idValue = (document["PointTypeID"] as! Int)
         if(idValue < 1){
             self.wasHandled = false
@@ -130,8 +143,10 @@ class PointLog {
         }
         self.type = DataManager.sharedManager.getPointType(value: abs(idValue))
         if(floorID == "Shreve"){
-            resident = SHREVE_RESIDENT+resident
+            name = SHREVE_RESIDENT+name
         }
+		
+		// QUESTION: Is the above Shreve part actually working???
     }
     
     func wasRejected() -> Bool {
@@ -157,7 +172,9 @@ class PointLog {
                 self.approvedBy = "Preapproved"
             }
             else{
-                self.approvedBy = User.get(.name) as! String?
+				let firstName = User.get(.firstName) as! String
+				let lastName = User.get(.lastName) as! String
+				self.approvedBy = firstName + " " + lastName
             }
             
             self.approvedOn = Timestamp.init()
@@ -167,7 +184,9 @@ class PointLog {
             if(!wasRejected()){
                 //Point was not already rejected
                 self.pointDescription = REJECTED_STRING + self.pointDescription
-                self.approvedBy = User.get(.name) as! String?
+				let firstName = User.get(.firstName) as! String
+				let lastName = User.get(.lastName) as! String
+				self.approvedBy = firstName + " " + lastName
                 self.approvedOn = Timestamp.init()
             }
             //else point was already rejected so it does not need ot be updated

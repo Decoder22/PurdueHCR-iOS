@@ -14,7 +14,8 @@ class FirebaseHelper {
     
     let db: Firestore
     let storage: Storage
-    let NAME = "Name"
+    let FIRST_NAME = "FirstName"
+	let LAST_NAME = "LastName"
     let PERMISSION_LEVEL = "Permission Level"
     let HOUSE = "House"
     let POINTS = "Points"
@@ -34,7 +35,8 @@ class FirebaseHelper {
     func createUser(onDone:@escaping (_ err: Error?) -> Void){
         let userRef = db.collection("Users").document(User.get(.id) as! String)
         userRef.setData([
-            self.NAME: User.get(.name)!,
+            self.FIRST_NAME: User.get(.firstName)!,
+			self.LAST_NAME: User.get(.lastName)!,
             self.PERMISSION_LEVEL: User.get(.permissionLevel)! as! Int,
             self.HOUSE:User.get(.house)!,
             self.FLOOR_ID:User.get(.floorID)!,
@@ -81,7 +83,8 @@ class FirebaseHelper {
             if let document = document, document.exists {
                 let permissionLevel = document.data()![self.PERMISSION_LEVEL] as! Int
                 User.save(permissionLevel as Any, as: .permissionLevel)
-                User.save(document.data()![self.NAME] as Any, as: .name)
+                User.save(document.data()![self.FIRST_NAME] as Any, as: .firstName)
+				User.save(document.data()![self.LAST_NAME] as Any, as: .lastName)
                 if(permissionLevel == 2){ // check if REA/REC
                     
                 }
@@ -317,7 +320,8 @@ class FirebaseHelper {
             if let document = document, document.exists {
                 User.save(document.data()![self.HOUSE] as Any, as: .house)
                 User.save(document.data()![self.FLOOR_ID] as Any, as: .floorID)
-                User.save(document.data()![self.NAME] as Any, as: .name)
+                User.save(document.data()![self.FIRST_NAME] as Any, as: .firstName)
+				User.save(document.data()![self.LAST_NAME] as Any, as: .lastName)
                 User.save(document.data()![self.PERMISSION_LEVEL] as Any, as: .permissionLevel)
                 User.save(document.data()![self.TOTAL_POINTS] as Any, as: .points)
                 onDone(error)
@@ -626,8 +630,8 @@ class FirebaseHelper {
         
         docRef.getDocuments()
             { (querySnapshot, error) in
-                if error != nil {
-                    print("Error getting documenbts: \(String(describing: error))")
+                if (error != nil) {
+                    print("Error getting documents: \(String(describing: error))")
                     return
                 }
                 var pointLogs = [PointLog]()
@@ -636,9 +640,17 @@ class FirebaseHelper {
                     let id = document.documentID
                     let description = document.data()["Description"] as! String
                     let idType = (document.data()["PointTypeID"] as! Int)
-                    var resident = document.data()["Resident"] as! String
+					let resident = document.data()["Resident"]
+					var name = ""
+					if (resident == nil) {
+						let first = document.data()["ResidentFirstName"] as! String
+						let last = document.data()["ResidentLastName"] as! String
+						name = first + last
+					} else {
+						name = resident as! String
+					}
                     if(floorID == "Shreve"){
-                        resident = "(Shreve) " + resident
+                        name = "(Shreve) " + name
                     }
                     let residentRefMaybe = document.data()["ResidentRef"]
                     var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)
@@ -646,7 +658,7 @@ class FirebaseHelper {
                         residentRef = residentRefMaybe as! DocumentReference
                     }
                     let pointType = DataManager.sharedManager.getPointType(value: idType)
-                    let pointLog = PointLog(pointDescription: description, resident: resident, type: pointType, floorID: floorID, residentRef:residentRef)
+                    let pointLog = PointLog(pointDescription: description, resident: name, type: pointType, floorID: floorID, residentRef:residentRef)
                     pointLog.logID = id
                     pointLogs.append(pointLog)
                 }
@@ -654,34 +666,43 @@ class FirebaseHelper {
         }
     }
 	
-	func getAllPointLogsForUser(user:User, onDone:@escaping (([PointLog]) -> Void)){
-		let docRef = db.collection(self.USERS).document(user).collection(self.POINTS)
+	func getAllPointLogsForUser(residentID:String, house:String, onDone:@escaping (([PointLog]) -> Void)){
+		let docRef = db.collection(self.HOUSE).document(house).collection(self.POINTS)
 		
 		docRef.getDocuments()
 			{ (querySnapshot, error) in
-				if error != nil {
-					print("Error getting documenbts: \(String(describing: error))")
+				if (error != nil) {
+					print("Error getting documents: \(String(describing: error))")
 					return
 				}
 				var pointLogs = [PointLog]()
 				for document in querySnapshot!.documents {
-					let floorID = document.data()["FloorID"] as! String
-					let id = document.documentID
-					let description = document.data()["Description"] as! String
-					let idType = (document.data()["PointTypeID"] as! Int)
-					var resident = document.data()["Resident"] as! String
-					if(floorID == "Shreve"){
-						resident = "(Shreve) " + resident
+					let ID = document.data()["ResidentId"]
+					if (ID != nil) {
+						let resID = ID as! String
+						if (resID == residentID) {
+							let floorID = document.data()["FloorID"] as! String
+							let id = document.documentID
+							let description = document.data()["Description"] as! String
+							let idType = (document.data()["PointTypeID"] as! Int)
+							var name = ""
+							let first = document.data()["ResidentFirstName"] as! String
+							let last = document.data()["ResidentLastName"] as! String
+							name = first + last
+							if(floorID == "Shreve"){
+								name = "(Shreve) " + name
+							}
+							let residentRefMaybe = document.data()["ResidentRef"]
+							var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)
+							if(residentRefMaybe != nil ){
+								residentRef = residentRefMaybe as! DocumentReference
+							}
+							let pointType = DataManager.sharedManager.getPointType(value: idType)
+							let pointLog = PointLog(pointDescription: description, resident: name, type: pointType, floorID: floorID, residentRef:residentRef)
+							pointLog.logID = id
+							pointLogs.append(pointLog)
+						}
 					}
-					let residentRefMaybe = document.data()["ResidentRef"]
-					var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)
-					if(residentRefMaybe != nil ){
-						residentRef = residentRefMaybe as! DocumentReference
-					}
-					let pointType = DataManager.sharedManager.getPointType(value: idType)
-					let pointLog = PointLog(pointDescription: description, resident: resident, type: pointType, floorID: floorID, residentRef:residentRef)
-					pointLog.logID = id
-					pointLogs.append(pointLog)
 				}
 				onDone(pointLogs)
 		}

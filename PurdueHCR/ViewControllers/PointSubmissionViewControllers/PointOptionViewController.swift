@@ -174,7 +174,7 @@ class PointOptionViewController: UITableViewController, UISearchResultsUpdating{
         tableView.reloadData()
     }
     func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
+		return searchController.isActive && !searchBarIsEmpty()
     }
     
     private func sortIntoPointGroupsWithPermission(arr:[PointType]) -> [PointGroup]{

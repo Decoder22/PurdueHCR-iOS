@@ -11,6 +11,7 @@
 		AFFF5C517BE37CA63E769D79 /* Pods_PurdueHCR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172F6609F4B14DA0FA8D754A /* Pods_PurdueHCR.framework */; };
 		B52B713D2252F02600C46C11 /* UITestRECSystemPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52B713C2252F02600C46C11 /* UITestRECSystemPreferences.swift */; };
 		B52FD0CB22B849AC009682CB /* UserPointsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52FD0CA22B849AC009682CB /* UserPointsTableViewController.swift */; };
+		B53685D422DFD73700A0D0B5 /* HouseCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53685D322DFD73700A0D0B5 /* HouseCodeViewController.swift */; };
 		B551BDD321B1004F00CF4F6C /* Register in Resources */ = {isa = PBXBuildFile; fileRef = B551BDD221B1004F00CF4F6C /* Register */; };
 		B55449592176F11300A914C2 /* TextFieldMaxLengths.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */; };
 		B5A98394225D7D5E00AE64B8 /* UITestSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A98393225D7D5E00AE64B8 /* UITestSignup.swift */; };
@@ -103,6 +104,7 @@
 		AC9352CC1FB986152D577038 /* Pods_PurdueHCRUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PurdueHCRUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52B713C2252F02600C46C11 /* UITestRECSystemPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestRECSystemPreferences.swift; sourceTree = "<group>"; };
 		B52FD0CA22B849AC009682CB /* UserPointsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPointsTableViewController.swift; sourceTree = "<group>"; };
+		B53685D322DFD73700A0D0B5 /* HouseCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseCodeViewController.swift; sourceTree = "<group>"; };
 		B551BDD221B1004F00CF4F6C /* Register */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Register; sourceTree = "<group>"; };
 		B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldMaxLengths.swift; sourceTree = "<group>"; };
 		B5A98393225D7D5E00AE64B8 /* UITestSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSignup.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 			children = (
 				D3D062C220E8219C00E8B3A3 /* LogInViewController.swift */,
 				D37E1D9B20FAAD8E00C1B05E /* SignUpViewController.swift */,
+				B53685D322DFD73700A0D0B5 /* HouseCodeViewController.swift */,
 			);
 			path = UserCreation;
 			sourceTree = "<group>";
@@ -839,6 +842,7 @@
 				D3D062C320E8219C00E8B3A3 /* LogInViewController.swift in Sources */,
 				D30FC90220DF35D800201E74 /* AppDelegate.swift in Sources */,
 				D33F43B1210AA00700D3982D /* PointDescriptionView.swift in Sources */,
+				B53685D422DFD73700A0D0B5 /* HouseCodeViewController.swift in Sources */,
 				D30FC90420DF35D800201E74 /* PointOptionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
