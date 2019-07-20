@@ -60,7 +60,8 @@ class FirebaseHelper {
                     let value = pointDocument.data()["Value"] as! Int
                     let permissionLevel = pointDocument.data()["PermissionLevel"] as! Int
                     let isEnabled = pointDocument.data()["Enabled"] as! Bool
-                    pointArray.append(PointType(pv: value, pd: description , rcs: residentSubmit, pid: id, permissionLevel: permissionLevel, isEnabled:isEnabled))
+					// TODO: Update pn field
+					pointArray.append(PointType(pv: value, pn: "", pd: description , rcs: residentSubmit, pid: id, permissionLevel: permissionLevel, isEnabled:isEnabled))
                 }
                 pointArray.sort(by: {
                     if($0.pointValue == $1.pointValue){

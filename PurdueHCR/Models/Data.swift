@@ -12,14 +12,16 @@ import Firebase
 
 class PointType {
     var pointValue:Int
+	var pointName:String
     var pointDescription:String
     var residentCanSubmit:Bool
     var pointID:Int
     var permissionLevel:Int
     var isEnabled:Bool
     
-    init(pv:Int,pd:String,rcs:Bool,pid:Int, permissionLevel:Int, isEnabled:Bool){
+	init(pv:Int,pn:String,pd:String,rcs:Bool,pid:Int, permissionLevel:Int, isEnabled:Bool){
         self.pointValue = pv
+		self.pointName = pn
         self.pointDescription = pd
         self.residentCanSubmit = rcs
         self.pointID = pid

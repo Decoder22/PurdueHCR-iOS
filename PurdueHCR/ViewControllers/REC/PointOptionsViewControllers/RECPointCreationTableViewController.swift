@@ -68,8 +68,9 @@ class RECPointCreationTableViewController: UITableViewController, UITextViewDele
         let residentsCanSubmit = residentsCanSubmitSwitch.isOn
         let permissionLevel = Int(permissionSlider.value)
         let isEnabled = enabledSwitch.isOn
-        
-        let newType = PointType(pv: pointValue, pd: description, rcs: residentsCanSubmit, pid: 0, permissionLevel: permissionLevel, isEnabled:isEnabled)
+		
+		// TODO: Update this so they enter description
+		let newType = PointType(pv: pointValue, pn: "", pd: description, rcs: residentsCanSubmit, pid: 0, permissionLevel: permissionLevel, isEnabled:isEnabled)
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         DataManager.sharedManager.createPointType(pointType: newType) { (error) in
             if(error == nil){

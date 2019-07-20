@@ -17,6 +17,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 	@IBOutlet var descriptionField: UITextView!
 	@IBOutlet weak var houseImage: UIImageView!
 	@IBOutlet weak var submitButton: UIButton!
+	@IBOutlet weak var descriptionLabel: UILabel!
 	
 	
     var type:PointType?
@@ -24,8 +25,11 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        typeLabel.text? = type!.pointDescription
-		nameLabel.text = User.get(.name) as? String
+        typeLabel.text? = type!.pointName
+		descriptionLabel.text = type!.pointDescription
+		let firstName = User.get(.firstName) as! String
+		let lastName = User.get(.lastName) as! String
+		nameLabel.text = firstName + " " + lastName
         descriptionField.layer.borderColor = UIColor.black.cgColor
         descriptionField.layer.borderWidth = 1
 		descriptionField.layer.cornerRadius = 10

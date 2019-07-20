@@ -44,7 +44,8 @@ class DataManager {
                 return pt
             }
         }
-        return PointType(pv: 0, pd: "Unkown Point Type", rcs: false, pid: -1, permissionLevel: 3, isEnabled:false) // The famous this should never happen comment
+		// TODO: Update pn field
+		return PointType(pv: 0, pn: "", pd: "Unkown Point Type", rcs: false, pid: -1, permissionLevel: 3, isEnabled:false) // The famous this should never happen comment
     }
     
 
@@ -71,7 +72,7 @@ class DataManager {
             }
             else{
 				if (!updating) {
-					if let index = self?._unconfirmedPointLogs!.index(of: log) {
+					if let index = self?._unconfirmedPointLogs!.firstIndex(of: log) {
 						self?._unconfirmedPointLogs!.remove(at: index)
 					}
 				}

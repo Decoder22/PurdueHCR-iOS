@@ -94,7 +94,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" restorationIdentifier="descriptionField" text="Tell us about what you did!" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gMf-yh-8Ny" userLabel="descriptionField">
-                                <rect key="frame" x="16" y="219" width="343" height="190"/>
+                                <rect key="frame" x="16" y="402" width="343" height="190"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" identifier="descriptionField" label="descriptionField"/>
                                 <constraints>
@@ -138,21 +138,30 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afd-fT-Yve">
+                                <rect key="frame" x="16" y="209" width="343" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="XLP-WZ-pD8" firstAttribute="bottom" secondItem="6qn-MP-jve" secondAttribute="bottom" id="15p-lb-E3a"/>
-                            <constraint firstItem="gMf-yh-8Ny" firstAttribute="top" secondItem="fzT-5L-Y56" secondAttribute="bottom" constant="10" id="4yd-wI-TZp"/>
+                            <constraint firstItem="gMf-yh-8Ny" firstAttribute="bottom" secondItem="LTx-Ib-JRS" secondAttribute="top" constant="-10" id="4yd-wI-TZp"/>
                             <constraint firstItem="6qn-MP-jve" firstAttribute="leading" secondItem="XLP-WZ-pD8" secondAttribute="trailing" constant="10" id="GGP-2b-lgA"/>
                             <constraint firstItem="fzT-5L-Y56" firstAttribute="leading" secondItem="RsU-Hh-tap" secondAttribute="leadingMargin" id="GOx-if-CAE"/>
                             <constraint firstItem="fzT-5L-Y56" firstAttribute="trailing" secondItem="RsU-Hh-tap" secondAttribute="trailingMargin" id="Iv8-Yz-Dma"/>
+                            <constraint firstItem="afd-fT-Yve" firstAttribute="leading" secondItem="fzT-5L-Y56" secondAttribute="leading" id="KF4-Cb-fqb"/>
                             <constraint firstItem="XLP-WZ-pD8" firstAttribute="top" secondItem="cJ7-v0-mLF" secondAttribute="top" constant="10" id="ME9-C1-eVq"/>
                             <constraint firstItem="LTx-Ib-JRS" firstAttribute="centerX" secondItem="RsU-Hh-tap" secondAttribute="centerX" id="Phq-S0-4Le"/>
+                            <constraint firstItem="afd-fT-Yve" firstAttribute="trailing" secondItem="fzT-5L-Y56" secondAttribute="trailing" id="TIi-vw-ji0"/>
                             <constraint firstItem="gMf-yh-8Ny" firstAttribute="leading" secondItem="RsU-Hh-tap" secondAttribute="leadingMargin" id="VeI-oe-dLp"/>
                             <constraint firstItem="cJ7-v0-mLF" firstAttribute="trailing" secondItem="6qn-MP-jve" secondAttribute="trailing" constant="10" id="WFU-RI-bjq"/>
                             <constraint firstItem="6qn-MP-jve" firstAttribute="top" secondItem="cJ7-v0-mLF" secondAttribute="top" constant="10" id="cq7-3M-2aV"/>
                             <constraint firstItem="XLP-WZ-pD8" firstAttribute="leading" secondItem="RsU-Hh-tap" secondAttribute="leadingMargin" id="fbZ-iI-Qn0"/>
                             <constraint firstItem="fzT-5L-Y56" firstAttribute="trailing" secondItem="gMf-yh-8Ny" secondAttribute="trailing" id="gAT-Ds-sWm"/>
+                            <constraint firstItem="afd-fT-Yve" firstAttribute="top" secondItem="fzT-5L-Y56" secondAttribute="bottom" id="kRO-78-ATe"/>
                             <constraint firstItem="fzT-5L-Y56" firstAttribute="top" secondItem="XLP-WZ-pD8" secondAttribute="bottom" constant="10" id="ler-8R-G2g"/>
                             <constraint firstItem="cJ7-v0-mLF" firstAttribute="bottom" secondItem="LTx-Ib-JRS" secondAttribute="bottom" constant="15" id="r8w-eB-t2b"/>
                         </constraints>
@@ -161,6 +170,7 @@
                     <navigationItem key="navigationItem" title="Create Submission" id="ZAH-QY-1Uc"/>
                     <connections>
                         <outlet property="descriptionField" destination="gMf-yh-8Ny" id="fkS-a4-FH4"/>
+                        <outlet property="descriptionLabel" destination="afd-fT-Yve" id="Wbx-bl-FLw"/>
                         <outlet property="houseImage" destination="XLP-WZ-pD8" id="CCN-S7-QGb"/>
                         <outlet property="nameLabel" destination="6qn-MP-jve" id="TyK-Oj-06a"/>
                         <outlet property="submitButton" destination="LTx-Ib-JRS" id="q67-I0-HVO"/>

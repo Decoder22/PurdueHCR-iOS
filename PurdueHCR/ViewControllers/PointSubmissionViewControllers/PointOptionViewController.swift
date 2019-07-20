@@ -64,12 +64,12 @@ class PointOptionViewController: UITableViewController, UISearchResultsUpdating{
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PointTypeCell
         if(isFiltering()){
-            cell.typeLabel.text = filteredPoints[indexPath.row].pointDescription
-            cell.accessibilityIdentifier = filteredPoints[indexPath.row].pointDescription
+            cell.typeLabel.text = filteredPoints[indexPath.row].pointName
+            cell.accessibilityIdentifier = filteredPoints[indexPath.row].pointName
         }
         else{
-            cell.typeLabel.text = pointSystem[indexPath.section].points[indexPath.row].pointDescription
-            cell.accessibilityIdentifier = pointSystem[indexPath.section].points[indexPath.row].pointDescription
+            cell.typeLabel.text = pointSystem[indexPath.section].points[indexPath.row].pointName
+            cell.accessibilityIdentifier = pointSystem[indexPath.section].points[indexPath.row].pointName
         }
         return(cell)
     }
@@ -169,7 +169,7 @@ class PointOptionViewController: UITableViewController, UISearchResultsUpdating{
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         filteredPoints = DataManager.sharedManager.getPoints()!.filter({( point : PointType) -> Bool in
-            return point.pointDescription.lowercased().contains(searchText.lowercased()) && checkPermission(pointType: point)
+            return point.pointName.lowercased().contains(searchText.lowercased()) && checkPermission(pointType: point)
         })
         tableView.reloadData()
     }
