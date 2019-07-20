@@ -15,7 +15,6 @@
 		B53EBBE222D5502600475882 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53EBBE122D5502600475882 /* SplashScreenViewController.swift */; };
 		B551BDD321B1004F00CF4F6C /* Register in Resources */ = {isa = PBXBuildFile; fileRef = B551BDD221B1004F00CF4F6C /* Register */; };
 		B55449592176F11300A914C2 /* TextFieldMaxLengths.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */; };
-		B5A98394225D7D5E00AE64B8 /* UITestSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A98393225D7D5E00AE64B8 /* UITestSignup.swift */; };
 		B5B8236121EA8203009E6750 /* PointsSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B8236021EA8203009E6750 /* PointsSubmittedViewController.swift */; };
 		D30FBEDF20FBCCA3000DD221 /* RHPApprovalTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30FBEDE20FBCCA3000DD221 /* RHPApprovalTableViewController.swift */; };
 		D30FBEEF20FC0B13000DD221 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30FBEEE20FC0B13000DD221 /* ProfileView.swift */; };
@@ -35,7 +34,8 @@
 		D33F43AF210A9FB100D3982D /* PointDescriptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D33F43AE210A9FB100D3982D /* PointDescriptionView.xib */; };
 		D33F43B1210AA00700D3982D /* PointDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F43B0210AA00700D3982D /* PointDescriptionView.swift */; };
 		D345C96B20F3CC1B00ACDF39 /* FirebaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D345C96A20F3CC1B00ACDF39 /* FirebaseHelper.swift */; };
-		D36DFEC6220F30270062184C /* UiTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DFEC5220F30270062184C /* UiTestUtils.swift */; };
+		D36DFEBE220F2EF40062184C /* UserLogInUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DFEBD220F2EF40062184C /* UserLogInUITests.swift */; };
+		D36DFEC8220F3CBF0062184C /* ResidentPointSubmissionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36DFEC7220F3CBF0062184C /* ResidentPointSubmissionUITests.swift */; };
 		D37E1D9C20FAAD8E00C1B05E /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37E1D9B20FAAD8E00C1B05E /* SignUpViewController.swift */; };
 		D3912A6A219CE77B0002E7C7 /* HouseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3912A65219CE77A0002E7C7 /* HouseTableViewController.swift */; };
 		D3912A6B219CE77B0002E7C7 /* SubmitGrantedAwardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3912A66219CE77A0002E7C7 /* SubmitGrantedAwardViewController.swift */; };
@@ -104,7 +104,6 @@
 		B53685D322DFD73700A0D0B5 /* HouseCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseCodeViewController.swift; sourceTree = "<group>"; };
 		B551BDD221B1004F00CF4F6C /* Register */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Register; sourceTree = "<group>"; };
 		B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldMaxLengths.swift; sourceTree = "<group>"; };
-		B5A98393225D7D5E00AE64B8 /* UITestSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSignup.swift; sourceTree = "<group>"; };
 		B5B8236021EA8203009E6750 /* PointsSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsSubmittedViewController.swift; sourceTree = "<group>"; };
 		D30FBEDE20FBCCA3000DD221 /* RHPApprovalTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RHPApprovalTableViewController.swift; sourceTree = "<group>"; };
 		D30FBEEE20FC0B13000DD221 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -129,7 +128,7 @@
 		D345C96A20F3CC1B00ACDF39 /* FirebaseHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseHelper.swift; sourceTree = "<group>"; };
 		D36DFEBB220F2EF40062184C /* PurdueHCRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PurdueHCRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D36DFEBF220F2EF40062184C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D36DFEC5220F30270062184C /* UiTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiTestUtils.swift; sourceTree = "<group>"; };
+		D36DFEC7220F3CBF0062184C /* ResidentPointSubmissionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResidentPointSubmissionUITests.swift; sourceTree = "<group>"; };
 		D37E1D9B20FAAD8E00C1B05E /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3912A65219CE77A0002E7C7 /* HouseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HouseTableViewController.swift; path = PurdueHCR/ViewControllers/REC/HouseViewControllers/HouseTableViewController.swift; sourceTree = SOURCE_ROOT; };
 		D3912A66219CE77A0002E7C7 /* SubmitGrantedAwardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SubmitGrantedAwardViewController.swift; path = PurdueHCR/ViewControllers/REC/HouseViewControllers/SubmitGrantedAwardViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -331,7 +330,6 @@
 				D3BCD381224BE4E00041AB2D /* UITestPages */,
 				D3BCD380224BE4BD0041AB2D /* UITests */,
 				D36DFEBF220F2EF40062184C /* Info.plist */,
-				D36DFEC5220F30270062184C /* UiTestUtils.swift */,
 			);
 			path = PurdueHCRUITests;
 			sourceTree = "<group>";
@@ -442,7 +440,6 @@
 				D3CF6BDB224FF3EC00D97A0F /* UITestPointSubmission.swift */,
 				D3CF6BE12250867E00D97A0F /* UITestQRCode.swift */,
 				B52B713C2252F02600C46C11 /* UITestRECSystemPreferences.swift */,
-				B5A98393225D7D5E00AE64B8 /* UITestSignup.swift */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -818,7 +815,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3BCD38D224C65050041AB2D /* UITestSignUpPage.swift in Sources */,
-				B5A98394225D7D5E00AE64B8 /* UITestSignup.swift in Sources */,
 				D3BCD397224C984E0041AB2D /* UITestRHPApprovalPage.swift in Sources */,
 				D3CF6BDE2250264D00D97A0F /* UITestRHPHistoryPage.swift in Sources */,
 				D3BCD383224BE5120041AB2D /* UITestPageBase.swift in Sources */,
@@ -832,7 +828,6 @@
 				D3CF6BDC224FF3EC00D97A0F /* UITestPointSubmission.swift in Sources */,
 				D3BCD38F224C65330041AB2D /* UITestForgotPasswordPage.swift in Sources */,
 				D3BCD38B224C2C900041AB2D /* UITestProfilePage.swift in Sources */,
-				D36DFEC6220F30270062184C /* UiTestUtils.swift in Sources */,
 				D3CF6BD4224FE88100D97A0F /* UITestPointSubmissionPage.swift in Sources */,
 				D3BCD39B224CA0AD0041AB2D /* UITestRHPSubmitPointsTablePage.swift in Sources */,
 				D3CF6BDA224FEF1B00D97A0F /* UITestRHPPointSubmissionPage.swift in Sources */,

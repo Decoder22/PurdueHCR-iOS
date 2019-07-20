@@ -13,19 +13,42 @@ import Firebase
 class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 
     @IBOutlet var typeLabel: UILabel!
-    @IBOutlet var descriptionField: UITextView!
-    @IBOutlet var submitButton: UIBarButtonItem!
-    
+	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet var descriptionField: UITextView!
+	@IBOutlet weak var houseImage: UIImageView!
+	@IBOutlet weak var submitButton: UIButton!
+	
+	
     var type:PointType?
     var user:User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         typeLabel.text? = type!.pointDescription
+		nameLabel.text = User.get(.name) as? String
         descriptionField.layer.borderColor = UIColor.black.cgColor
         descriptionField.layer.borderWidth = 1
+		descriptionField.layer.cornerRadius = 10
+		submitButton.layer.cornerRadius = 10
+		
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
         self.view.addGestureRecognizer(tapGesture)
+		let houseName = User.get(.house) as! String
+		if(houseName == "Platinum"){
+			houseImage.image = #imageLiteral(resourceName: "Platinum")
+		}
+		else if(houseName == "Copper"){
+			houseImage.image = #imageLiteral(resourceName: "Copper")
+		}
+		else if(houseName == "Palladium"){
+			houseImage.image = #imageLiteral(resourceName: "Palladium")
+		}
+		else if(houseName == "Silver"){
+			houseImage.image = #imageLiteral(resourceName: "Silver")
+		}
+		else if(houseName == "Titanium"){
+			houseImage.image = #imageLiteral(resourceName: "Titanium")
+		}
         // Do any additional setup after loading the view.
     }
     
