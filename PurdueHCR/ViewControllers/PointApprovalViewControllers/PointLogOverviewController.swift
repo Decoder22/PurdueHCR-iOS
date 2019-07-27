@@ -28,11 +28,11 @@ class PointLogOverviewController: UIViewController {
 		
 		pointDescriptionView.setLog(pointLog: pointLog!)
 		pointDescriptionView.layer.cornerRadius = radius
-		let height : CGFloat = 80
-		let width : CGFloat = 80
+		let height : CGFloat = 60
+		let width : CGFloat = (self.view.frame.width - 60) / 2
 		let offset : CGFloat = 20
 		let heightModifier = height + offset + (self.tabBarController?.tabBar.frame.height)!
-		let x = self.view.frame.width - height - offset
+		let x = 40 + width
 		let y = self.view.frame.height - heightModifier
 		let approveOrigin = CGPoint.init(x: x, y: y)
 		let rejectOrigin = CGPoint.init(x: 20, y: y)
@@ -43,27 +43,23 @@ class PointLogOverviewController: UIViewController {
 		rejectButton = UIButton.init(type: .custom)
 		rejectButton?.frame = CGRect.init(origin: rejectOrigin, size: buttonSize)
 		
-		approveButton?.setImage(#imageLiteral(resourceName: "approve"), for: .normal)
-		approveButton?.layer.cornerRadius = radius
+		//approveButton?.setImage(#imageLiteral(resourceName: "approve"), for: .normal)
+		approveButton?.setTitle("Approve", for: .normal)
+		approveButton?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+		approveButton?.layer.cornerRadius = 10
 		/*if #available(iOS 13, *) {
 			approveButton?.backgroundColor = UIColor.get
 		} else {
 			
 		}*/
-		approveButton?.backgroundColor = UIColor.init(red: 52, green: 199, blue: 89, alpha: 1.00)
-		approveButton?.layer.shadowColor = UIColor.gray.cgColor
-		approveButton?.layer.shadowRadius = 3
-		approveButton?.layer.shadowOpacity = 15
-		approveButton?.layer.shadowOffset = CGSize.init(width: 0, height: 2)
+		approveButton?.backgroundColor = UIColor.init(red: 52/255, green: 199/255, blue: 89/255, alpha: 1.00)
 		approveButton?.addTarget(self, action: #selector(approvePointLog), for: .touchUpInside)
 		
-		rejectButton?.setImage(#imageLiteral(resourceName: "reject"), for: .normal)
-		rejectButton?.layer.cornerRadius = radius
+		//rejectButton?.setImage(#imageLiteral(resourceName: "reject"), for: .normal)
+		rejectButton?.setTitle("Reject", for: .normal)
+		rejectButton?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+		rejectButton?.layer.cornerRadius = 10
 		rejectButton?.backgroundColor = UIColor.red
-		rejectButton?.layer.shadowColor = UIColor.gray.cgColor
-		rejectButton?.layer.shadowRadius = 3
-		rejectButton?.layer.shadowOpacity = 15
-		rejectButton?.layer.shadowOffset = CGSize.init(width: 0, height: 2)
 		rejectButton?.addTarget(self, action: #selector(rejectPointLog), for: .touchUpInside)
 		
 		self.view.addSubview(approveButton!)

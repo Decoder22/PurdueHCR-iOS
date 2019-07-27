@@ -53,10 +53,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGl-5f-Wyl" customClass="HousePointsView" customModule="PurdueHCR" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="535" width="359" height="359"/>
+                                        <rect key="frame" x="8" y="535" width="359" height="240"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="359" id="ODR-bd-aFf"/>
+                                            <constraint firstAttribute="height" constant="240" id="ODR-bd-aFf"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -71,7 +71,7 @@
                                     <constraint firstItem="vhe-Cn-9Q8" firstAttribute="leading" secondItem="vFy-4D-Lcd" secondAttribute="leadingMargin" id="YzR-rh-YPF"/>
                                     <constraint firstItem="vhe-Cn-9Q8" firstAttribute="top" secondItem="vFy-4D-Lcd" secondAttribute="topMargin" id="ZcH-0M-KBm"/>
                                     <constraint firstItem="2EP-Vu-eK9" firstAttribute="leading" secondItem="dGl-5f-Wyl" secondAttribute="leading" id="j1R-WA-nI8"/>
-                                    <constraint firstAttribute="bottom" secondItem="dGl-5f-Wyl" secondAttribute="bottom" constant="12" id="o5C-t0-sLA"/>
+                                    <constraint firstAttribute="bottom" secondItem="dGl-5f-Wyl" secondAttribute="bottom" constant="10" id="o5C-t0-sLA"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="delegate" destination="zGs-DW-f3U" id="z1T-px-obX"/>
@@ -196,10 +196,21 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="KYu-F8-wwX"/>
+                    <connections>
+                        <segue destination="TpY-DJ-INg" kind="show" identifier="cell_push" id="BDD-9V-dOb"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A13-QX-ytm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2194" y="-408"/>
+        </scene>
+        <!--Point Log Overview Controller-->
+        <scene sceneID="MdB-iZ-wYK">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PointApproval" referencedIdentifier="Point Log Overview Controller" id="TpY-DJ-INg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XCV-bN-pBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2867" y="-409"/>
         </scene>
     </scenes>
     <resources>

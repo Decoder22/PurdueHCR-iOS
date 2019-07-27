@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SubmitGrantedAwardViewController: TypeSubmitViewController {
 
@@ -19,9 +20,10 @@ class SubmitGrantedAwardViewController: TypeSubmitViewController {
     override func submitPointLog(pointType: PointType, logDescription: String) {
 		let firstName = User.get(.firstName) as! String
 		let lastName = User.get(.lastName) as! String
-		let name = firstName + lastName
         let recRef = DataManager.sharedManager.getUserRefFromUserID(id: User.get(.id) as! String)
-        let log = PointLog(pointDescription: logDescription, resident:name , type: pointType, floorID: "Award", residentRef: recRef)
+		let residentId = User.get(.id) as! String
+		//TODO: Decide what to do about this ViewController and fix creationDate
+		let log = PointLog(pointDescription: logDescription, firstName: firstName, lastName: lastName, type: pointType, floorID: "Award", residentRef: recRef, residentId: residentId, dateOccurred: Timestamp.init())
         DataManager.sharedManager.awardPointsToHouseFromREC(log: log, house: house!) { (error) in
             if(error != nil){
                 if(error!.localizedDescription == "The operation couldn’t be completed. (Could not submit points because point type is disabled. error 1.)"){

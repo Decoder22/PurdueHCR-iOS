@@ -91,7 +91,7 @@
                 <viewControllerPlaceholder storyboardName="LoginStoryboard" referencedIdentifier="House Code View Controller" id="vA6-jb-4eb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iyk-hj-ff2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2207" y="169"/>
+            <point key="canvasLocation" x="-2395" y="201"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">

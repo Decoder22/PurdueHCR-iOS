@@ -75,16 +75,18 @@ class PointLog {
     //Values stored in Firebase
     var approvedBy:String?
     var approvedOn:Timestamp?
-    var pointDescription:String;
-    var floorID:String;
-    var type:PointType;
-    var resident:String;
-    var residentRef:DocumentReference
-    var residentReportTime:Timestamp?
-    var logID:String? = nil;
+    var pointDescription:String
+    var floorID:String
+    var type:PointType
+	var firstName:String
+	var lastName:String
+	var residentId:String
+    var dateSubmitted:Timestamp?
+	var dateOccurred:Timestamp?
+    var logID:String? = nil
     
     //Values stayed local
-    var wasHandled:Bool;
+    var wasHandled:Bool
     
     
     /// Initialization for newly created points. If the points are being pulled from Firebase database, use the other init method.
@@ -95,13 +97,15 @@ class PointLog {
     ///   - type: PointType for which the point is being submitted for
     ///   - floorID: Id of the floor for who submitted it
     ///   - residentRef: Firebase reference to the resident who submitted it
-    init(pointDescription:String, resident:String, type:PointType, floorID:String, residentRef:DocumentReference){
+	init(pointDescription:String, firstName:String, lastName:String, type:PointType, floorID:String, residentRef:DocumentReference, residentId:String, dateOccurred:Timestamp = Timestamp.init()){
         self.pointDescription = pointDescription
         self.floorID = floorID
         self.type = type
-        self.resident = resident
-        self.residentRef = residentRef
-        self.residentReportTime = Timestamp.init()
+        self.firstName = firstName
+		self.lastName = lastName
+		self.residentId = residentId
+        self.dateOccurred = dateOccurred
+		self.dateSubmitted = Timestamp.init()
         self.wasHandled = false
     }
     
@@ -116,25 +120,15 @@ class PointLog {
         
         self.floorID = document["FloorID"] as! String
         self.pointDescription = document["Description"] as! String
-		let resident = document["Resident"]
-		var name = ""
-		if (resident == nil) {
-			let first = document["ResidentFirstName"] as! String
-			let last = document["ResidentLastName"] as! String
-			name = first + last
-			
-		} else {
-			name = resident as! String
-		}
-		self.resident = name
-		var ref = document["ResidentRef"]
-		if (ref == nil) {
-			ref = document["ResidentId"] as! DocumentReference
-		}
-        self.residentRef = ref as! DocumentReference
+		var firstName = document["ResidentFirstName"] as! String
+		let lastName = document["ResidentLastName"] as! String
+		self.firstName = firstName
+		self.lastName = lastName
+		self.residentId = document["ResidentId"] as! String
         self.approvedBy = document["ApprovedBy"] as! String?
         self.approvedOn = document["ApprovedOn"] as! Timestamp?
-        self.residentReportTime = document["ResidentReportTime"] as! Timestamp?
+        self.dateOccurred = document["DateOccurred"] as! Timestamp?
+		self.dateSubmitted = document["DateSubmitted"] as! Timestamp?
 		
         let idValue = (document["PointTypeID"] as! Int)
         if(idValue < 1){
@@ -145,7 +139,7 @@ class PointLog {
         }
         self.type = DataManager.sharedManager.getPointType(value: abs(idValue))
         if(floorID == "Shreve"){
-            name = SHREVE_RESIDENT+name
+            firstName = SHREVE_RESIDENT + firstName
         }
 		
 		// QUESTION: Is the above Shreve part actually working???
@@ -200,19 +194,21 @@ class PointLog {
         if(!wasHandled){
             pointTypeIDValue = pointTypeIDValue * -1
         }
-        var residentName = self.resident
-        if(residentName.contains(SHREVE_RESIDENT)){
-            residentName = String(residentName.dropFirst(SHREVE_RESIDENT.count))
-            
+        var firstName = self.firstName
+        if(firstName.contains(SHREVE_RESIDENT)){
+            firstName = String(firstName.dropFirst(SHREVE_RESIDENT.count))
         }
+		let lastName = self.lastName
 
         var dict: [String : Any] = [
             "Description":self.pointDescription,
             "FloorID":self.floorID,
             "PointTypeID":pointTypeIDValue,
-            "Resident":residentName,
-            "ResidentRef":self.residentRef,
-            "ResidentReportTime":self.residentReportTime!
+            "ResidentFirstName":firstName,
+			"ResidentLastName":lastName,
+            "ResidentId":self.residentId,
+            "DateOccurred":self.dateOccurred!,
+			"DateSubmitted":self.dateSubmitted!
         ]
         if(self.approvedBy != nil){
             dict["ApprovedBy"] = self.approvedBy!
@@ -233,7 +229,8 @@ extension PointLog: Equatable, CustomStringConvertible {
     static func == (lhs: PointLog, rhs: PointLog) -> Bool {
         return
             lhs.type.pointID == rhs.type.pointID &&
-                lhs.resident == rhs.resident &&
+                lhs.firstName == rhs.firstName &&
+				lhs.lastName == rhs.lastName &&
                 lhs.pointDescription == rhs.pointDescription &&
                 lhs.logID == rhs.logID
     }

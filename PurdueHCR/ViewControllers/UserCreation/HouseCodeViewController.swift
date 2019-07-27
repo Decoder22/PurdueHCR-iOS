@@ -60,21 +60,36 @@ class HouseCodeViewController: UIViewController, UITextFieldDelegate {
 		let firstName = firstNameField.text
 		let lastName = lastNameField.text
 		let code = codeField.text
-
-		// find the house that their code matches and go to the database and create their user
-		//
-		User.save(firstName as Any, as: .firstName)
-		User.save(lastName as Any, as: .lastName)
-		DataManager.sharedManager.createUser(onDone: ({ (err:Error?) in
-			if err != nil {
-				self.notify(title: "Failed to Sign Up", subtitle: "Failed to create user.", style: .danger)
-				self.joinButton.isEnabled = true
-				self.activityIndicator.stopAnimating()
-				try! Auth.auth().signOut()
-			} else {
-				self.initializeData()
-			}
-		}))
+		
+		
+		// TODO: Determine what the correct test case of this is
+		// TODO: Disable join button after pressing until need to press again
+		if (firstName == "" || lastName == ""){
+			self.notify(title: "Failed to Sign Up", subtitle: "Please enter your preferred first and last name.", style: .danger)
+			self.joinButton.isEnabled = true
+			self.activityIndicator.stopAnimating()
+		}
+		else if(!codeIsValid(code:code!)){
+			self.notify(title: "Failed to Sign Up", subtitle: "Code is invalid.", style: .danger)
+			self.joinButton.isEnabled = true
+			self.activityIndicator.stopAnimating()
+		}
+		else {
+			// find the house that their code matches and go to the database and create their user
+			//
+			User.save(firstName as Any, as: .firstName)
+			User.save(lastName as Any, as: .lastName)
+			DataManager.sharedManager.createUser(onDone: ({ (err:Error?) in
+				if err != nil {
+					self.notify(title: "Failed to Create Profile", subtitle: "Failed to join house.", style: .danger)
+					self.joinButton.isEnabled = true
+					self.activityIndicator.stopAnimating()
+					try! Auth.auth().signOut()
+				} else {
+					self.initializeData()
+				}
+			}))
+		}
 	
 	}
 	
@@ -105,6 +120,23 @@ class HouseCodeViewController: UIViewController, UITextFieldDelegate {
 			}
 		})
 	}
+	
+	
+	// code is format [houseIdentifier:roomNumber]
+	func codeIsValid(code:String)-> Bool{
+		let codes = DataManager.sharedManager.getHouseCodes()!
+		for houseCode in codes {
+			if(code == houseCode.code){
+				User.save(houseCode.house, as: .house)
+				User.save(houseCode.floorID, as: .floorID)
+				User.save(0 as Any, as: .permissionLevel)
+				User.save(0 as Any, as: .points)
+				return true
+			}
+		}
+		return false
+	}
+	
 	
 	func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
 		moveTextField(textField: textField, up: false)

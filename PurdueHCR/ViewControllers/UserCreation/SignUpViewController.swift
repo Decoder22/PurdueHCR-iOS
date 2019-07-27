@@ -100,21 +100,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             self.signUpButton.isEnabled = true
             self.activityIndicator.stopAnimating()
         }
-        /*else if ( name!.split(separator: " ").count != 2){
-            self.notify(title: "Failed to Sign Up", subtitle: "Please enter your preferred first and last name.", style: .danger)
-            self.signUpButton.isEnabled = true
-            self.activityIndicator.stopAnimating()
-        }*/
         else if ( !isValidEmail(testStr: email!)){
             self.notify(title: "Failed to Sign Up", subtitle: "Please enter a valid Purdue email address.", style: .danger)
             self.signUpButton.isEnabled = true
             self.activityIndicator.stopAnimating()
         }
-        /*else if(!codeIsValid(code:code!)){
-            self.notify(title: "Failed to Sign Up", subtitle: "Code is invalid.", style: .danger)
-            self.signUpButton.isEnabled = true
-            self.activityIndicator.stopAnimating()
-        }*/
         else{
             // user is fine to authenticate
             
@@ -126,6 +116,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     return
                 }
                 //they are signed in
+				User.save(user.uid, as: .id)
 				self.performSegue(withIdentifier: "code_push", sender: self)
             }
 			
@@ -134,50 +125,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
     }
 	
-	func initializeData() {
-		DataManager.sharedManager.initializeData(finished:{(initError) in
-		if (initError == nil) {
-			Cely.changeStatus(to: .loggedIn)
-			self.activityIndicator.stopAnimating()
-		} else if (initError!.code == 1) {
-			let alertController = UIAlertController.init(title: "Error", message: "Data could not be loaded.", preferredStyle: .alert)
-			
-			let retryOption = UIAlertAction.init(title: "Try Again", style: .default, handler: { (alert) in
-				self.initializeData()
-			})
-			
-			alertController.addAction(retryOption)
-			self.addChild(alertController)
-			
-		} else if (initError!.code == 2) {
-			let alertController = UIAlertController.init(title: "Failure to Find Account", message: "Please create a new account.", preferredStyle: .alert)
-			
-			let okAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (alert) in
-				try! Auth.auth().signOut()
-				Cely.logout()
-			})
-			alertController.addAction(okAction)
-			self.addChild(alertController)
-		}
-		})
-	}
-    
-    
-    // code is format [houseIdentifier:roomNumber]
-    func codeIsValid(code:String)-> Bool{
-        let codes = DataManager.sharedManager.getHouseCodes()!
-        for houseCode in codes {
-            if(code == houseCode.code){
-                User.save(houseCode.house, as: .house)
-                User.save(houseCode.floorID, as: .floorID)
-                User.save(0 as Any, as: .permissionLevel)
-                User.save(0 as Any, as: .points)
-                return true
-            }
-        }
-        return false
-    }
-    
+	
     func isValidEmail(testStr:String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@purdue.edu"
         
@@ -196,8 +144,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBAction func back(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

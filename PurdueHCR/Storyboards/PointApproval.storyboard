@@ -13,7 +13,7 @@
         <!--Point Overview-->
         <scene sceneID="dSc-0c-3DG">
             <objects>
-                <viewController title="Point Overview" id="v84-jY-ASU" customClass="PointLogOverviewController" customModule="PurdueHCR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Point Log Overview Controller" title="Point Overview" id="v84-jY-ASU" customClass="PointLogOverviewController" customModule="PurdueHCR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HfZ-GI-4Eb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,19 +22,20 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aEe-ur-E04" customClass="PointDescriptionView" customModule="PurdueHCR" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="8" width="359" height="227"/>
+                                        <rect key="frame" x="13" y="13" width="349" height="227"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="227" id="TcT-xg-RQd"/>
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="aEe-ur-E04" firstAttribute="leading" secondItem="wqo-t1-xiX" secondAttribute="leadingMargin" id="9u8-tc-tbj"/>
+                                    <constraint firstItem="aEe-ur-E04" firstAttribute="leading" secondItem="wqo-t1-xiX" secondAttribute="leadingMargin" constant="5" id="9u8-tc-tbj"/>
                                     <constraint firstAttribute="bottom" secondItem="aEe-ur-E04" secondAttribute="bottom" constant="304" id="Aqi-9L-Dzw"/>
-                                    <constraint firstItem="aEe-ur-E04" firstAttribute="trailing" secondItem="wqo-t1-xiX" secondAttribute="trailingMargin" id="MhU-3f-wtB"/>
+                                    <constraint firstItem="aEe-ur-E04" firstAttribute="trailing" secondItem="wqo-t1-xiX" secondAttribute="trailingMargin" constant="5" id="MhU-3f-wtB"/>
                                     <constraint firstItem="aEe-ur-E04" firstAttribute="centerX" secondItem="wqo-t1-xiX" secondAttribute="centerX" id="Tud-6R-joG"/>
-                                    <constraint firstItem="aEe-ur-E04" firstAttribute="top" secondItem="wqo-t1-xiX" secondAttribute="topMargin" id="euq-wV-2GR"/>
+                                    <constraint firstItem="aEe-ur-E04" firstAttribute="top" secondItem="wqo-t1-xiX" secondAttribute="topMargin" constant="5" id="euq-wV-2GR"/>
                                 </constraints>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-1"/>
                             </scrollView>
@@ -251,6 +252,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0Cb-0I-gSI"/>
+        <segue reference="vd2-Hg-7bX"/>
     </inferredMetricsTieBreakers>
 </document>

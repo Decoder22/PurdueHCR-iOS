@@ -18,10 +18,13 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 	@IBOutlet weak var houseImage: UIImageView!
 	@IBOutlet weak var submitButton: UIButton!
 	@IBOutlet weak var descriptionLabel: UILabel!
+	@IBOutlet weak var datePicker: UIDatePicker!
 	
 	
     var type:PointType?
     var user:User?
+	
+	let placeholder = "Tell us what you did!"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,9 +33,13 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 		let firstName = User.get(.firstName) as! String
 		let lastName = User.get(.lastName) as! String
 		nameLabel.text = firstName + " " + lastName
-        descriptionField.layer.borderColor = UIColor.black.cgColor
-        descriptionField.layer.borderWidth = 1
+        //descriptionField.layer.borderColor = UIColor.black.cgColor
+        //descriptionField.layer.borderWidth = 1
 		descriptionField.layer.cornerRadius = 10
+		descriptionField.text = placeholder
+		descriptionField.textColor = UIColor.lightGray
+		descriptionField.selectedTextRange = descriptionField.textRange(from: descriptionField.beginningOfDocument, to: descriptionField.beginningOfDocument)
+		descriptionField.becomeFirstResponder()
 		submitButton.layer.cornerRadius = 10
 		
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
@@ -61,7 +68,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func submit(_ sender: Any) {
+	@IBAction func submit(_ sender: Any) {
         submitButton.isEnabled = false;
         guard let description = descriptionField.text, !description.isEmpty, !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else{
             notify(title: "Failure", subtitle: "Please enter a description", style: .danger)
@@ -73,7 +80,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
             submitButton.isEnabled = true;
             return
         }
-        if(description == "Tell us about what you did!"){
+        if(description == placeholder){
             notify(title: "Failure", subtitle: "Please tell us more about what you did!", style: .danger)
             submitButton.isEnabled = true;
             return
@@ -88,13 +95,19 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
     ///   - pointType: Point Type to have a log created of
     ///   - descriptions: String text describing what the residents did
     func submitPointLog(pointType:PointType, logDescription:String){
+		
+		// TODO: Update reported time of point
+		
 		let firstName = User.get(.firstName) as! String
 		let lastName = User.get(.lastName) as! String
-		let name = firstName + lastName
         let preApproved = ((User.get(.permissionLevel) as! Int) == 1 )
         let floor = User.get(.floorID) as! String
         let residentRef = DataManager.sharedManager.getUserRefFromUserID(id: User.get(.id) as! String)
-        let pointLog = PointLog(pointDescription: logDescription, resident: name, type: pointType, floorID: floor, residentRef:residentRef)
+		let residentId = User.get(.id) as! String
+		
+		// TODO: FIX DIS CUZ IT PROBLY AINT RAIGHT
+		let dateOccurred = Timestamp.init(date: datePicker.date)
+        let pointLog = PointLog(pointDescription: logDescription, firstName: firstName, lastName: lastName, type: pointType, floorID: floor, residentRef:residentRef, residentId: residentId, dateOccurred: dateOccurred)
         DataManager.sharedManager.writePoints(log: pointLog, preApproved: preApproved) { (err:Error?) in
             if(err != nil){
                 if(err!.localizedDescription == "The operation couldn’t be completed. (Could not submit points because point type is disabled. error 1.)"){
@@ -119,26 +132,46 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
             }
         }
     }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if(textView.text == "Tell us about what you did!"){
-            textView.text = ""
-        }
-    }
+	
+//    func textViewDidBeginEditing(_ textView: UITextView) {
+//        if(textView.text == "Tell us about what you did!"){
+//            textView.text = ""
+//        }
+//    }
+//
+//    func textViewDidEndEditing(_ textView: UITextView) {
+//        if(textView.text == ""){
+//            textView.text = "Tell us about what you did!"
+//        }
+//    }
 
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if(textView.text == ""){
-            textView.text = "Tell us about what you did!"
-        }
-    }
-
+	func textViewDidChangeSelection(_ textView: UITextView) {
+		if self.view.window != nil {
+			if textView.textColor == UIColor.lightGray {
+				textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+			}
+		}
+	}
+	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-		let currentText = descriptionField.text ?? ""
-		guard let stringRange = Range(range, in: currentText) else { return false }
 		
-		let changedText = currentText.replacingCharacters(in: stringRange, with: text)
+		let currentText:String = textView.text
+		let updatedText = (currentText as NSString).replacingCharacters(in: range, with: text)
 		
-		return changedText.count <= 240
+		if updatedText.isEmpty {
+			
+			textView.text = placeholder
+			textView.textColor = UIColor.lightGray
+			
+			textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
+		}
+			
+		else if textView.textColor == UIColor.lightGray && !text.isEmpty {
+			textView.textColor = UIColor.black
+			textView.text = ""
+		}
+
+		return updatedText.count <= 240
 	}
 	
     @objc func dismissKeyboard (_ sender: UITapGestureRecognizer) {

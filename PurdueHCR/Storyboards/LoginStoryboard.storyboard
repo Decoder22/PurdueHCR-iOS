@@ -144,6 +144,7 @@
                         <outlet property="logInButton" destination="rR0-AF-a2o" id="sLw-a2-fuA"/>
                         <outlet property="password" destination="vQo-Oe-EGD" id="9Mp-yp-9DV"/>
                         <outlet property="username" destination="W4d-ka-VCi" id="NLf-in-PKT"/>
+                        <segue destination="U6d-VH-hFW" kind="show" identifier="code_push" id="NQU-bY-H2f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HWU-zJ-iUn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -287,7 +288,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" smartQuotesType="no"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="leftSpacer">
                                         <real key="value" value="8"/>
@@ -301,7 +302,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="leftSpacer">
                                         <real key="value" value="8"/>
@@ -315,7 +316,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="leftSpacer">
                                         <real key="value" value="8"/>
@@ -398,6 +399,7 @@
         <image name="emblem" width="1000" height="1000"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="esu-CM-72B"/>
         <segue reference="7Rm-Z3-CLZ"/>
     </inferredMetricsTieBreakers>
 </document>

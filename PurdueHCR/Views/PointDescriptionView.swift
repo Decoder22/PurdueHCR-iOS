@@ -34,12 +34,13 @@ class PointDescriptionView: UIView {
     
     func setLog(pointLog:PointLog)
     {
-        residentLabel.text = pointLog.resident
+        residentLabel.text = pointLog.firstName + " " + pointLog.lastName
         pointTypeDescriptionLabel.text = pointLog.type.pointDescription
         descriptionLabel.text = pointLog.pointDescription
-        descriptionLabel.layer.borderColor = UIColor.black.cgColor
-        descriptionLabel.layer.borderWidth = 1.0
-		descriptionLabel.layer.cornerRadius = 10
+		self.backgroundView.layer.cornerRadius = 10
+        //descriptionLabel.layer.borderColor = UIColor.black.cgColor
+        //descriptionLabel.layer.borderWidth = 1.0
+		//descriptionLabel.layer.cornerRadius = 10
     }
     
 

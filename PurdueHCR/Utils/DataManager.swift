@@ -340,10 +340,10 @@ class DataManager {
                 let pointType = self.getPointType(value: link.pointTypeID)
 				let firstName = User.get(.firstName) as! String
 				let lastName = User.get(.lastName) as! String
-                let resident = firstName + " " + lastName
                 let floorID = User.get(.floorID) as! String
                 let ref = self.getUserRefFromUserID(id: User.get(.id) as! String)
-                let log = PointLog(pointDescription: link.description, resident: resident, type: pointType, floorID: floorID, residentRef: ref)
+				let residentId = User.get(.id) as! String
+                let log = PointLog(pointDescription: link.description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentRef: ref, residentId: residentId, dateOccurred: Timestamp.init())
                 var documentID = ""
                 if(link.singleUse){
                     documentID = id

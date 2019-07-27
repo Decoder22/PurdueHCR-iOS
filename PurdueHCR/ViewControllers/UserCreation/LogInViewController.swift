@@ -137,9 +137,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 				else{
 					self.logInButton.isEnabled = true
 					self.activityIndicator.stopAnimating()
-					try! Auth.auth().signOut()
-					self.notify(title: "Could Not Find User", subtitle: "Please create a new account.", style: .danger)
-					return
+					self.performSegue(withIdentifier: "code_push", sender: self)
+//					try! Auth.auth().signOut()
+//					self.notify(title: "Could Not Find User", subtitle: "Please create a new account.", style: .danger)
+//					return
 				}
 			})
 		}

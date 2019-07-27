@@ -30,7 +30,7 @@ class HousePointsView: UIView {
         commonInit()
     }
     
-    required init(coder aDecoder: NSCoder){
+    required init(coder aDecoder: NSCoder) {
         var houses = DataManager.sharedManager.getHouses()!
         self.rewards = DataManager.sharedManager.getRewards()!
         self.house = houses.remove(at: houses.firstIndex(of: House(id: User.get(.house) as! String, points: 0, hexColor:"",numberOfResidents: 0))!)

@@ -17,6 +17,8 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	var filteredPoints = [PointLog]()
 	var activityIndicator = UIActivityIndicatorView()
 	
+	let green = UIColor.init(red: 52/255, green: 199/255, blue: 89/255, alpha: 1.00)
+	
 	override func viewDidLoad() {
 		
 		self.navigationItem.hidesBackButton = true
@@ -102,20 +104,20 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 			if (filteredPoints[indexPath.row].wasRejected() == true) {
 				cell.activeView.backgroundColor = UIColor.red
 			} else {
-				cell.activeView.backgroundColor = UIColor.green
+				cell.activeView.backgroundColor = green
 			}
 			cell.descriptionLabel.text = filteredPoints[indexPath.row].pointDescription
 			cell.reasonLabel.text = filteredPoints[indexPath.row].type.pointDescription
-			cell.nameLabel.text = filteredPoints[indexPath.row].resident
+			cell.nameLabel.text = filteredPoints[indexPath.row].firstName + " " + filteredPoints[indexPath.row].lastName
 		}
 		else{
 			if (displayedLogs[indexPath.row].wasRejected() == true) {
 				cell.activeView.backgroundColor = UIColor.red
 			} else {
-				cell.activeView.backgroundColor = UIColor.green
+				cell.activeView.backgroundColor = green
 			}
 			cell.reasonLabel?.text = displayedLogs[indexPath.row].type.pointDescription
-			cell.nameLabel?.text = displayedLogs[indexPath.row].resident
+			cell.nameLabel?.text = displayedLogs[indexPath.row].firstName + " " + displayedLogs[indexPath.row].lastName
 			cell.descriptionLabel?.text = displayedLogs[indexPath.row].pointDescription
 		}
 		return cell
@@ -142,7 +144,7 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 				}
 				
 			})
-			approveAction.backgroundColor = .green
+			approveAction.backgroundColor = green
 			approveAction.title = "Approve"
 			action.append(approveAction)
 		}
@@ -252,22 +254,22 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	}
 	
 	// This function is called before the segue
-//	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//		if (segue.identifier == "cell_push") {
-//			// get a reference to the second view controller
-//			let nextViewController = segue.destination as! PointLogOverviewController
-//			let indexPath = tableView.indexPathForSelectedRow
-//
-//			if(isFiltering()) {
-//				nextViewController.pointLog = self.filteredPoints[(indexPath?.row)!]
-//			} else {
-//				nextViewController.pointLog = self.displayedLogs[(indexPath?.row)!]
-//			}
-//			//nextViewController.preViewContr = self
-//			nextViewController.indexPath = indexPath
-//		}
-//	}
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+		if (segue.identifier == "cell_push") {
+			// get a reference to the second view controller
+			let nextViewController = segue.destination as! PointLogOverviewController
+			let indexPath = tableView.indexPathForSelectedRow
+
+			if(isFiltering()) {
+				nextViewController.pointLog = self.filteredPoints[(indexPath?.row)!]
+			} else {
+				nextViewController.pointLog = self.displayedLogs[(indexPath?.row)!]
+			}
+			//nextViewController.preViewContr = self
+			nextViewController.indexPath = indexPath
+		}
+	}
 	
 	func searchBarIsEmpty() -> Bool {
 		// Returns true if the text is empty or nil
@@ -277,10 +279,11 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
 		filteredPoints = displayedLogs.filter({( point : PointLog) -> Bool in
 			let searched = searchText.lowercased()
-			let inName = point.resident.lowercased().contains(searched)
+			let inFirstName = point.firstName.lowercased().contains(searched)
+			let inLastName = point.lastName.lowercased().contains(searched)
 			let inReason = point.type.pointDescription.lowercased().contains(searched)
 			let inDescription = point.pointDescription.lowercased().contains(searched)
-			return (inName || inReason || inDescription)
+			return (inFirstName || inLastName || inReason || inDescription)
 		})
 		tableView.reloadData()
 	}
