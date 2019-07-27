@@ -49,7 +49,7 @@ class TabBarController: UITabBarController {
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
-		self.performSegue(withIdentifier: "showSplashScreen", sender: nil)
+		//self.performSegue(withIdentifier: "showSplashScreen", sender: nil)
 	}
     
     func linkPointSubmissionViewController() -> UIViewController {
