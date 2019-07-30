@@ -44,8 +44,8 @@ class DataManager {
                 return pt
             }
         }
-		// TODO: Update pn field
-		return PointType(pv: 0, pn: "", pd: "Unkown Point Type", rcs: false, pid: -1, permissionLevel: 3, isEnabled:false) // The famous this should never happen comment
+		// TODO: Update pn field and permission level
+		return PointType(pv: 0, pn: "", pd: "Unkown Point Type", rcs: false, pid: -1, permissionLevel: .rec, isEnabled:false) // The famous this should never happen comment
     }
     
 

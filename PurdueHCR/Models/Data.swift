@@ -11,15 +11,23 @@ import UIKit
 import Firebase
 
 class PointType {
+	
+	enum PermissionLevel: Int {
+		case resident = 0
+		case rhp = 1
+		case rec = 2
+		case fhp = 3
+	}
+	
     var pointValue:Int
 	var pointName:String
     var pointDescription:String
     var residentCanSubmit:Bool
     var pointID:Int
-    var permissionLevel:Int
+    var permissionLevel:PermissionLevel
     var isEnabled:Bool
     
-	init(pv:Int,pn:String,pd:String,rcs:Bool,pid:Int, permissionLevel:Int, isEnabled:Bool){
+	init(pv:Int,pn:String,pd:String,rcs:Bool,pid:Int, permissionLevel:PermissionLevel, isEnabled:Bool){
         self.pointValue = pv
 		self.pointName = pn
         self.pointDescription = pd
@@ -142,7 +150,7 @@ class PointLog {
             firstName = SHREVE_RESIDENT + firstName
         }
 		
-		// QUESTION: Is the above Shreve part actually working???
+		// TODO: Is the above Shreve part actually working???
     }
     
     func wasRejected() -> Bool {
@@ -197,15 +205,14 @@ class PointLog {
         var firstName = self.firstName
         if(firstName.contains(SHREVE_RESIDENT)){
             firstName = String(firstName.dropFirst(SHREVE_RESIDENT.count))
-        }
-		let lastName = self.lastName
+		}
 
         var dict: [String : Any] = [
             "Description":self.pointDescription,
             "FloorID":self.floorID,
             "PointTypeID":pointTypeIDValue,
             "ResidentFirstName":firstName,
-			"ResidentLastName":lastName,
+			"ResidentLastName":self.lastName,
             "ResidentId":self.residentId,
             "DateOccurred":self.dateOccurred!,
 			"DateSubmitted":self.dateSubmitted!
@@ -251,14 +258,50 @@ class Reward {
 }
 
 class HouseCode {
+	
+	// TODO: Make house and floor ids optional bc of REC and FHP
+	
     var code:String
+	var codeName:String
+	var permissionLevel:Int
     var house:String
     var floorID:String
-    init(code:String,house:String, floorID:String){
+	init(code:String, codeName:String = "", permissionLevel:Int = 0, house:String, floorID:String){
         self.code = code
+		self.codeName = codeName
+		self.permissionLevel = permissionLevel
         self.house = house
         self.floorID = floorID
     }
+	
+	/// Initialization method for house codes pulled from Firebase Database
+	///
+	/// - Parameters:
+	///   - id: FirebaseId of the log
+	///   - document: Dictionary that was returned from the database
+	init(id:String,document:[String:Any]){
+		
+		self.code = document["Code"] as! String
+		self.codeName = document["CodeName"] as! String
+		self.permissionLevel = document["PermissionLevel"] as! Int
+		self.floorID = document["FloorID"] as! String
+		self.house = document["House"] as! String
+		
+	}
+	
+	func convertToDict()->[String:Any]{
+		
+		let dict: [String : Any] = [
+			"Code":self.code,
+			"CodeName":self.codeName,
+			"PermissionLevel":permissionLevel,
+			"FloorID":self.floorID,
+			"House":self.house,
+		]
+		
+		return dict
+	}
+	
 }
 
 class Link {

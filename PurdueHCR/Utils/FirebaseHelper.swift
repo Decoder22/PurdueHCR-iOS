@@ -63,7 +63,7 @@ class FirebaseHelper {
                     let value = pointDocument.data()["Value"] as! Int
                     let permissionLevel = pointDocument.data()["PermissionLevel"] as! Int
                     let isEnabled = pointDocument.data()["Enabled"] as! Bool
-					pointArray.append(PointType(pv: value, pn: name, pd: description , rcs: residentSubmit, pid: id, permissionLevel: permissionLevel, isEnabled:isEnabled))
+					pointArray.append(PointType(pv: value, pn: name, pd: description , rcs: residentSubmit, pid: id, permissionLevel: PointType.PermissionLevel(rawValue: permissionLevel)!, isEnabled:isEnabled))
                 }
                 pointArray.sort(by: {
                     if($0.pointValue == $1.pointValue){
@@ -357,7 +357,7 @@ class FirebaseHelper {
                             print("Append code: \(key)")
                             let floorID = key.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true)[0]
                             let houseCode = houseDocument.data()[key] as! String
-                            houseKeys.append(HouseCode(code: houseCode, house: id, floorID:String(floorID)))
+							houseKeys.append(HouseCode(code: houseCode, house: id, floorID:String(floorID)))
                         }
                     }
                     houseArray.append(House(id: id, points: points, hexColor:hex, numberOfResidents:numberOfResidents))
