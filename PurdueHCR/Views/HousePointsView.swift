@@ -13,7 +13,8 @@ class HousePointsView: UIView {
 
     @IBOutlet var circleProgress: KDCircularProgress!
     @IBOutlet var pointsRemainingLabel: UILabel!
-    @IBOutlet var nextRewardLabel: UILabel!
+	@IBOutlet weak var pointsTotalLabel: UILabel!
+	@IBOutlet var nextRewardLabel: UILabel!
     
     @IBOutlet var backgroundView: UIView!
     
@@ -54,22 +55,22 @@ class HousePointsView: UIView {
         self.house = houses.remove(at: houses.firstIndex(of: House(id: User.get(.house) as! String, points: 0,hexColor:"",numberOfResidents: 0))!)
         
         circleProgress.progressColors = [AppUtils.hexStringToUIColor(hex: house.hexColor),UIColor.white]
-        rewardImageView?.center = self.circleProgress.convert(self.circleProgress.center, from: self.circleProgress)
         let reward = getCurrentReward()
 		let prevRewardValue = getPrevRewardValue()
 		print("Previous reward value: ", prevRewardValue)
         if(reward != nil){
-			nextRewardLabel.text = "Next Reward:\n" + reward!.rewardName
+			nextRewardLabel.text = reward!.rewardName
             rewardImageView?.image = reward!.image
             circleProgress.angle = (Double(self.house.totalPoints - prevRewardValue) / Double(reward!.requiredValue - prevRewardValue)) * 360.0
 			let pointsToGo = reward!.requiredValue - self.house.totalPoints
-			pointsRemainingLabel.text? = (pointsToGo.description + " points away!\n(" + reward!.requiredValue.description + " points total)")
+			pointsRemainingLabel.text? = pointsToGo.description
+			pointsTotalLabel.text = "(" + reward!.requiredValue.description + " points total)"
         }
         else{
-            nextRewardLabel.text = "Next Reward:\n Eternal Glory"
+            nextRewardLabel.text = "Eternal Glory"
             rewardImageView?.image = nil
             circleProgress.angle = 180.0
-            pointsRemainingLabel.text? = "Next Goal: Victory"
+            pointsRemainingLabel.text? = "Victory"
         }
         
         rewardImageView?.center = self.circleProgress.convert(self.circleProgress.center, from: self.circleProgress)
@@ -78,9 +79,9 @@ class HousePointsView: UIView {
     
     func createImageView() -> UIImageView {
         if(rewardImageView == nil){
-            let size = self.circleProgress.frame.size.width * 0.36
-			//size = sqrt((size * size) * 2)
-            return UIImageView(frame: CGRect(x:0, y: 1000, width: size, height: size))
+			// TODO: Fix this mess please :)
+            let size = self.circleProgress.frame.size.width * 0.28
+            return UIImageView(frame: CGRect(x: self.circleProgress.center.x - size/2, y: self.circleProgress.center.y - size/2, width: size, height: size))
         }
         else{
             return rewardImageView!

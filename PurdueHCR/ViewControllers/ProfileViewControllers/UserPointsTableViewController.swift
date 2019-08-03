@@ -44,6 +44,7 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	@objc func resfreshData(){
 		DataManager.sharedManager.getAllPointLogsForUser(residentID: (User).get(.id) as! String, house: (User).get(.house) as! String, onDone: { (pointLogs:[PointLog]) in
 			self.displayedLogs = pointLogs
+			self.displayedLogs.sort(by: {$0.dateSubmitted!.dateValue() > $1.dateSubmitted!.dateValue()})
 			DispatchQueue.main.async { [unowned self] in
 				self.tableView.reloadData()
 			}
@@ -99,7 +100,7 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ResolvedCell
-		cell.activeView.layer.cornerRadius = cell.activeView.frame.width / 2
+		cell.activeView.layer.cornerRadius = cell.activeView.frame.height / 2
 		if(isFiltering()){
 			if (filteredPoints[indexPath.row].wasRejected() == true) {
 				cell.activeView.backgroundColor = UIColor.red

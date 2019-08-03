@@ -49,6 +49,7 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
         self.housePointsView.layer.shadowOffset = CGSize.zero
         self.housePointsView.layer.shadowRadius = 5
 		self.housePointsView.layer.cornerRadius = radius
+		self.housePointsView.sizeToFit()
         
         self.housePointsCompareView.layer.shadowColor = UIColor.black.cgColor
         self.housePointsCompareView.layer.shadowOpacity = 0.5

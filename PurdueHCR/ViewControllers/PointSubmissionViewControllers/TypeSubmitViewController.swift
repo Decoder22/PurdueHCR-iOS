@@ -19,6 +19,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 	@IBOutlet weak var submitButton: UIButton!
 	@IBOutlet weak var descriptionLabel: UILabel!
 	@IBOutlet weak var datePicker: UIDatePicker!
+	@IBOutlet weak var topView: UIView!
 	
 	
     var type:PointType?
@@ -29,18 +30,23 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         typeLabel.text? = type!.pointName
+		typeLabel.sizeToFit()
 		descriptionLabel.text = type!.pointDescription
+		descriptionLabel.sizeToFit()
 		let firstName = User.get(.firstName) as! String
 		let lastName = User.get(.lastName) as! String
 		nameLabel.text = firstName + " " + lastName
-        //descriptionField.layer.borderColor = UIColor.black.cgColor
-        //descriptionField.layer.borderWidth = 1
-		descriptionField.layer.cornerRadius = 10
 		descriptionField.text = placeholder
 		descriptionField.textColor = UIColor.lightGray
 		descriptionField.selectedTextRange = descriptionField.textRange(from: descriptionField.beginningOfDocument, to: descriptionField.beginningOfDocument)
 		descriptionField.becomeFirstResponder()
 		submitButton.layer.cornerRadius = 10
+		
+		self.topView.layer.shadowColor = UIColor.darkGray.cgColor
+		self.topView.layer.shadowOpacity = 0.5
+		self.topView.layer.shadowOffset = CGSize.zero
+		self.topView.layer.shadowRadius = 7
+		self.topView.sizeToFit()
 		
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
         self.view.addGestureRecognizer(tapGesture)

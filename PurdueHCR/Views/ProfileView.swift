@@ -41,7 +41,8 @@ class ProfileView: UIView {
         addSubview(backgroundView)
         backgroundView.frame = self.bounds
         backgroundView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-		viewPointsButton.layer.cornerRadius = 10//viewPointsButton.layer.frame.height / 2
+		viewPointsButton.layer.cornerRadius = viewPointsButton.layer.frame.height / 2
+		viewPointsButton.imageEdgeInsets = UIEdgeInsets.init(top: 15, left: 15, bottom: 15, right: 15)
 //        pointsButton.text = "Stay tuned for:\n The Medals Update!"
 //        pointsButton.layer.borderWidth = 2.0
 //        pointsButton.layer.borderColor = UIColor.black.cgColor

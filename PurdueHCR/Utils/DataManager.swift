@@ -141,7 +141,7 @@ class DataManager {
 	
 	func getMessagesForPointLog(pointLog: PointLog, onDone:@escaping (_ messageLogs:[MessageLog])->Void) {
 		fbh.getMessagesForPointLog(pointLog: pointLog, onDone: {(messageLogs:[MessageLog]) in
-			onDone(messageLogs)
+			onDone(messageLogs.sorted(by: { $0.creationDate.dateValue() < $1.creationDate.dateValue() }))
 		})
 	}
 	

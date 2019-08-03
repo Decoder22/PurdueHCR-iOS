@@ -53,10 +53,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGl-5f-Wyl" customClass="HousePointsView" customModule="PurdueHCR" customModuleProvider="target">
-                                        <rect key="frame" x="8" y="535" width="359" height="240"/>
+                                        <rect key="frame" x="8" y="535" width="359" height="190"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="240" id="ODR-bd-aFf"/>
+                                            <constraint firstAttribute="height" constant="190" id="ODR-bd-aFf"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -126,7 +126,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRN-dX-P9Z" customClass="I">
-                                            <rect key="frame" x="16" y="41" width="343" height="16"/>
+                                            <rect key="frame" x="21" y="41" width="338" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="7pq-iB-zIh"/>
                                             </constraints>
@@ -135,13 +135,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Point Type" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v23-bz-Jdg">
-                                            <rect key="frame" x="16" y="11" width="343" height="22"/>
+                                            <rect key="frame" x="21" y="11" width="338" height="22"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzp-cH-YQI">
-                                            <rect key="frame" x="16" y="65" width="343" height="19"/>
+                                            <rect key="frame" x="21" y="65" width="338" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="A35-bL-a5X"/>
                                             </constraints>
@@ -150,10 +150,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZM2-FT-ZRi">
-                                            <rect key="frame" x="343" y="11" width="16" height="16"/>
+                                            <rect key="frame" x="6" y="16" width="16" height="5.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="ZM2-FT-ZRi" secondAttribute="height" multiplier="1:1" id="hgH-Mz-lLR"/>
+                                                <constraint firstAttribute="width" secondItem="ZM2-FT-ZRi" secondAttribute="height" multiplier="3:1" id="aaZ-mb-drF"/>
                                                 <constraint firstAttribute="width" constant="16" id="z5V-p3-MQe"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
@@ -171,15 +171,15 @@
                                         <constraint firstItem="pzp-cH-YQI" firstAttribute="bottom" secondItem="g29-6t-B8f" secondAttribute="bottomMargin" id="8wd-SD-Znk"/>
                                         <constraint firstItem="v23-bz-Jdg" firstAttribute="trailing" secondItem="g29-6t-B8f" secondAttribute="trailingMargin" id="9eG-Dy-fkg"/>
                                         <constraint firstItem="v23-bz-Jdg" firstAttribute="trailing" secondItem="SRN-dX-P9Z" secondAttribute="trailing" id="AMo-zp-qIr"/>
-                                        <constraint firstItem="v23-bz-Jdg" firstAttribute="leading" secondItem="g29-6t-B8f" secondAttribute="leadingMargin" id="AoG-s0-Uva"/>
+                                        <constraint firstItem="v23-bz-Jdg" firstAttribute="leading" secondItem="g29-6t-B8f" secondAttribute="leadingMargin" constant="5" id="AoG-s0-Uva"/>
                                         <constraint firstItem="SRN-dX-P9Z" firstAttribute="leading" secondItem="pzp-cH-YQI" secondAttribute="leading" id="Lo5-gn-Byg"/>
                                         <constraint firstItem="pzp-cH-YQI" firstAttribute="top" secondItem="SRN-dX-P9Z" secondAttribute="bottom" constant="8" symbolic="YES" id="NCX-2C-ooB"/>
                                         <constraint firstItem="v23-bz-Jdg" firstAttribute="leading" secondItem="SRN-dX-P9Z" secondAttribute="leading" id="V6M-WW-3hC"/>
                                         <constraint firstItem="v23-bz-Jdg" firstAttribute="top" secondItem="g29-6t-B8f" secondAttribute="topMargin" id="Xkp-Go-WWs"/>
-                                        <constraint firstItem="ZM2-FT-ZRi" firstAttribute="top" secondItem="g29-6t-B8f" secondAttribute="topMargin" id="lmh-CJ-xx9"/>
+                                        <constraint firstItem="ZM2-FT-ZRi" firstAttribute="top" secondItem="g29-6t-B8f" secondAttribute="topMargin" constant="5" id="lmh-CJ-xx9"/>
                                         <constraint firstItem="SRN-dX-P9Z" firstAttribute="trailing" secondItem="pzp-cH-YQI" secondAttribute="trailing" id="ugx-Va-wkR"/>
                                         <constraint firstItem="SRN-dX-P9Z" firstAttribute="top" secondItem="v23-bz-Jdg" secondAttribute="bottom" constant="8" symbolic="YES" id="wAN-2l-x1P"/>
-                                        <constraint firstItem="ZM2-FT-ZRi" firstAttribute="trailing" secondItem="g29-6t-B8f" secondAttribute="trailingMargin" id="z3Z-tQ-yM7"/>
+                                        <constraint firstItem="ZM2-FT-ZRi" firstAttribute="leading" secondItem="g29-6t-B8f" secondAttribute="leadingMargin" constant="-10" id="z3Z-tQ-yM7"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

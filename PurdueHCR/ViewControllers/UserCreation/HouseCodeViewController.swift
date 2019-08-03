@@ -53,6 +53,8 @@ class HouseCodeViewController: UIViewController, UITextFieldDelegate {
 		activityIndicator.style = UIActivityIndicatorView.Style.gray
 		self.view.addSubview(activityIndicator)
 		
+		self.hideKeyboardWhenTappedAround()
+		
 	}
     
 	@IBAction func joinHouse(_ sender: Any) {
@@ -137,7 +139,10 @@ class HouseCodeViewController: UIViewController, UITextFieldDelegate {
 		return false
 	}
 	
-	
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		moveTextField(textField: textField, up: true)
+	}
+
 	func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
 		moveTextField(textField: textField, up: false)
 	}

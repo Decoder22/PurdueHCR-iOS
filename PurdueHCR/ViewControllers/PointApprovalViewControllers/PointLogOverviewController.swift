@@ -29,6 +29,10 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+		
 		tableView.separatorColor = systemGray5
 		tableView.backgroundColor = systemGray5
 		let height : CGFloat = 60
@@ -91,7 +95,7 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 	
 	override func viewWillAppear(_ animated: Bool) {
 		DataManager.sharedManager.getMessagesForPointLog(pointLog: pointLog!, onDone: { (messageLogs:[MessageLog]) in
-			self.sortMessages(messages: messageLogs)
+			self.mess = messageLogs
 		})
 	}
 	
@@ -131,7 +135,7 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 	@objc func resfreshData(){
 		DataManager.sharedManager.getMessagesForPointLog(pointLog: pointLog!, onDone: { (messageLogs:[MessageLog]) in
 			// TODO: Probably a cleaner implementation of this??
-			self.sortMessages(messages: messageLogs)
+			self.mess = messageLogs
 			DispatchQueue.main.async { [unowned self] in
 				self.tableView.reloadData()
 			}
@@ -144,10 +148,6 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 		DataManager.sharedManager.addMessageToPointLog(message: message, messageType: .comment, pointLog: pointLog!)
 		typeMessageField.text! = ""
 		resfreshData()
-	}
-	
-	func sortMessages(messages: [MessageLog]) {
-		mess = messages.sorted(by: { $0.creationDate.dateValue() < $1.creationDate.dateValue() })
 	}
 	
 	// MARK: - Table view data source
@@ -225,9 +225,6 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 		return cell
 	}
 	
-	
-	
-	
 	// Support conditional editing of the table view.
 	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		// Return false if you do not want the specified item to be editable.
@@ -236,6 +233,29 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 	
 	func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
 		return UITableView.automaticDimension
+	}
+	
+	// TODO: Update this implementation. I can't imagine it being very efficient or scalable. Plus it doesn't use constants so changing constraints elsewhere would completely throw this off
+	
+	@objc func keyboardWillShow(notification: NSNotification) {
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+			if (User.get(.permissionLevel) as! Int != 1) {
+				bottomConstraint.constant = (-1 * keyboardSize.height) - 10
+			} else {
+				bottomConstraint.constant = -80 - keyboardSize.height
+			}
+			self.tableView.layoutIfNeeded()
+		}
+	}
+	
+	@objc func keyboardWillHide(notification: NSNotification) {
+		if (User.get(.permissionLevel) as! Int != 1) {
+			bottomConstraint.constant = -60
+		} else {
+			bottomConstraint.constant = -145
+		}
+		
+		self.tableView.layoutIfNeeded()
 	}
 
 }
