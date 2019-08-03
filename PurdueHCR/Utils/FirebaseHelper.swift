@@ -23,6 +23,7 @@ class FirebaseHelper {
     let TOTAL_POINTS = "TotalPoints"
     let FLOOR_ID = "FloorID"
 	let USER_ID = "UserID"
+	let MESSAGES = "Messages"
     
     init(){
         db = Firestore.firestore()
@@ -192,7 +193,7 @@ class FirebaseHelper {
         let house = User.get(.house) as! String
         var housePointRef: DocumentReference?
         var houseRef:DocumentReference?
-        var userRef:DocumentReference?
+        var residentID = log.residentId as! String
         houseRef = self.db.collection(self.HOUSE).document(house)
         housePointRef = houseRef!.collection(self.POINTS).document(log.logID!)
         //let userId = log.residentId
@@ -218,9 +219,22 @@ class FirebaseHelper {
                     else{
                         //Conditions are met for point updating
                         housePointRef!.setData(log.convertToDict(),merge:true){err in
+							var message = " the point request"
+							var type = MessageLog.MessageType.reject
+							if (approved) {
+								message = " approved" + message
+								type = MessageLog.MessageType.approve
+							} else {
+								message = " rejected" + message
+							}
+							let firstName = User.get(.firstName) as! String
+							let lastName = User.get(.lastName) as! String
+							message = firstName + " " + lastName + message
+							// TODO: Fix because it may execute the message even if there is an error which would not be ideal
+							self.addMessageToPontLog(message: message, messageType: type, pointLog: log)
                             //if approved or update, update total points
                             if((approved || updating) && err == nil){
-                                self.updateHouseAndUserPoints(log: log, userRef: userRef!, houseRef: houseRef!, updatePointValue: updating, onDone: {(err:Error?) in
+								self.updateHouseAndUserPoints(log: log, residentID: residentID, houseRef: houseRef!, updatePointValue: updating, onDone: {(err:Error?) in
                                     onDone(err)
                                 })
                             }
@@ -316,6 +330,44 @@ class FirebaseHelper {
                 onDone(pointLogs)
         }
     }
+	
+	func getMessagesForPointLog(pointLog: PointLog, onDone:@escaping ( _ messageLogs:[MessageLog])->Void) {
+		let house = User.get(.house) as! String
+		let pointID = pointLog.logID! as String
+		let docRef = self.db.collection(self.HOUSE).document(house).collection(self.POINTS).document(pointID).collection(self.MESSAGES)
+		
+		// Error handling for if there are no messages.....
+		
+		docRef.getDocuments(completion: { (querySnapshot, error) in
+			if error != nil {
+				print("Error getting messages: \(String(describing: error))")
+				return
+			}
+			var messageLogs = [MessageLog]()
+			for document in querySnapshot!.documents {
+				let creationDate = document.data()["CreationDate"] as! Timestamp
+				let message = document.data()["Message"] as! String
+				let senderFirstName = document.data()["SenderFirstName"] as! String
+				let senderLastName = document.data()["SenderLastName"] as! String
+				let senderPermissionLevel = document.data()["SenderPermissionLevel"] as! Int
+				let messageType = document.data()["MessageType"] as! String
+				let log = MessageLog(creationDate: creationDate, message: message, senderFirstName: senderFirstName, senderLastName: senderLastName, senderPermissionLevel: senderPermissionLevel, messageType: MessageLog.MessageType(rawValue: messageType)!)
+				messageLogs.append(log)
+			}
+			onDone(messageLogs)
+		})
+	}
+	
+	func addMessageToPontLog(message: String, messageType: MessageLog.MessageType, pointLog: PointLog) {
+		let house = User.get(.house) as! String
+		let pointID = pointLog.logID! as! String
+		let firstName = User.get(.firstName) as! String
+		let lastName = User.get(.lastName) as! String
+		let permissionLevel = User.get(.permissionLevel) as! Int
+		let newMessage = MessageLog.init(creationDate: Timestamp.init(), message: message, senderFirstName: firstName, senderLastName: lastName, senderPermissionLevel: permissionLevel, messageType: .comment)
+		let data = newMessage.convertToDict()
+		self.db.collection(self.HOUSE).document(house).collection(self.POINTS).document(pointID).collection(self.MESSAGES).addDocument(data: data)
+	}
     
     func refreshUserInformation(onDone:@escaping (_ err:Error?)->Void){
         let userRef = self.db.collection(self.USERS).document(User.get(.id) as! String)
@@ -367,7 +419,8 @@ class FirebaseHelper {
             }
         }
     }
-    
+	
+	// TODO: Make rewards a const
     func refreshRewards(onDone:@escaping (_ rewards:[Reward])->Void ){
         self.db.collection("Rewards").getDocuments(){ (querySnapshot, err) in
             var rewardArray = [Reward]()
@@ -431,45 +484,46 @@ class FirebaseHelper {
     ///   - userRef: DocumentReference for firebase user
     ///   - updatePointValue: Bool for if the point is being update. Set this to false if this log has not been previously approved or rejected
     ///   - onDone: Closure to run when the function is finished or errors
-    private func updateUserPoints(log:PointLog, userRef:DocumentReference, updatePointValue:Bool, onDone:@escaping (_ err:Error?)->Void) {
+    private func updateUserPoints(log:PointLog, residentID:String, updatePointValue:Bool, onDone:@escaping (_ err:Error?)->Void) {
         //Start Firebase Transaction - Used to prevent concurrency issues when updating a value
         db.runTransaction({ (transaction, errorPointer) -> Any? in
             //Get the old user document
-            let userDocument: DocumentSnapshot
-            do {
-                try userDocument = transaction.getDocument(userRef)
-            } catch let fetchError as NSError {
-                errorPointer?.pointee = fetchError
-                return nil
-            }
-            //Get the value of the old points total for the user
-            guard let oldTotal = userDocument.data()?["TotalPoints"] as? Int else {
-                let error = NSError(
-                    domain: "AppErrorDomain",
-                    code: -1,
-                    userInfo: [
-                        NSLocalizedDescriptionKey: "Unable to retrieve TotalPoints from snapshot \(userDocument)"
-                    ]
-                )
-                errorPointer?.pointee = error
-                return nil
-            }
-            //Update the value
-            var newTotal = oldTotal
-            if(updatePointValue){
-                if(log.wasRejected()){
-                    newTotal -= log.type.pointValue // if log is being updated and is rejected, subtract points
-                }
-                else{
-                    newTotal += log.type.pointValue // if log is being updated and it is approved, add points
-                }
-            }
-            else{
-                newTotal += log.type.pointValue // If this is the first time being updated, add points
-            }
-            //Complete transaction update
-            transaction.updateData(["TotalPoints": newTotal], forDocument: userRef)
-            return nil
+            let docRef = self.db.collection(self.USERS).document(residentID)
+			let userDocument: DocumentSnapshot
+			do {
+				try userDocument = transaction.getDocument(docRef)
+			} catch let fetchError as NSError {
+				errorPointer?.pointee = fetchError
+				return nil
+			}
+			//Get the value of the old points total for the user
+			guard let oldTotal = userDocument.data()!["TotalPoints"] as? Int else {
+				let error = NSError(
+					domain: "AppErrorDomain",
+					code: -1,
+					userInfo: [
+						NSLocalizedDescriptionKey: "Unable to retrieve TotalPoints from snapshot \(String(describing: userDocument))"
+					]
+				)
+				errorPointer?.pointee = error
+				return nil
+			}
+			//Update the value
+			var newTotal = oldTotal
+			if(updatePointValue){
+				if(log.wasRejected()){
+					newTotal -= log.type.pointValue // if log is being updated and is rejected, subtract points
+				}
+				else{
+					newTotal += log.type.pointValue // if log is being updated and it is approved, add points
+				}
+			}
+			else{
+				newTotal += log.type.pointValue // If this is the first time being updated, add points
+			}
+			//Complete transaction update
+			transaction.updateData(["TotalPoints": newTotal], forDocument: docRef)
+			return nil
         })
         { (object, error) in
             //handle errors
@@ -551,20 +605,20 @@ class FirebaseHelper {
     ///
     /// - Parameters:
     ///   - log: Point Log that contains points to be given to House and Resident
-    ///   - userRef: Reference to the User in Firebase that needs to be awarded points
+    ///   - residentID: String of the user's id
     ///   - houseRef: Reference to the house that will be given the points
     ///   - isRECGrantingAward: Boolean (defaults to false) true if REC is giving award to entire house
     ///   - updatePointValue: Boolean if this point is being updated. Make this true if log was already approved or disapproved, and this is an update to its status that requires its point value be changed.
     ///   - onDone: Closure function to be called on completion. Err is nil if no errors are thrown.
-    private func updateHouseAndUserPoints(log:PointLog,userRef:DocumentReference,houseRef:DocumentReference, isRECGrantingAward:Bool = false, updatePointValue:Bool, onDone:@escaping (_ err:Error?)->Void)
+	private func updateHouseAndUserPoints(log:PointLog, residentID: String, houseRef:DocumentReference, isRECGrantingAward:Bool = false, updatePointValue:Bool, onDone:@escaping (_ err:Error?)->Void)
     {
-        updateHousePoints(log: log, houseRef: houseRef,updatePointValue: updatePointValue , onDone: {(err:Error?)in
+        updateHousePoints(log: log, houseRef: houseRef, updatePointValue: updatePointValue , onDone: {(err:Error?)in
             if(err != nil){
                 onDone(err)
             }
             //If REC is giving award to House, dont give the points to a specific user
             else if(!isRECGrantingAward){
-                self.updateUserPoints(log: log, userRef: userRef, updatePointValue: updatePointValue, onDone: {(errDeep:Error?) in
+				self.updateUserPoints(log: log, residentID: residentID, updatePointValue: updatePointValue, onDone: {(errDeep:Error?) in
                     onDone(errDeep)
                 })
             }

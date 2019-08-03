@@ -116,7 +116,7 @@ class DataManager {
     func getUnconfirmedPointLogs()->[PointLog]?{
         return self._unconfirmedPointLogs
     }
-    
+	
     func refreshUser(onDone:@escaping (_ err:Error?)->Void){
         fbh.refreshUserInformation(onDone: onDone)
     }
@@ -138,7 +138,17 @@ class DataManager {
             onDone(pointLogs)
         })
     }
-    
+	
+	func getMessagesForPointLog(pointLog: PointLog, onDone:@escaping (_ messageLogs:[MessageLog])->Void) {
+		fbh.getMessagesForPointLog(pointLog: pointLog, onDone: {(messageLogs:[MessageLog]) in
+			onDone(messageLogs)
+		})
+	}
+	
+	func addMessageToPointLog(message: String, messageType: MessageLog.MessageType, pointLog: PointLog) {
+		fbh.addMessageToPontLog(message: message, messageType: messageType, pointLog: pointLog)
+	}
+	
     func refreshHouses(onDone:@escaping ( _ houses:[House]) ->Void){
         print("House refersh")
         fbh.refreshHouseInformation(onDone: { (houses:[House],codes:[HouseCode]) in

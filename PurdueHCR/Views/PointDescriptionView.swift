@@ -13,7 +13,8 @@ class PointDescriptionView: UIView {
     @IBOutlet var pointTypeDescriptionLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var backgroundView: UIView!
-    
+	@IBOutlet weak var icon: UIImageView!
+	
     
     override init(frame: CGRect){
         super.init(frame: frame)
@@ -29,18 +30,16 @@ class PointDescriptionView: UIView {
         Bundle.main.loadNibNamed("PointDescriptionView", owner: self, options: nil)
         addSubview(backgroundView)
         backgroundView.frame = self.bounds
+		self.backgroundView.layer.cornerRadius = 10
         backgroundView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+		icon.backgroundColor = UIColor.blue
+		icon.layer.cornerRadius = icon.layer.frame.height / 2 
     }
     
-    func setLog(pointLog:PointLog)
-    {
+    func setLog(pointLog:PointLog) {
         residentLabel.text = pointLog.firstName + " " + pointLog.lastName
         pointTypeDescriptionLabel.text = pointLog.type.pointDescription
         descriptionLabel.text = pointLog.pointDescription
-		self.backgroundView.layer.cornerRadius = 10
-        //descriptionLabel.layer.borderColor = UIColor.black.cgColor
-        //descriptionLabel.layer.borderWidth = 1.0
-		//descriptionLabel.layer.cornerRadius = 10
     }
     
 

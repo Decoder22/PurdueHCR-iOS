@@ -51,7 +51,7 @@ class ProfileView: UIView {
         reloadData()
     }
     
-    func reloadData(){
+    func reloadData() {
         let houseName = User.get(.house) as! String
         if(houseName == "Platinum"){
             houseLogoImageView.image = #imageLiteral(resourceName: "Platinum")

@@ -106,6 +106,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 		let residentId = User.get(.id) as! String
 		
 		// TODO: FIX DIS CUZ IT PROBLY AINT RAIGHT
+		datePicker.maximumDate = Date()
 		let dateOccurred = Timestamp.init(date: datePicker.date)
         let pointLog = PointLog(pointDescription: logDescription, firstName: firstName, lastName: lastName, type: pointType, floorID: floor, residentRef:residentRef, residentId: residentId, dateOccurred: dateOccurred)
         DataManager.sharedManager.writePoints(log: pointLog, preApproved: preApproved) { (err:Error?) in
@@ -132,18 +133,6 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
             }
         }
     }
-	
-//    func textViewDidBeginEditing(_ textView: UITextView) {
-//        if(textView.text == "Tell us about what you did!"){
-//            textView.text = ""
-//        }
-//    }
-//
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        if(textView.text == ""){
-//            textView.text = "Tell us about what you did!"
-//        }
-//    }
 
 	func textViewDidChangeSelection(_ textView: UITextView) {
 		if self.view.window != nil {

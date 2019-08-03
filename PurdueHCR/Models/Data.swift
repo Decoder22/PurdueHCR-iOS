@@ -116,7 +116,7 @@ class PointLog {
 		self.dateSubmitted = Timestamp.init()
         self.wasHandled = false
     }
-    
+	
     /// Initialization method for points pulled from Firebase Database
     ///
     /// - Parameters:
@@ -163,7 +163,7 @@ class PointLog {
     /// - Parameters:
     ///   - approved: Bool Point is approved
     ///   - preapproved: Bool Point was preapproved
-    func updateApprovalStatus( approved:Bool,preapproved:Bool = false){
+    func updateApprovalStatus(approved:Bool, preapproved:Bool = false){
         wasHandled = true
         if(approved){
             //Approve the point
@@ -241,6 +241,61 @@ extension PointLog: Equatable, CustomStringConvertible {
                 lhs.pointDescription == rhs.pointDescription &&
                 lhs.logID == rhs.logID
     }
+}
+
+class MessageLog {
+	
+	enum MessageType: String {
+		case comment = "comment"
+		case approve = "approve"
+		case reject = "reject"
+	}
+	
+	var creationDate: Timestamp
+	var message: String
+	var senderFirstName: String
+	var senderLastName: String
+	var senderPermissionLevel: Int
+	var messageType: MessageType
+	
+	init(creationDate: Timestamp, message: String, senderFirstName: String, senderLastName: String, senderPermissionLevel: Int, messageType: MessageType) {
+		self.creationDate = creationDate
+		self.message = message
+		self.senderFirstName = senderFirstName
+		self.senderLastName = senderLastName
+		self.senderPermissionLevel = senderPermissionLevel
+		self.messageType = messageType
+	}
+	
+	/// Initialization method for points pulled from Firebase Database
+	///
+	/// - Parameters:
+	///   - id: FirebaseId of the log
+	///   - document: Dictionary that was returned from the database
+	init(document:[String:Any]){
+		
+		self.creationDate = document["CreationDate"] as! Timestamp
+		self.message = document["Message"] as! String
+		self.senderFirstName = document["SenderFirstName"] as! String
+		self.senderLastName = document["SenderLastName"] as! String
+		self.senderPermissionLevel = document["SenderPermissionLevel"] as! Int
+		self.messageType = document["MessageType"] as! MessageType
+	}
+	
+	func convertToDict()->[String:Any]{
+		
+		let dict: [String : Any] = [
+			"CreationDate":self.creationDate,
+			"Message":self.message,
+			"SenderFirstName":senderFirstName,
+			"SenderLastName":self.senderLastName,
+			"SenderPermissionLevel":self.senderPermissionLevel,
+			"MessageType":self.messageType.rawValue
+		]
+		
+		return dict
+	}
+	
 }
 
 class Reward {

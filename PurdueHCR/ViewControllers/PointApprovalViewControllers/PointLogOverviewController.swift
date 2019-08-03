@@ -8,26 +8,29 @@
 
 import UIKit
 
-class PointLogOverviewController: UIViewController {
-    
-	@IBOutlet weak var scrollView: UIScrollView!
+class PointLogOverviewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
+	@IBOutlet var backgroundView: UIView!
+	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var sendButton: UIButton!
+	@IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+	@IBOutlet weak var typeMessageField: UITextField!
 	var indexPath : IndexPath?
 	var approveButton : UIButton?
 	var rejectButton : UIButton?
-    
     var pointLog: PointLog?
-    //var index: IndexPath?
-    @IBOutlet var pointDescriptionView: PointDescriptionView!
+	let radius : CGFloat = 10
+	let systemGray5 = UIColor.init(red: 229.0/255.0, green: 229.0/255.0, blue: 234.0/255.0, alpha: 1.0)
+	// TODO: Fix this since this view is referenced from more than one location
 	var preViewContr: RHPApprovalTableViewController?
-    
+	// TODO: Rename
+	var mess = [MessageLog]()
+	var refresher: UIRefreshControl?
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		let radius : CGFloat = 10
-		
-		pointDescriptionView.setLog(pointLog: pointLog!)
-		pointDescriptionView.layer.cornerRadius = radius
+		tableView.separatorColor = systemGray5
+		tableView.backgroundColor = systemGray5
 		let height : CGFloat = 60
 		let width : CGFloat = (self.view.frame.width - 60) / 2
 		let offset : CGFloat = 20
@@ -38,34 +41,60 @@ class PointLogOverviewController: UIViewController {
 		let rejectOrigin = CGPoint.init(x: 20, y: y)
 		let buttonSize = CGSize.init(width: width, height: height)
 		
-		approveButton = UIButton.init(type: .custom)
-		approveButton?.frame = CGRect.init(origin: approveOrigin, size: buttonSize)
-		rejectButton = UIButton.init(type: .custom)
-		rejectButton?.frame = CGRect.init(origin: rejectOrigin, size: buttonSize)
+		typeMessageField.layer.cornerRadius = typeMessageField.frame.height / 2
+		typeMessageField.layer.borderColor = UIColor.lightGray.cgColor
+		typeMessageField.layer.borderWidth = 1
 		
-		//approveButton?.setImage(#imageLiteral(resourceName: "approve"), for: .normal)
-		approveButton?.setTitle("Approve", for: .normal)
-		approveButton?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
-		approveButton?.layer.cornerRadius = 10
-		/*if #available(iOS 13, *) {
-			approveButton?.backgroundColor = UIColor.get
-		} else {
+		sendButton.backgroundColor = tabBarController?.tabBar.tintColor
+		sendButton.tintColor = UIColor.white
+		sendButton.layer.cornerRadius = sendButton.frame.height / 2
+		
+		// If the user is an RHP add approve/reject buttons to the view
+		if (User.get(.permissionLevel) as! Int == 1) {
+			approveButton = UIButton.init(type: .custom)
+			approveButton?.frame = CGRect.init(origin: approveOrigin, size: buttonSize)
+			rejectButton = UIButton.init(type: .custom)
+			rejectButton?.frame = CGRect.init(origin: rejectOrigin, size: buttonSize)
 			
-		}*/
-		approveButton?.backgroundColor = UIColor.init(red: 52/255, green: 199/255, blue: 89/255, alpha: 1.00)
-		approveButton?.addTarget(self, action: #selector(approvePointLog), for: .touchUpInside)
+			approveButton?.setTitle("Approve", for: .normal)
+			approveButton?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+			approveButton?.layer.cornerRadius = 10
+			/*if #available(iOS 13, *) {
+			approveButton?.backgroundColor = UIColor.get
+			} else {
+			
+			}*/
+			approveButton?.backgroundColor = UIColor.init(red: 52/255, green: 199/255, blue: 89/255, alpha: 1.00)
+			approveButton?.addTarget(self, action: #selector(approvePointLog), for: .touchUpInside)
+			
+			rejectButton?.setTitle("Reject", for: .normal)
+			rejectButton?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
+			rejectButton?.layer.cornerRadius = 10
+			rejectButton?.backgroundColor = UIColor.red
+			rejectButton?.addTarget(self, action: #selector(rejectPointLog), for: .touchUpInside)
+			
+			self.backgroundView.addSubview(approveButton!)
+			self.backgroundView.addSubview(rejectButton!)
+		} else {
+			bottomConstraint.constant = -60
+			self.tableView.layoutIfNeeded()
+		}
 		
-		//rejectButton?.setImage(#imageLiteral(resourceName: "reject"), for: .normal)
-		rejectButton?.setTitle("Reject", for: .normal)
-		rejectButton?.titleLabel?.font = UIFont.boldSystemFont(ofSize: 22)
-		rejectButton?.layer.cornerRadius = 10
-		rejectButton?.backgroundColor = UIColor.red
-		rejectButton?.addTarget(self, action: #selector(rejectPointLog), for: .touchUpInside)
+	
+		refresher = UIRefreshControl()
+		refresher?.attributedTitle = NSAttributedString(string: "Pull to refresh")
+		refresher?.addTarget(self, action: #selector(resfreshData), for: .valueChanged)
+		tableView.refreshControl = refresher
+		resfreshData()
 		
-		self.view.addSubview(approveButton!)
-		self.view.addSubview(rejectButton!)
     }
-
+	
+	override func viewWillAppear(_ animated: Bool) {
+		DataManager.sharedManager.getMessagesForPointLog(pointLog: pointLog!, onDone: { (messageLogs:[MessageLog]) in
+			self.sortMessages(messages: messageLogs)
+		})
+	}
+	
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -98,6 +127,115 @@ class PointLogOverviewController: UIViewController {
 		}
         self.navigationController?.popViewController(animated: true)
     }
-    
+	
+	@objc func resfreshData(){
+		DataManager.sharedManager.getMessagesForPointLog(pointLog: pointLog!, onDone: { (messageLogs:[MessageLog]) in
+			// TODO: Probably a cleaner implementation of this??
+			self.sortMessages(messages: messageLogs)
+			DispatchQueue.main.async { [unowned self] in
+				self.tableView.reloadData()
+			}
+			self.tableView.refreshControl?.endRefreshing()
+		})
+	}
+
+	@IBAction func sendMessage(_ sender: Any) {
+		let message = typeMessageField.text!
+		DataManager.sharedManager.addMessageToPointLog(message: message, messageType: .comment, pointLog: pointLog!)
+		typeMessageField.text! = ""
+		resfreshData()
+	}
+	
+	func sortMessages(messages: [MessageLog]) {
+		mess = messages.sorted(by: { $0.creationDate.dateValue() < $1.creationDate.dateValue() })
+	}
+	
+	// MARK: - Table view data source
+	
+	func numberOfSections(in tableView: UITableView) -> Int {
+		// #warning Incomplete implementation, return the number of sections
+		/*if (!DataManager.sharedManager.systemPreferences!.isHouseEnabled) {
+			let message = DataManager.sharedManager.systemPreferences!.houseEnabledMessage
+			emptyMessage(message: message)
+			return 0
+		}
+		else if mess.count > 0 {
+			killEmptyMessage()
+			return 1
+		} else {
+			emptyMessage(message: "You don't have any to approve. Good job!")
+			return 0
+		}*/
+		return 1
+	}
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		// #warning Incomplete implementation, return the number of rows
+		return mess.count + 1 // Account for the first cell that is the point description
+	}
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+		
+		cell.backgroundColor = systemGray5
+		
+		if (indexPath.row == 0) {
+			let pointDescriptionView = PointDescriptionView()
+			pointDescriptionView.setLog(pointLog: pointLog!)
+			pointDescriptionView.layer.cornerRadius = radius
+			pointDescriptionView.layer.shadowColor = UIColor.darkGray.cgColor
+			pointDescriptionView.layer.shadowOpacity = 0.5
+			pointDescriptionView.layer.shadowOffset = CGSize.zero
+			pointDescriptionView.layer.shadowRadius = 5
+			cell.addSubview(pointDescriptionView)
+		
+			pointDescriptionView.translatesAutoresizingMaskIntoConstraints = false
+			let horizontalConstraint = NSLayoutConstraint(item: pointDescriptionView, attribute: .centerX, relatedBy: .equal, toItem: cell, attribute: .centerX, multiplier: 1, constant: 0)
+			let verticalConstraint = NSLayoutConstraint(item: pointDescriptionView, attribute: .top, relatedBy: .equal, toItem: cell, attribute: .top, multiplier: 1, constant: 35)
+			let widthConstraint = NSLayoutConstraint(item: pointDescriptionView, attribute: .width, relatedBy: .equal, toItem: cell, attribute: .width, multiplier: 1, constant: -20)
+			
+			// TODO: Rename
+			let thistest = NSLayoutConstraint(item: cell, attribute: .height, relatedBy: .equal, toItem: pointDescriptionView, attribute: .height, multiplier: 1, constant: 45)
+			
+			NSLayoutConstraint.activate([horizontalConstraint, verticalConstraint, widthConstraint, thistest])
+			
+		} else {
+		
+			let messageView = MessageView.init()
+			messageView.layer.cornerRadius = radius
+			messageView.layer.shadowColor = UIColor.darkGray.cgColor
+			messageView.layer.shadowOpacity = 0.5
+			messageView.layer.shadowOffset = CGSize.zero
+			messageView.layer.shadowRadius = 5
+			messageView.setLog(messageLog: mess[indexPath.row - 1])
+			cell.addSubview(messageView)
+			
+			messageView.translatesAutoresizingMaskIntoConstraints = false
+			let horizontalConstraint = NSLayoutConstraint(item: messageView, attribute: .centerX, relatedBy: .equal, toItem: cell, attribute: .centerX, multiplier: 1, constant: 0)
+			let verticalConstraint = NSLayoutConstraint(item: messageView, attribute: .top, relatedBy: .equal, toItem: cell, attribute: .top, multiplier: 1, constant: 35)
+			let widthConstraint = NSLayoutConstraint(item: messageView, attribute: .width, relatedBy: .equal, toItem: cell, attribute: .width, multiplier: 1, constant: -20)
+			
+			// TODO: Rename
+			let thistest = NSLayoutConstraint(item: cell, attribute: .height, relatedBy: .equal, toItem: messageView, attribute: .height, multiplier: 1, constant: 45)
+			
+			NSLayoutConstraint.activate([horizontalConstraint, verticalConstraint, widthConstraint, thistest])
+			
+		}
+		
+		return cell
+	}
+	
+	
+	
+	
+	// Support conditional editing of the table view.
+	func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+		// Return false if you do not want the specified item to be editable.
+		return true
+	}
+	
+	func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+		return UITableView.automaticDimension
+	}
 
 }
