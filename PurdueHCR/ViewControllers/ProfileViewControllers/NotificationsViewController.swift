@@ -1,14 +1,14 @@
 //
-//  UserPointsTableViewController.swift
+//  NotificationsViewController.swift
 //  PurdueHCR
 //
-//  Created by Benjamin Hardin on 6/17/19.
+//  Created by Benjamin Hardin on 8/3/19.
 //  Copyright © 2019 DecodeProgramming. All rights reserved.
 //
 
 import UIKit
 
-class UserPointsTableViewController: UITableViewController, UISearchResultsUpdating {
+class NotificationsViewController: UITableViewController, UISearchResultsUpdating {
 
 	let searchController = UISearchController(searchResultsController: nil)
 	var refresher: UIRefreshControl?
@@ -42,7 +42,7 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	}
 	
 	@objc func resfreshData(){
-		DataManager.sharedManager.getAllPointLogsForUser(residentID: (User).get(.id) as! String, house: (User).get(.house) as! String, onDone: { (pointLogs:[PointLog]) in
+		DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs:[PointLog]) in
 			self.displayedLogs = pointLogs
 			self.displayedLogs.sort(by: {$0.dateSubmitted!.dateValue() > $1.dateSubmitted!.dateValue()})
 			DispatchQueue.main.async { [unowned self] in
@@ -53,9 +53,9 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 			self.navigationItem.hidesBackButton = false
 		})
 	}
-
-	func updateSearchResults(for searchController: UISearchController) {
 	
+	func updateSearchResults(for searchController: UISearchController) {
+		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -64,7 +64,7 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 		}
 		resfreshData()
 	}
-
+	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		// #warning Incomplete implementation, return the number of sections
 		if isFiltering() {
@@ -251,17 +251,17 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		// Segue to the second view controller
-		self.performSegue(withIdentifier: "cell_push", sender: self)
+		self.performSegue(withIdentifier: "notification_push", sender: self)
 	}
 	
 	// This function is called before the segue
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-		if (segue.identifier == "cell_push") {
+		
+		if (segue.identifier == "notification_push") {
 			// get a reference to the second view controller
 			let nextViewController = segue.destination as! PointLogOverviewController
 			let indexPath = tableView.indexPathForSelectedRow
-
+			
 			if(isFiltering()) {
 				nextViewController.pointLog = self.filteredPoints[(indexPath?.row)!]
 			} else {
@@ -292,5 +292,5 @@ class UserPointsTableViewController: UITableViewController, UISearchResultsUpdat
 	func isFiltering() -> Bool {
 		return searchController.isActive && !searchBarIsEmpty()
 	}
-
+	
 }

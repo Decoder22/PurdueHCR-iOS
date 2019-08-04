@@ -193,7 +193,7 @@ class FirebaseHelper {
         let house = User.get(.house) as! String
         var housePointRef: DocumentReference?
         var houseRef:DocumentReference?
-        var residentID = log.residentId as! String
+        var residentID = log.residentId
         houseRef = self.db.collection(self.HOUSE).document(house)
         housePointRef = houseRef!.collection(self.POINTS).document(log.logID!)
         //let userId = log.residentId
@@ -231,7 +231,7 @@ class FirebaseHelper {
 							let lastName = User.get(.lastName) as! String
 							message = firstName + " " + lastName + message
 							// TODO: Fix because it may execute the message even if there is an error which would not be ideal
-							self.addMessageToPontLog(message: message, messageType: type, pointLog: log)
+ 							self.addMessageToPontLog(message: message, messageType: type, pointID: log.logID!)
                             //if approved or update, update total points
                             if((approved || updating) && err == nil){
 								self.updateHouseAndUserPoints(log: log, residentID: residentID, houseRef: houseRef!, updatePointValue: updating, onDone: {(err:Error?) in
@@ -334,11 +334,11 @@ class FirebaseHelper {
 	func getMessagesForPointLog(pointLog: PointLog, onDone:@escaping ( _ messageLogs:[MessageLog])->Void) {
 		let house = User.get(.house) as! String
 		let pointID = pointLog.logID! as String
-		let docRef = self.db.collection(self.HOUSE).document(house).collection(self.POINTS).document(pointID).collection(self.MESSAGES)
+		let docRef = self.db.collection(self.HOUSE).document(house).collection(self.POINTS).document(pointID)
 		
 		// Error handling for if there are no messages.....
 		
-		docRef.getDocuments(completion: { (querySnapshot, error) in
+		docRef.collection(self.MESSAGES).getDocuments(completion: { (querySnapshot, error) in
 			if error != nil {
 				print("Error getting messages: \(String(describing: error))")
 				return
@@ -349,24 +349,49 @@ class FirebaseHelper {
 				let message = document.data()["Message"] as! String
 				let senderFirstName = document.data()["SenderFirstName"] as! String
 				let senderLastName = document.data()["SenderLastName"] as! String
-				let senderPermissionLevel = document.data()["SenderPermissionLevel"] as! Int
+				let senderPermissionLevel = PointType.PermissionLevel(rawValue: document.data()["SenderPermissionLevel"] as! Int)!
 				let messageType = document.data()["MessageType"] as! String
 				let log = MessageLog(creationDate: creationDate, message: message, senderFirstName: senderFirstName, senderLastName: senderLastName, senderPermissionLevel: senderPermissionLevel, messageType: MessageLog.MessageType(rawValue: messageType)!)
 				messageLogs.append(log)
 			}
 			onDone(messageLogs)
 		})
+		
+		let permissionLevel = PointType.PermissionLevel(rawValue: User.get(.permissionLevel) as! Int)!
+		if (permissionLevel == .resident) {
+			docRef.setData(["ResidentNotifications": 0], merge: true)
+		}
+		else if (permissionLevel == .rhp) {
+			docRef.setData(["RHPNotifications": 0], merge: true)
+		}
 	}
 	
-	func addMessageToPontLog(message: String, messageType: MessageLog.MessageType, pointLog: PointLog) {
+	func addMessageToPontLog(message: String, messageType: MessageLog.MessageType, pointID: String) {
 		let house = User.get(.house) as! String
-		let pointID = pointLog.logID! as! String
 		let firstName = User.get(.firstName) as! String
 		let lastName = User.get(.lastName) as! String
-		let permissionLevel = User.get(.permissionLevel) as! Int
-		let newMessage = MessageLog.init(creationDate: Timestamp.init(), message: message, senderFirstName: firstName, senderLastName: lastName, senderPermissionLevel: permissionLevel, messageType: .comment)
+		let permissionLevel = PointType.PermissionLevel(rawValue: User.get(.permissionLevel) as! Int)!
+		let newMessage = MessageLog.init(creationDate: Timestamp.init(), message: message, senderFirstName: firstName, senderLastName: lastName, senderPermissionLevel: permissionLevel, messageType: messageType)
 		let data = newMessage.convertToDict()
-		self.db.collection(self.HOUSE).document(house).collection(self.POINTS).document(pointID).collection(self.MESSAGES).addDocument(data: data)
+		let ref = self.db.collection(self.HOUSE).document(house).collection(self.POINTS).document(pointID)
+		ref.collection(self.MESSAGES).addDocument(data: data)
+		var resNotif = 0
+		var rhpNotif = 0
+		ref.getDocument { (document, err) in
+			if (err != nil) {
+				print("Error getting document: \(String(describing: err))")
+				return
+			}
+			resNotif = document!.data()!["ResidentNotifications"] as! Int
+			rhpNotif = document!.data()!["RHPNotifications"] as! Int
+			if (permissionLevel == .resident) {
+				ref.setData(["RHPNotifications":(rhpNotif + 1)], merge: true)
+			}
+			else if (permissionLevel == .rhp) {
+				ref.setData(["ResidentNotifications":(resNotif + 1)], merge: true)
+			}
+		}
+		
 	}
     
     func refreshUserInformation(onDone:@escaping (_ err:Error?)->Void){
@@ -703,14 +728,17 @@ class FirebaseHelper {
                     if(floorID == "Shreve"){
                         firstName = "(Shreve) " + firstName
                     }
-                    let residentRefMaybe = document.data()["ResidentRef"]
-                    var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)
+					
+					// TODO: this part about hard-coding a reference may need to be re-added
+					
+                    /*let residentRefMaybe = document.data()["ResidentRef"]
+                    var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)*/
 					let residentId = User.get(.id) as! String
-                    if(residentRefMaybe != nil ){
+                    /*if(residentRefMaybe != nil ){
                         residentRef = residentRefMaybe as! DocumentReference
-                    }
+                    }*/
                     let pointType = DataManager.sharedManager.getPointType(value: idType)
-                    let pointLog = PointLog(pointDescription: description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentRef:residentRef, residentId: residentId, dateOccurred: dateOccurred)
+                    let pointLog = PointLog(pointDescription: description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentId: residentId, dateOccurred: dateOccurred)
                     pointLog.logID = id
                     pointLogs.append(pointLog)
                 }
@@ -742,14 +770,15 @@ class FirebaseHelper {
 							if(floorID == "Shreve"){
 								firstName = "(Shreve) " + firstName
 							}
-							let residentRefMaybe = document.data()["ResidentRef"]
+							// TODO: The commented out part about hard-coding a ref might need to be reimplemented
+							/*let residentRefMaybe = document.data()["ResidentRef"]
 							var residentRef = self.db.collection(self.USERS).document("ypT6K68t75hqX6OubFO0HBBTHoy1") // Hard code a ref for when a code doesnt have one. (IE points were Given by REC to no specific user)
 							if (residentRefMaybe != nil){
 								residentRef = residentRefMaybe as! DocumentReference
-							}
-							let residentId = User.get(.id) as! String
+							}*/
+							let residentId = document.data()["ResidentId"] as! String
 							let pointType = DataManager.sharedManager.getPointType(value: idType)
-							let pointLog = PointLog(pointDescription: description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentRef: residentRef, residentId: residentId)
+							let pointLog = PointLog(pointDescription: description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentId: residentId)
 							pointLog.logID = id
 							pointLogs.append(pointLog)
 						}
@@ -758,7 +787,52 @@ class FirebaseHelper {
 				onDone(pointLogs)
 		}
 	}
-    
+	
+	func getMessagesForUser(onDone: @escaping ([PointLog])-> Void){
+		let permissionLevel = PointType.PermissionLevel(rawValue: User.get(.permissionLevel) as! Int)!
+		
+		let house = User.get(.house) as! String
+		
+		let residentId = User.get(.id) as! String
+		let path = db.collection(self.HOUSE).document(house).collection(self.POINTS)
+		path.getDocuments { (querySnapshot, err) in
+			if (err != nil) {
+				print("Error getting documents: \(String(describing: err))")
+				return
+			}
+			var pointLogs = [PointLog]()
+			for document in querySnapshot!.documents {
+				var getData = false
+				if (permissionLevel == .resident) {
+					if (document.data()["ResidentId"] as! String == residentId) {
+						if (document.data()["ResidentNotifications"] as! Int != 0) {
+							getData = true
+						}
+					}
+				}
+				else if (permissionLevel == .rhp) {
+					if (document.data()["RHPNotifications"] as! Int != 0) {
+						getData = true
+					}
+				}
+				if (getData) {
+					let description = document.data()["Description"] as! String
+					let firstName = document.data()["ResidentFirstName"] as! String
+					let lastName = document.data()["ResidentLastName"] as! String
+					let idType = document.data()["PointTypeID"] as! Int
+					let pointType = DataManager.sharedManager.getPointType(value: idType)
+					let floorID = document.data()["FloorID"] as! String
+					let residentId = document.data()["ResidentId"] as! String
+					let pointLog = PointLog(pointDescription: description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentId: residentId)
+					pointLog.logID = document.documentID
+					pointLogs.append(pointLog)
+				}
+			}
+			onDone(pointLogs)
+		}
+		
+	}
+
     func addPointType(pointType:PointType, onDone:@escaping (_ err:Error?)-> Void){
         let highestId = DataManager.sharedManager.getPoints()!.count + 1 // This has the potential for a race condition but oh well
         //Adding a point with a specific Document ID
@@ -809,7 +883,9 @@ class FirebaseHelper {
             }
             var users = [UserModel]()
             for document in querySnapshot!.documents{
-                let name = document.data()["Name"] as! String
+				let firstName = document.data()["FirstName"] as! String
+				let lastName = document.data()["LastName"] as! String
+                let name = firstName + " " + lastName
                 let points = document.data()["TotalPoints"] as! Int
                 let model = UserModel(name: name, points: points)
                 if(users.count < 5){

@@ -46,11 +46,11 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="profileView" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jt1-LE-iWS">
-                    <rect key="frame" x="152" y="98.5" width="50" height="50"/>
+                    <rect key="frame" x="177" y="111" width="25" height="25"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="jt1-LE-iWS" secondAttribute="height" multiplier="1:1" id="DVr-HI-Uh9"/>
-                        <constraint firstAttribute="width" constant="50" id="KR5-8H-hvH"/>
+                        <constraint firstAttribute="width" constant="25" id="KR5-8H-hvH"/>
                     </constraints>
                     <state key="normal" backgroundImage="list">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

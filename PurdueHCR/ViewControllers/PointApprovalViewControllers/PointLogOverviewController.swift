@@ -145,7 +145,7 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 
 	@IBAction func sendMessage(_ sender: Any) {
 		let message = typeMessageField.text!
-		DataManager.sharedManager.addMessageToPointLog(message: message, messageType: .comment, pointLog: pointLog!)
+		DataManager.sharedManager.addMessageToPointLog(message: message, messageType: .comment, pointID: pointLog!.logID!)
 		typeMessageField.text! = ""
 		resfreshData()
 	}

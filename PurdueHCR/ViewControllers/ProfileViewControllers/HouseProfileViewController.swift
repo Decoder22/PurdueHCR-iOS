@@ -18,8 +18,9 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
     @IBOutlet var profileView: ProfileView!
 	@IBOutlet weak var housePointsCompareView: HousePointsCompareView!
 	@IBOutlet weak var housePointsView: HousePointsView!
-    
-    var refresher:UIRefreshControl?
+	@IBOutlet weak var notificationsButton: UIButton!
+	
+    var refresher: UIRefreshControl?
     var refreshCount = 0
 	var p : PopupView?
 	var house : House?
@@ -56,6 +57,23 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
         self.housePointsCompareView.layer.shadowOffset = CGSize.zero
         self.housePointsCompareView.layer.shadowRadius = 5
 		self.housePointsCompareView.layer.cornerRadius = radius
+		
+		let permission = User.get(.permissionLevel) as! Int
+		if (permission != 0 || permission != 1) {
+			self.navigationController?.navigationItem.hidesBackButton = true
+		}
+		
+		
+		// TODO: A separate method should probably be created for this so that it doesn't have to pass around as much data but instead just returns a boolean whether or not the user has a notification
+		DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs: [PointLog]) in
+			if (pointLogs.capacity > 0) {
+				self.notificationsButton.setImage(#imageLiteral(resourceName: "BellNotification"), for: .normal)
+			}
+			else {
+				self.notificationsButton.setImage(#imageLiteral(resourceName: "Bell"), for: .normal)
+			}
+		})
+		
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -73,6 +91,14 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
             self.housePointsCompareView.refreshDataSet()
             self.handleRefresher()
         })
+		DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs: [PointLog]) in
+			if (pointLogs.capacity > 0) {
+				self.notificationsButton.setImage(#imageLiteral(resourceName: "BellNotification"), for: .normal)
+			}
+			else {
+				self.notificationsButton.setImage(#imageLiteral(resourceName: "Bell"), for: .normal)
+			}
+		})
     }
     
     func handleRefresher(){
@@ -173,7 +199,7 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
 		let vc = storyboard.instantiateViewController(withIdentifier: "UserPointsController") 
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
-
+		
 }
 
 // Helper function inserted by Swift 4.2 migrator.

@@ -145,8 +145,8 @@ class DataManager {
 		})
 	}
 	
-	func addMessageToPointLog(message: String, messageType: MessageLog.MessageType, pointLog: PointLog) {
-		fbh.addMessageToPontLog(message: message, messageType: messageType, pointLog: pointLog)
+	func addMessageToPointLog(message: String, messageType: MessageLog.MessageType, pointID: String) {
+		fbh.addMessageToPontLog(message: message, messageType: messageType, pointID: pointID)
 	}
 	
     func refreshHouses(onDone:@escaping ( _ houses:[House]) ->Void){
@@ -351,9 +351,8 @@ class DataManager {
 				let firstName = User.get(.firstName) as! String
 				let lastName = User.get(.lastName) as! String
                 let floorID = User.get(.floorID) as! String
-                let ref = self.getUserRefFromUserID(id: User.get(.id) as! String)
 				let residentId = User.get(.id) as! String
-                let log = PointLog(pointDescription: link.description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentRef: ref, residentId: residentId, dateOccurred: Timestamp.init())
+                let log = PointLog(pointDescription: link.description, firstName: firstName, lastName: lastName, type: pointType, floorID: floorID, residentId: residentId, dateOccurred: Timestamp.init())
                 var documentID = ""
                 if(link.singleUse){
                     documentID = id
@@ -424,6 +423,10 @@ class DataManager {
 	
 	func getAllPointLogsForUser(residentID:String, house:String, onDone:@escaping (([PointLog]) -> Void)){
 		fbh.getAllPointLogsForUser(residentID: residentID, house: house, onDone: onDone)
+	}
+	
+	func getMessagesForUser(onDone: @escaping([PointLog]) -> Void) {
+		fbh.getMessagesForUser(onDone: onDone)
 	}
     
     func createPointType(pointType:PointType, onDone:@escaping ((_ err:Error?) ->Void)){

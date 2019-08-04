@@ -108,13 +108,12 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 		let lastName = User.get(.lastName) as! String
         let preApproved = ((User.get(.permissionLevel) as! Int) == 1 )
         let floor = User.get(.floorID) as! String
-        let residentRef = DataManager.sharedManager.getUserRefFromUserID(id: User.get(.id) as! String)
 		let residentId = User.get(.id) as! String
 		
 		// TODO: FIX DIS CUZ IT PROBLY AINT RAIGHT
 		datePicker.maximumDate = Date()
 		let dateOccurred = Timestamp.init(date: datePicker.date)
-        let pointLog = PointLog(pointDescription: logDescription, firstName: firstName, lastName: lastName, type: pointType, floorID: floor, residentRef:residentRef, residentId: residentId, dateOccurred: dateOccurred)
+        let pointLog = PointLog(pointDescription: logDescription, firstName: firstName, lastName: lastName, type: pointType, floorID: floor, residentId: residentId, dateOccurred: dateOccurred)
         DataManager.sharedManager.writePoints(log: pointLog, preApproved: preApproved) { (err:Error?) in
             if(err != nil){
                 if(err!.localizedDescription == "The operation couldn’t be completed. (Could not submit points because point type is disabled. error 1.)"){

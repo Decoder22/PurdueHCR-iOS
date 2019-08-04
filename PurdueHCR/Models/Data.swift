@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 import Firebase
 
+class DefinedValues {
+	
+}
+
 class PointType {
 	
 	enum PermissionLevel: Int {
@@ -92,10 +96,11 @@ class PointLog {
     var dateSubmitted:Timestamp?
 	var dateOccurred:Timestamp?
     var logID:String? = nil
+	var rhpNotifications:Int
+	var residentNotifications:Int
     
     //Values stayed local
     var wasHandled:Bool
-    
     
     /// Initialization for newly created points. If the points are being pulled from Firebase database, use the other init method.
     ///
@@ -105,7 +110,7 @@ class PointLog {
     ///   - type: PointType for which the point is being submitted for
     ///   - floorID: Id of the floor for who submitted it
     ///   - residentRef: Firebase reference to the resident who submitted it
-	init(pointDescription:String, firstName:String, lastName:String, type:PointType, floorID:String, residentRef:DocumentReference, residentId:String, dateOccurred:Timestamp = Timestamp.init()){
+	init(pointDescription:String, firstName:String, lastName:String, type:PointType, floorID:String, residentId:String, dateOccurred:Timestamp = Timestamp.init()){
         self.pointDescription = pointDescription
         self.floorID = floorID
         self.type = type
@@ -115,6 +120,9 @@ class PointLog {
         self.dateOccurred = dateOccurred
 		self.dateSubmitted = Timestamp.init()
         self.wasHandled = false
+		// TODO: Fix
+		self.rhpNotifications = 0
+		self.residentNotifications = 0
     }
 	
     /// Initialization method for points pulled from Firebase Database
@@ -128,15 +136,15 @@ class PointLog {
         
         self.floorID = document["FloorID"] as! String
         self.pointDescription = document["Description"] as! String
-		var firstName = document["ResidentFirstName"] as! String
-		let lastName = document["ResidentLastName"] as! String
-		self.firstName = firstName
-		self.lastName = lastName
+		self.firstName = document["ResidentFirstName"] as! String
+		self.lastName = document["ResidentLastName"] as! String
 		self.residentId = document["ResidentId"] as! String
         self.approvedBy = document["ApprovedBy"] as! String?
         self.approvedOn = document["ApprovedOn"] as! Timestamp?
         self.dateOccurred = document["DateOccurred"] as! Timestamp?
 		self.dateSubmitted = document["DateSubmitted"] as! Timestamp?
+		self.rhpNotifications = document["RHPNotifications"] as! Int
+		self.residentNotifications = document["ResidentNotifications"] as! Int
 		
         let idValue = (document["PointTypeID"] as! Int)
         if(idValue < 1){
@@ -255,10 +263,10 @@ class MessageLog {
 	var message: String
 	var senderFirstName: String
 	var senderLastName: String
-	var senderPermissionLevel: Int
+	var senderPermissionLevel: PointType.PermissionLevel
 	var messageType: MessageType
 	
-	init(creationDate: Timestamp, message: String, senderFirstName: String, senderLastName: String, senderPermissionLevel: Int, messageType: MessageType) {
+	init(creationDate: Timestamp, message: String, senderFirstName: String, senderLastName: String, senderPermissionLevel: PointType.PermissionLevel, messageType: MessageType) {
 		self.creationDate = creationDate
 		self.message = message
 		self.senderFirstName = senderFirstName
@@ -278,8 +286,8 @@ class MessageLog {
 		self.message = document["Message"] as! String
 		self.senderFirstName = document["SenderFirstName"] as! String
 		self.senderLastName = document["SenderLastName"] as! String
-		self.senderPermissionLevel = document["SenderPermissionLevel"] as! Int
-		self.messageType = document["MessageType"] as! MessageType
+		self.senderPermissionLevel = document["SenderPermissionLevel"] as! PointType.PermissionLevel
+		self.messageType = MessageType(rawValue: document["MessageType"] as! String)!
 	}
 	
 	func convertToDict()->[String:Any]{
@@ -289,7 +297,7 @@ class MessageLog {
 			"Message":self.message,
 			"SenderFirstName":senderFirstName,
 			"SenderLastName":self.senderLastName,
-			"SenderPermissionLevel":self.senderPermissionLevel,
+			"SenderPermissionLevel":self.senderPermissionLevel.rawValue,
 			"MessageType":self.messageType.rawValue
 		]
 		
