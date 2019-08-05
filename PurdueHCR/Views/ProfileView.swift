@@ -49,6 +49,11 @@ class ProfileView: UIView {
 //        totalPointsLabel.layer.borderWidth = 0
 //        totalPointsLabel.layer.borderColor = UIColor.black.cgColor
 //		houseLogoImageView.frame(forAlignmentRect: CGRect.init(x: -100, y: 0, width: 25, height: 25))
+		let permissionLevel = PointType.PermissionLevel(rawValue: User.get(.permissionLevel) as! Int)
+		if (permissionLevel == PointType.PermissionLevel.rhp) {
+			viewPointsButton.isEnabled = false
+			viewPointsButton.isHidden = true
+		}
         reloadData()
     }
     
