@@ -28,7 +28,7 @@ class TabBarController: UITabBarController {
             viewControllers.append(linkProfileViewController())
             viewControllers.append(linkPointSubmissionViewController())
         }
-        else if( p == 1){
+        else if (p == 1){
             //RHP Controllers
             viewControllers.append(linkProfileViewController())
             viewControllers.append(linkPointSubmissionViewController())
@@ -36,7 +36,7 @@ class TabBarController: UITabBarController {
             viewControllers.append(linkQRCodeViewController())
 
         }
-        else if( p == 2){
+        else if (p == 2){
             //REA/REC Controllers
             viewControllers.append(linkRECHouseViewController())
             viewControllers.append(linkQRCodeViewController())
@@ -45,7 +45,9 @@ class TabBarController: UITabBarController {
 
         }
 		else if (p == 3) {
-			
+			//FHP Controllers
+			viewControllers.append(linkProfileViewController())
+			viewControllers.append(linkQRCodeViewController())
 		}
         // Do any additional setup after loading the view.
         self.setViewControllers(viewControllers, animated: false)
