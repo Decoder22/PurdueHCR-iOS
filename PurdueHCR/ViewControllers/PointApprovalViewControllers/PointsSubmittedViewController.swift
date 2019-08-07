@@ -91,12 +91,12 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ResolvedCell
-		cell.activeView.layer.cornerRadius = cell.activeView.frame.width / 2
+		cell.activeView.layer.cornerRadius = 0
 		if(isFiltering()){
             if (filteredPoints[indexPath.row].wasRejected() == true) {
-                cell.activeView.backgroundColor = UIColor.red
+                cell.activeView.backgroundColor = DefinedValues.red
             } else {
-                cell.activeView.backgroundColor = myGreen
+                cell.activeView.backgroundColor = DefinedValues.green
             }
 			cell.descriptionLabel.text = filteredPoints[indexPath.row].pointDescription
 			cell.reasonLabel.text = filteredPoints[indexPath.row].type.pointDescription
@@ -104,9 +104,9 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 		}
 		else{
             if (displayedLogs[indexPath.row].wasRejected() == true) {
-                cell.activeView.backgroundColor = UIColor.red
+                cell.activeView.backgroundColor = DefinedValues.red
             } else {
-                cell.activeView.backgroundColor = myGreen
+                cell.activeView.backgroundColor = DefinedValues.green
             }
 			cell.reasonLabel?.text = displayedLogs[indexPath.row].type.pointDescription
 			cell.nameLabel?.text = displayedLogs[indexPath.row].firstName + " " + displayedLogs[indexPath.row].lastName
@@ -136,7 +136,7 @@ class PointsSubmittedViewController: RHPApprovalTableViewController, UISearchRes
 				}
 				
 			})
-			approveAction.backgroundColor = green
+			approveAction.backgroundColor = DefinedValues.green
 			approveAction.title = "Approve"
 			action.append(approveAction)
 		}

@@ -151,7 +151,7 @@ class DataManager {
 	
     func refreshHouses(onDone:@escaping ( _ houses:[House]) ->Void){
         print("House refersh")
-        fbh.refreshHouseInformation(onDone: { (houses:[House],codes:[HouseCode]) in
+        fbh.refreshHouseInformation(onDone: { (houses:[House], codes:[HouseCode]) in
             self._houses = houses
             self._houseCodes = codes
             onDone(houses)

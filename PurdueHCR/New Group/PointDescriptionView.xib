@@ -50,7 +50,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Description" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Oh-90-35P">
-                    <rect key="frame" x="5" y="135" width="359" height="366"/>
+                    <rect key="frame" x="10" y="135" width="354" height="366"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -92,7 +92,7 @@
                 <constraint firstItem="bsK-JN-4Tu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="X1j-N3-LgT"/>
                 <constraint firstItem="1Oh-90-35P" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="5" id="X9E-oT-aDX"/>
                 <constraint firstItem="bsK-JN-4Tu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="YEb-LE-KjV"/>
-                <constraint firstItem="1Oh-90-35P" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="5" id="YbU-ob-CyT"/>
+                <constraint firstItem="1Oh-90-35P" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="YbU-ob-CyT"/>
                 <constraint firstItem="bsK-JN-4Tu" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="Z3V-P0-YG0"/>
                 <constraint firstItem="1Oh-90-35P" firstAttribute="top" secondItem="g7x-3v-neG" secondAttribute="bottom" constant="5" id="a2z-2U-w68"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="g7x-3v-neG" secondAttribute="trailing" id="b4o-C6-CPQ"/>
@@ -103,7 +103,7 @@
                 <constraint firstItem="asA-2T-GIU" firstAttribute="leading" secondItem="eHD-nv-Bhh" secondAttribute="trailing" constant="10" id="oef-w0-Z8G"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="CL9-tJ-bLY" secondAttribute="trailing" constant="5" id="rYQ-GI-DwE"/>
                 <constraint firstItem="CL9-tJ-bLY" firstAttribute="top" secondItem="PdO-yp-i3W" secondAttribute="bottom" constant="5" id="rpU-2g-mdX"/>
-                <constraint firstAttribute="bottom" secondItem="1Oh-90-35P" secondAttribute="bottom" constant="5" id="wvH-3a-hHs"/>
+                <constraint firstAttribute="bottom" secondItem="1Oh-90-35P" secondAttribute="bottom" constant="10" id="wvH-3a-hHs"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

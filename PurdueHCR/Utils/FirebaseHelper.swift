@@ -18,6 +18,7 @@ class FirebaseHelper {
 	let LAST_NAME = "LastName"
     let PERMISSION_LEVEL = "Permission Level"
     let HOUSE = "House"
+	let HOUSE_CODE = "HouseCodes"
     let POINTS = "Points"
     let USERS = "Users"
     let TOTAL_POINTS = "TotalPoints"
@@ -411,12 +412,11 @@ class FirebaseHelper {
             }
         }
     }
-    
+	
     func refreshHouseInformation(onDone:@escaping ( _ houses:[House],_ code:[HouseCode])->Void){
         let houseRef = self.db.collection(self.HOUSE)
         houseRef.getDocuments() { (querySnapshot, err) in
             var houseArray = [House]()
-            var houseKeys = [HouseCode]()
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -426,23 +426,30 @@ class FirebaseHelper {
                     let hex = houseDocument.data()["Color"] as! String
                     let numberOfResidents = houseDocument.data()["NumberOfResidents"] as! Int
                     let id = houseDocument.documentID
-                    
-                    for key in houseDocument.data().keys
-                    {
-                        if(key.contains("Code"))
-                        {
-                            print("Append code: \(key)")
-                            let floorID = key.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true)[0]
-                            let houseCode = houseDocument.data()[key] as! String
-							houseKeys.append(HouseCode(code: houseCode, house: id, floorID:String(floorID)))
-                        }
-                    }
                     houseArray.append(House(id: id, points: points, hexColor:hex, numberOfResidents:numberOfResidents))
                 }
                 houseArray.sort(by: {$0.totalPoints > $1.totalPoints})
-                onDone(houseArray, houseKeys)
+				
             }
+			
+			let houseCodeRef = self.db.collection(self.HOUSE_CODE)
+			houseCodeRef.getDocuments { (querySnapshot, err) in
+				var houseCodes = [HouseCode]()
+				if err != nil {
+					print("Error getting documents: \(String(describing: err))")
+				}
+				for codeDoc in querySnapshot!.documents {
+					let code = codeDoc.data()["Code"] as! String
+					let codeName = codeDoc.data()["CodeName"] as! String
+					let house = codeDoc.data()["House"] as! String
+					let permissionLevel = codeDoc.data()["PermissionLevel"] as! Int
+					houseCodes.append(HouseCode.init(code: code, codeName: codeName, permissionLevel: permissionLevel, house: house))
+				}
+				onDone(houseArray, houseCodes)
+			}
+			
         }
+
     }
 	
 	// TODO: Make rewards a const

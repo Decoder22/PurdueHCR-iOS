@@ -38,13 +38,16 @@ class MessageView: UIView {
 		messageLabel.text = messageLog.message
 		let type = messageLog.messageType
 		if (type == .approve) {
-			messageIcon.backgroundColor = UIColor.green
+			messageIcon.backgroundColor = DefinedValues.green
+			messageIcon.image = #imageLiteral(resourceName: "approve")
 		}
 		else if (type == .reject) {
-			messageIcon.backgroundColor = UIColor.red
+			messageIcon.backgroundColor = DefinedValues.red
+			messageIcon.image = #imageLiteral(resourceName: "reject")
 		}
 		else if (type == .comment) {
-			messageIcon.backgroundColor = UIColor.yellow
+			messageIcon.backgroundColor = DefinedValues.yellow
+			messageIcon.image = #imageLiteral(resourceName: "comment")
 		}
 	}
 	

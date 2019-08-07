@@ -66,6 +66,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
 		else if(houseName == "Titanium"){
 			houseImage.image = #imageLiteral(resourceName: "Titanium")
 		}
+		datePicker.maximumDate = Date()
         // Do any additional setup after loading the view.
     }
     
@@ -110,12 +111,10 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
         let floor = User.get(.floorID) as! String
 		let residentId = User.get(.id) as! String
 		
-		// TODO: FIX DIS CUZ IT PROBLY AINT RAIGHT
-		datePicker.maximumDate = Date()
 		let dateOccurred = Timestamp.init(date: datePicker.date)
         let pointLog = PointLog(pointDescription: logDescription, firstName: firstName, lastName: lastName, type: pointType, floorID: floor, residentId: residentId, dateOccurred: dateOccurred)
-        DataManager.sharedManager.writePoints(log: pointLog, preApproved: preApproved) { (err:Error?) in
-            if(err != nil){
+		DataManager.sharedManager.writePoints(log: pointLog, preApproved: preApproved, onDone: { (err:Error?) in
+            if (err != nil) {
                 if(err!.localizedDescription == "The operation couldn’t be completed. (Could not submit points because point type is disabled. error 1.)"){
                     self.notify(title: "Failed to submit", subtitle: "Point Type is no longer enabled.", style: .danger)
                 }
@@ -136,7 +135,7 @@ class TypeSubmitViewController: UIViewController, UITextViewDelegate {
                     self.notify(title: "Submitted for approval!", subtitle: pointLog.pointDescription, style: .success)
                 }
             }
-        }
+        })
     }
 
 	func textViewDidChangeSelection(_ textView: UITextView) {

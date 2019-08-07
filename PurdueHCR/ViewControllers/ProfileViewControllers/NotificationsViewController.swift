@@ -100,7 +100,7 @@ class NotificationsViewController: UITableViewController, UISearchResultsUpdatin
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ResolvedCell
-		cell.activeView.layer.cornerRadius = cell.activeView.frame.height / 2
+		cell.activeView.layer.cornerRadius = cell.activeView.frame.width / 2
 		if(isFiltering()){
 			if (filteredPoints[indexPath.row].wasRejected() == true) {
 				cell.activeView.backgroundColor = UIColor.red

@@ -32,8 +32,9 @@ class PointDescriptionView: UIView {
         backgroundView.frame = self.bounds
 		self.backgroundView.layer.cornerRadius = 10
         backgroundView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-		icon.backgroundColor = UIColor.blue
-		icon.layer.cornerRadius = icon.layer.frame.height / 2 
+		icon.backgroundColor = DefinedValues.blue
+		icon.layer.cornerRadius = icon.layer.frame.height / 2
+		icon.image = #imageLiteral(resourceName: "Send")
     }
     
     func setLog(pointLog:PointLog) {

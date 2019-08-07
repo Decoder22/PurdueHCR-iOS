@@ -128,10 +128,10 @@ class HouseCodeViewController: UIViewController, UITextFieldDelegate {
 	func codeIsValid(code:String)-> Bool{
 		let codes = DataManager.sharedManager.getHouseCodes()!
 		for houseCode in codes {
-			if(code == houseCode.code){
+			if (code == houseCode.code){
 				User.save(houseCode.house, as: .house)
 				User.save(houseCode.floorID, as: .floorID)
-				User.save(0 as Any, as: .permissionLevel)
+				User.save(houseCode.permissionLevel as Any, as: .permissionLevel)
 				User.save(0 as Any, as: .points)
 				return true
 			}

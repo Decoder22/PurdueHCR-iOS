@@ -44,6 +44,9 @@ class TabBarController: UITabBarController {
             viewControllers.append(linkRECRewardsViewController())
 
         }
+		else if (p == 3) {
+			
+		}
         // Do any additional setup after loading the view.
         self.setViewControllers(viewControllers, animated: false)
     }

@@ -12,6 +12,17 @@ import Firebase
 
 class DefinedValues {
 	
+	// Colors
+	
+	static let blue = UIColor.init(red: 0.00/255.0, green: 122.0/255.0, blue: 1.00, alpha: 1.0)
+	static let yellow = UIColor.init(red: 1.00, green: 204.0/255.0, blue: 0.0, alpha: 1.0)
+	static let red = UIColor.init(red: 1.00, green: 59.0/255.0, blue: 48.0/255.0, alpha: 1.0)
+	static let green = UIColor.init(red: 52.0/255.0, green: 199.0/255.0, blue: 89.0/255.0, alpha: 1.0)
+	
+	// Raw Values
+	
+	static let radius = 10
+	
 }
 
 class PointType {
@@ -223,7 +234,9 @@ class PointLog {
 			"ResidentLastName":self.lastName,
             "ResidentId":self.residentId,
             "DateOccurred":self.dateOccurred!,
-			"DateSubmitted":self.dateSubmitted!
+			"DateSubmitted":self.dateSubmitted!,
+			"ResidentNotifications":0,
+			"RHPNotifications":0
         ]
         if(self.approvedBy != nil){
             dict["ApprovedBy"] = self.approvedBy!
@@ -329,7 +342,7 @@ class HouseCode {
 	var permissionLevel:Int
     var house:String
     var floorID:String
-	init(code:String, codeName:String = "", permissionLevel:Int = 0, house:String, floorID:String){
+	init(code:String, codeName:String = "", permissionLevel:Int = 0, house:String, floorID:String = ""){
         self.code = code
 		self.codeName = codeName
 		self.permissionLevel = permissionLevel
