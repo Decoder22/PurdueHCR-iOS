@@ -16,6 +16,7 @@
 		B53685D422DFD73700A0D0B5 /* HouseCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53685D322DFD73700A0D0B5 /* HouseCodeViewController.swift */; };
 		B53EBBE222D5502600475882 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		B551BDD321B1004F00CF4F6C /* Register in Resources */ = {isa = PBXBuildFile; fileRef = B551BDD221B1004F00CF4F6C /* Register */; };
+		B553783522FCCAC600446259 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B553783422FCCAC600446259 /* GoogleService-Info.plist */; };
 		B55449592176F11300A914C2 /* TextFieldMaxLengths.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */; };
 		B56508BE22E3BBDB00AF7C97 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56508BD22E3BBDB00AF7C97 /* SplashScreenViewController.swift */; };
 		B599D98222F62F030033173C /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B599D98122F62F030033173C /* NotificationsViewController.swift */; };
@@ -57,7 +58,6 @@
 		D3BCD383224BE5120041AB2D /* UITestPageBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCD382224BE5120041AB2D /* UITestPageBase.swift */; };
 		D3BCD385224BE5760041AB2D /* UITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCD384224BE5760041AB2D /* UITestBase.swift */; };
 		D3BCD387224C28910041AB2D /* UITestSignInPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCD386224C28910041AB2D /* UITestSignInPage.swift */; };
-		D3BCD389224C29170041AB2D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D3BCD388224C29170041AB2D /* GoogleService-Info.plist */; };
 		D3BCD38B224C2C900041AB2D /* UITestProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCD38A224C2C900041AB2D /* UITestProfilePage.swift */; };
 		D3BCD38D224C65050041AB2D /* UITestSignUpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCD38C224C65050041AB2D /* UITestSignUpPage.swift */; };
 		D3BCD38F224C65330041AB2D /* UITestForgotPasswordPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCD38E224C65330041AB2D /* UITestForgotPasswordPage.swift */; };
@@ -107,6 +107,7 @@
 		B52FD0CA22B849AC009682CB /* UserPointsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPointsTableViewController.swift; sourceTree = "<group>"; };
 		B53685D322DFD73700A0D0B5 /* HouseCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HouseCodeViewController.swift; sourceTree = "<group>"; };
 		B551BDD221B1004F00CF4F6C /* Register */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Register; sourceTree = "<group>"; };
+		B553783422FCCAC600446259 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Real/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B55449582176F11300A914C2 /* TextFieldMaxLengths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldMaxLengths.swift; sourceTree = "<group>"; };
 		B56508BD22E3BBDB00AF7C97 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
 		B599D98122F62F030033173C /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
@@ -153,7 +154,6 @@
 		D3BCD382224BE5120041AB2D /* UITestPageBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestPageBase.swift; sourceTree = "<group>"; };
 		D3BCD384224BE5760041AB2D /* UITestBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestBase.swift; sourceTree = "<group>"; };
 		D3BCD386224C28910041AB2D /* UITestSignInPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSignInPage.swift; sourceTree = "<group>"; };
-		D3BCD388224C29170041AB2D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D3BCD38A224C2C900041AB2D /* UITestProfilePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestProfilePage.swift; sourceTree = "<group>"; };
 		D3BCD38C224C65050041AB2D /* UITestSignUpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSignUpPage.swift; sourceTree = "<group>"; };
 		D3BCD38E224C65330041AB2D /* UITestForgotPasswordPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestForgotPasswordPage.swift; sourceTree = "<group>"; };
@@ -301,8 +301,8 @@
 		D30FC90020DF35D800201E74 /* PurdueHCR */ = {
 			isa = PBXGroup;
 			children = (
-				D3BCD388224C29170041AB2D /* GoogleService-Info.plist */,
 				D33F43AB2108043300D3982D /* PurdueHCR.entitlements */,
+				B553783422FCCAC600446259 /* GoogleService-Info.plist */,
 				D30FC90120DF35D800201E74 /* AppDelegate.swift */,
 				D30FC90F20DF35D900201E74 /* Info.plist */,
 				D3355C90214A25BF0037556C /* ViewXIB */,
@@ -620,9 +620,9 @@
 				D30FBEF120FC0B24000DD221 /* ProfileView.xib in Resources */,
 				D3355C93214A267E0037556C /* PointApproval.storyboard in Resources */,
 				D3D062C520E822BA00E8B3A3 /* LoginStoryboard.storyboard in Resources */,
+				B553783522FCCAC600446259 /* GoogleService-Info.plist in Resources */,
 				D30FC90920DF35D800201E74 /* Main.storyboard in Resources */,
 				B50E6C9022F10E0B00505AA3 /* MessageView.xib in Resources */,
-				D3BCD389224C29170041AB2D /* GoogleService-Info.plist in Resources */,
 				D3912A75219CE7960002E7C7 /* RECPointOptions.storyboard in Resources */,
 				D33F43AF210A9FB100D3982D /* PointDescriptionView.xib in Resources */,
 				D3912A7C219CE7A90002E7C7 /* RECRewards.storyboard in Resources */,

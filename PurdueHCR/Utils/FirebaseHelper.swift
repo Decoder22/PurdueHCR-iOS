@@ -117,7 +117,7 @@ class FirebaseHelper {
     ///   - house: If the house is different than the saved house for the user (Used for REC Awarding points)
     ///   - isRECGrantingAward: Boolean to denote that this point is being added by the RHP
     ///   - onDone: Closure function the be called once the code hits an error or finishs. err is nil if no errors are found.
-    func addPointLog(log:PointLog, documentID:String = "",preApproved:Bool = false, house:String = (User.get(.house) as! String), isRECGrantingAward:Bool = false, onDone:@escaping (_ err:Error?)->Void){
+    func addPointLog(log:PointLog, documentID:String = "", preApproved:Bool = false, house:String = (User.get(.house) as! String), isRECGrantingAward:Bool = false, onDone:@escaping (_ err:Error?)->Void){
         var ref: DocumentReference? = nil
         //If point type is disabled and it is not an REC granting an award, warn that it is disabled
         if(!log.type.isEnabled && !isRECGrantingAward){
@@ -194,7 +194,7 @@ class FirebaseHelper {
         let house = User.get(.house) as! String
         var housePointRef: DocumentReference?
         var houseRef:DocumentReference?
-        var residentID = log.residentId
+		let residentID = log.residentId
         houseRef = self.db.collection(self.HOUSE).document(house)
         housePointRef = houseRef!.collection(self.POINTS).document(log.logID!)
         //let userId = log.residentId
@@ -424,9 +424,8 @@ class FirebaseHelper {
                 {
                     let points = houseDocument.data()[self.TOTAL_POINTS] as! Int
                     let hex = houseDocument.data()["Color"] as! String
-                    let numberOfResidents = houseDocument.data()["NumberOfResidents"] as! Int
                     let id = houseDocument.documentID
-                    houseArray.append(House(id: id, points: points, hexColor:hex, numberOfResidents:numberOfResidents))
+                    houseArray.append(House(id: id, points: points, hexColor:hex))
                 }
                 houseArray.sort(by: {$0.totalPoints > $1.totalPoints})
 				
@@ -441,9 +440,15 @@ class FirebaseHelper {
 				for codeDoc in querySnapshot!.documents {
 					let code = codeDoc.data()["Code"] as! String
 					let codeName = codeDoc.data()["CodeName"] as! String
-					let house = codeDoc.data()["House"] as! String
 					let permissionLevel = codeDoc.data()["PermissionLevel"] as! Int
-					houseCodes.append(HouseCode.init(code: code, codeName: codeName, permissionLevel: permissionLevel, house: house))
+					let house = codeDoc.data()["House"]
+					let floorID = codeDoc.data()["FloorId"]
+					if (house == nil || floorID == nil) {
+						
+					} else {
+						houseCodes.append(HouseCode.init(code: code, codeName: codeName, permissionLevel: permissionLevel, house: house as! String, floorID: floorID as! String))
+					}
+					
 				}
 				onDone(houseArray, houseCodes)
 			}

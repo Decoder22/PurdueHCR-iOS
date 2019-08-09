@@ -13,6 +13,7 @@ class PointDescriptionView: UIView {
     @IBOutlet var pointTypeDescriptionLabel: UILabel!
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var backgroundView: UIView!
+	@IBOutlet weak var grayView: UIView!
 	@IBOutlet weak var icon: UIImageView!
 	
     
@@ -35,6 +36,8 @@ class PointDescriptionView: UIView {
 		icon.backgroundColor = DefinedValues.blue
 		icon.layer.cornerRadius = icon.layer.frame.height / 2
 		icon.image = #imageLiteral(resourceName: "Send")
+		grayView.layer.cornerRadius = DefinedValues.radius
+		grayView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     }
     
     func setLog(pointLog:PointLog) {

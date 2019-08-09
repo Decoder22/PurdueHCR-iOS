@@ -88,9 +88,11 @@ class DataManager {
     ///   - log: PointLog that was submitted
     ///   - preApproved: Boolean that denotes whether the Log can skip RHP approval or not.
     ///   - onDone: Closure function the be called once the code hits an error or finish. err is nil if no errors are found.
-    func writePoints(log:PointLog, preApproved:Bool = false, onDone:@escaping (_ err:Error?)->Void){
+    func writePoints(log:PointLog, preApproved:Bool = false, onDone:@escaping (_ err:Error?)->Void) {
         // take in a point log, write it to house then write the ref to the user
-        fbh.addPointLog(log: log, preApproved: preApproved, onDone: onDone)
+		fbh.addPointLog(log: log, preApproved: preApproved) { (err:Error?) in
+			onDone(err)
+		}
     }
     
     /// Add Award from REA/REC

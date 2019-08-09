@@ -14,8 +14,9 @@ class MessageView: UIView {
 	@IBOutlet weak var nameLabel: UILabel!
 	@IBOutlet weak var messageLabel: UILabel!
 	@IBOutlet weak var messageIcon: UIImageView!
+	@IBOutlet weak var grayView: UIView!
 	
-	
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		Bundle.main.loadNibNamed("MessageView", owner: self, options: nil)
@@ -27,6 +28,8 @@ class MessageView: UIView {
 		messageIcon.image = #imageLiteral(resourceName: "approve")
 		messageIcon.backgroundColor = UIColor.green
 		messageIcon.layer.cornerRadius = messageIcon.layer.frame.height / 2
+		grayView.layer.cornerRadius = DefinedValues.radius
+		grayView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 	}
 	
 	required init(coder aDecoder: NSCoder){

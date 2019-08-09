@@ -50,9 +50,10 @@ class ProfileView: UIView {
 //        totalPointsLabel.layer.borderColor = UIColor.black.cgColor
 //		houseLogoImageView.frame(forAlignmentRect: CGRect.init(x: -100, y: 0, width: 25, height: 25))
 		let permissionLevel = PointType.PermissionLevel(rawValue: User.get(.permissionLevel) as! Int)
-		if (permissionLevel == PointType.PermissionLevel.rhp) {
+		if (permissionLevel == PointType.PermissionLevel.fhp) {
 			viewPointsButton.isEnabled = false
 			viewPointsButton.isHidden = true
+			totalPointsLabel.text = ""
 		}
         reloadData()
     }
@@ -78,8 +79,14 @@ class ProfileView: UIView {
 		let lastName = User.get(.lastName) as! String
         nameLabel.text = firstName + " " + lastName
 		
-		totalPointsLabel.adjustsFontSizeToFitWidth = true
-        totalPointsLabel.text = (User.get(.points) as! Int).description + " points"
+		let permissionLevel = PointType.PermissionLevel(rawValue: User.get(.permissionLevel) as! Int)
+		if (permissionLevel == PointType.PermissionLevel.fhp) {
+			totalPointsLabel.text = ""
+		} else {
+			totalPointsLabel.adjustsFontSizeToFitWidth = true
+        	totalPointsLabel.text = (User.get(.points) as! Int).description + " points"
+		}
+		
         totalPointsLabel.accessibilityIdentifier = "Resident Points"
         
         

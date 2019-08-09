@@ -79,6 +79,8 @@ class HouseCodeViewController: UIViewController, UITextFieldDelegate {
 		else {
 			// find the house that their code matches and go to the database and create their user
 			//
+
+			User.save(Auth.auth().currentUser?.uid, as: .id)
 			User.save(firstName as Any, as: .firstName)
 			User.save(lastName as Any, as: .lastName)
 			DataManager.sharedManager.createUser(onDone: ({ (err:Error?) in

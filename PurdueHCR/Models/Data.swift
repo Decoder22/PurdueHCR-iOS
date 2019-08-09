@@ -21,7 +21,7 @@ class DefinedValues {
 	
 	// Raw Values
 	
-	static let radius = 10
+	static let radius : CGFloat = 10.0
 	
 }
 
@@ -58,13 +58,11 @@ class House {
     var houseID: String
     var totalPoints: Int
     var hexColor: String
-    var numberOfResidents: Int
     var topScoreUsers : [UserModel]?
-    init(id:String, points:Int,hexColor:String, numberOfResidents:Int ){
+    init(id:String, points:Int, hexColor:String){
         self.houseID = id
         self.totalPoints = points
         self.hexColor = hexColor
-        self.numberOfResidents = numberOfResidents
     }
     
     
@@ -342,7 +340,7 @@ class HouseCode {
 	var permissionLevel:Int
     var house:String
     var floorID:String
-	init(code:String, codeName:String = "", permissionLevel:Int = 0, house:String, floorID:String = ""){
+	init(code:String, codeName:String = "", permissionLevel:Int = 0, house:String = "", floorID:String = ""){
         self.code = code
 		self.codeName = codeName
 		self.permissionLevel = permissionLevel

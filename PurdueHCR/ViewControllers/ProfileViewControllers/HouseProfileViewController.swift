@@ -59,20 +59,23 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
 		self.housePointsCompareView.layer.cornerRadius = radius
 		
 		let permission = User.get(.permissionLevel) as! Int
-		if (permission != 0 || permission != 1) {
-			self.navigationController?.navigationItem.hidesBackButton = true
+		if (permission != 0 && permission != 1) {
+			self.navigationItem.rightBarButtonItems = nil
 		}
 		
 		
 		// TODO: A separate method should probably be created for this so that it doesn't have to pass around as much data but instead just returns a boolean whether or not the user has a notification
-		DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs: [PointLog]) in
-			if (pointLogs.capacity > 0) {
-				self.notificationsButton.setImage(#imageLiteral(resourceName: "BellNotification"), for: .normal)
-			}
-			else {
-				self.notificationsButton.setImage(#imageLiteral(resourceName: "Bell"), for: .normal)
-			}
-		})
+		
+		if (self.navigationItem.rightBarButtonItems != nil) {
+			DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs: [PointLog]) in
+				if (pointLogs.capacity > 0) {
+					self.notificationsButton.setImage(#imageLiteral(resourceName: "BellNotification"), for: .normal)
+				}
+				else {
+					self.notificationsButton.setImage(#imageLiteral(resourceName: "Bell"), for: .normal)
+				}
+			})
+		}
 		
     }
 	
@@ -81,7 +84,7 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
 	}
 	
     @objc func refreshData(){
-        refreshCount = 0
+		refreshCount = 0
         DataManager.sharedManager.refreshUser(onDone: {(err:Error?) in
             self.profileView.reloadData()
             self.handleRefresher()
@@ -91,14 +94,16 @@ class HouseProfileViewController: UIViewController, UIScrollViewDelegate, Custom
             self.housePointsCompareView.refreshDataSet()
             self.handleRefresher()
         })
-		DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs: [PointLog]) in
-			if (pointLogs.capacity > 0) {
-				self.notificationsButton.setImage(#imageLiteral(resourceName: "BellNotification"), for: .normal)
-			}
-			else {
-				self.notificationsButton.setImage(#imageLiteral(resourceName: "Bell"), for: .normal)
-			}
-		})
+		if (navigationItem.rightBarButtonItems != nil) {
+			DataManager.sharedManager.getMessagesForUser(onDone: { (pointLogs: [PointLog]) in
+				if (pointLogs.capacity > 0) {
+					self.notificationsButton.setImage(#imageLiteral(resourceName: "BellNotification"), for: .normal)
+				}
+				else {
+					self.notificationsButton.setImage(#imageLiteral(resourceName: "Bell"), for: .normal)
+				}
+			})
+		}
     }
     
     func handleRefresher(){

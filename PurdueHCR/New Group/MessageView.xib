@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageView" customModule="PurdueHCR" customModuleProvider="target">
             <connections>
+                <outlet property="grayView" destination="KFU-wk-PVa" id="O9K-9p-VvU"/>
                 <outlet property="messageIcon" destination="hTC-KI-a0v" id="t3J-9I-nuG"/>
                 <outlet property="messageLabel" destination="B7P-KT-I6T" id="R5e-ye-T4P"/>
                 <outlet property="messageView" destination="iN0-l3-epB" id="U4e-hi-Ofp"/>

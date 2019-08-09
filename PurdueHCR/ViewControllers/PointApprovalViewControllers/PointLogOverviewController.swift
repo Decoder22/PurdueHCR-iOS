@@ -47,6 +47,7 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 		
 		typeMessageField.layer.cornerRadius = typeMessageField.frame.height / 2
 		typeMessageField.layer.borderColor = UIColor.lightGray.cgColor
+		typeMessageField.borderStyle = .none
 		typeMessageField.layer.borderWidth = 1
 		
 		sendButton.backgroundColor = tabBarController?.tabBar.tintColor
@@ -141,13 +142,16 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 			}
 			self.tableView.refreshControl?.endRefreshing()
 		})
+		self.tableView.reloadData()
 	}
 
 	@IBAction func sendMessage(_ sender: Any) {
 		let message = typeMessageField.text!
-		DataManager.sharedManager.addMessageToPointLog(message: message, messageType: .comment, pointID: pointLog!.logID!)
-		typeMessageField.text! = ""
-		resfreshData()
+			if (message != "") {
+			DataManager.sharedManager.addMessageToPointLog(message: message, messageType: .comment, pointID: pointLog!.logID!)
+			typeMessageField.text! = ""
+			resfreshData()
+		}
 	}
 	
 	// MARK: - Table view data source
@@ -176,7 +180,9 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-		
+		for view in cell.subviews {
+			view.removeFromSuperview()
+		}
 		cell.backgroundColor = systemGray5
 		
 		if (indexPath.row == 0) {
@@ -238,12 +244,12 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 	// TODO: Update this implementation. I can't imagine it being very efficient or scalable. Plus it doesn't use constants so changing constraints elsewhere would completely throw this off
 	
 	@objc func keyboardWillShow(notification: NSNotification) {
-		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-			if (User.get(.permissionLevel) as! Int != 1) {
-				bottomConstraint.constant = (-1 * keyboardSize.height) - 10
-			} else {
-				bottomConstraint.constant = -80 - keyboardSize.height
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+			if (User.get(.permissionLevel) as! Int == 1) {
+				approveButton!.isHidden = true
+				rejectButton!.isHidden = true
 			}
+			bottomConstraint.constant = -1 * (60 + keyboardSize.height - (self.tabBarController?.tabBar.frame.size.height)!)
 			self.tableView.layoutIfNeeded()
 		}
 	}
@@ -253,6 +259,8 @@ class PointLogOverviewController: UIViewController, UITableViewDelegate, UITable
 			bottomConstraint.constant = -60
 		} else {
 			bottomConstraint.constant = -145
+			approveButton!.isHidden = false
+			rejectButton!.isHidden = false
 		}
 		
 		self.tableView.layoutIfNeeded()
